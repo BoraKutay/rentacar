@@ -6,10 +6,10 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.CarMaintenanceService;
+import com.turkcell.rentacar.business.dtos.CarMaintenanceByIdDto;
+import com.turkcell.rentacar.business.dtos.CarMaintenanceListDto;
 import com.turkcell.rentacar.business.requests.CreateCarMaintenanceRequest;
 import com.turkcell.rentacar.business.requests.UpdateCarMaintenanceRequest;
-import com.turkcell.rentacar.business.requests.dtos.CarMaintenanceByIdDto;
-import com.turkcell.rentacar.business.requests.dtos.CarMaintenanceListDto;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -72,5 +72,6 @@ public class CarMaintenanceManager implements CarMaintenanceService {
         this.carMaintenanceDao.deleteById(carMaintenanceId);
         return new SuccessResult("Maintenance is deleted.");
 	}
+
 
 }

@@ -1,8 +1,8 @@
 package com.turkcell.rentacar.business.concretes;
 
 import com.turkcell.rentacar.business.abstracts.CarService;
-import com.turkcell.rentacar.business.requests.dtos.CarByIdDto;
-import com.turkcell.rentacar.business.requests.dtos.CarListDto;
+import com.turkcell.rentacar.business.dtos.CarByIdDto;
+import com.turkcell.rentacar.business.dtos.CarListDto;
 import com.turkcell.rentacar.business.requests.CreateCarRequest;
 import com.turkcell.rentacar.business.requests.UpdateCarRequest;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;

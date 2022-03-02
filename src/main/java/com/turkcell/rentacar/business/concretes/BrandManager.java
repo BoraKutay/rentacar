@@ -1,8 +1,8 @@
 package com.turkcell.rentacar.business.concretes;
 
 import com.turkcell.rentacar.business.abstracts.BrandService;
-import com.turkcell.rentacar.business.requests.dtos.BrandByIdDto;
-import com.turkcell.rentacar.business.requests.dtos.BrandListDto;
+import com.turkcell.rentacar.business.dtos.BrandByIdDto;
+import com.turkcell.rentacar.business.dtos.BrandListDto;
 import com.turkcell.rentacar.business.requests.CreateBrandRequest;
 import com.turkcell.rentacar.business.requests.UpdateBrandRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;

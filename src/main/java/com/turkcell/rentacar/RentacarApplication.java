@@ -69,8 +69,3 @@ public class RentacarApplication {
 
 
 
-
-
-// Global Exception ve validation
-//CarMaintenance -> id,desc, returnDate    one to one
-//CRUD 

@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CreateCarMaintenanceRequest {
 
-	private int carId;
 	private String description;
 	private String returnDate;
+	private int carId;
 }

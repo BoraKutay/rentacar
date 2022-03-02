@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 import javax.persistence.*;
 
 @Data
@@ -35,7 +37,7 @@ public class Car {
     @JoinColumn(name = "color_id")
     private Color color;
     
-    @OneToOne(mappedBy = "car" )
-    private CarMaintenance carMaintenance;
+    @OneToMany(mappedBy = "car" )
+    private List<CarMaintenance> carMaintenances;
     
 }
