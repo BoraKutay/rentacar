@@ -34,4 +34,8 @@ public class Car {
     @ManyToOne
     @JoinColumn(name = "color_id")
     private Color color;
+    
+    @OneToOne(mappedBy = "car" )
+    private CarMaintenance carMaintenance;
+    
 }

@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api/cars")
 
@@ -29,7 +31,7 @@ public class CarsController {
     }
 
     @PostMapping("/add")
-    public Result add(@RequestBody CreateCarRequest createcarRequest) throws BusinessException {
+    public Result add(@RequestBody @Valid CreateCarRequest createcarRequest) throws BusinessException {
 
         return this.carService.add(createcarRequest);
     }
