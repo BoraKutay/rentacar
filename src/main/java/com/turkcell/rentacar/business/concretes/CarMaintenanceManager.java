@@ -72,6 +72,14 @@ public class CarMaintenanceManager implements CarMaintenanceService {
         this.carMaintenanceDao.deleteById(carMaintenanceId);
         return new SuccessResult("Maintenance is deleted.");
 	}
+	
+	@Override
+	public DataResult<List<CarMaintenanceListDto>> getByCarId(int carId) {
+		List<CarMaintenance> result = this.carMaintenanceDao.getByCar_CarId(carId);
+		List<CarMaintenanceListDto> response = result.stream()
+				.map(carMaintenance -> this.modelMapperService.forDto().map(carMaintenance, CarMaintenanceListDto.class)).collect(Collectors.toList());
+		return new SuccessDataResult<List<CarMaintenanceListDto>>(response, "Car maintenances listed successfully.");
+	}
 
 
 }

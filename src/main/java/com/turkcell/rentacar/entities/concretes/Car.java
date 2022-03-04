@@ -27,7 +27,7 @@ public class Car {
     private int modelYear;
 
     @Column(name = "description")
-    private String description;
+    private String carDescription;
 
     @ManyToOne
     @JoinColumn(name = "brand_id")
@@ -37,7 +37,11 @@ public class Car {
     @JoinColumn(name = "color_id")
     private Color color;
     
-    @OneToMany(mappedBy = "car" )
+    
+   
+    @OneToMany(mappedBy = "car",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<CarMaintenance> carMaintenances;
+    
+    
     
 }

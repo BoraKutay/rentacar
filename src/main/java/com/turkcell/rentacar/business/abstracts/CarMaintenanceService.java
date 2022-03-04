@@ -16,4 +16,5 @@ public interface CarMaintenanceService {
     Result update(UpdateCarMaintenanceRequest updateCarMaintenanceRequest);
     DataResult<CarMaintenanceByIdDto> getById(int carMaintenanceId);
     Result deleteById(int carMaintenanceId);
+	DataResult<List<CarMaintenanceListDto>> getByCarId(int carId);
 }

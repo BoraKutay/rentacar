@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UpdateCarMaintenanceRequest {
 
-
+	private int carMaintenanceId;
 	private String description;
 	private String returnDate;
 	private int carId;

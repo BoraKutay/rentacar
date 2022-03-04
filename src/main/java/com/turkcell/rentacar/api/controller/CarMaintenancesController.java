@@ -58,6 +58,11 @@ public class CarMaintenancesController {
 
 	        return this.carMaintenanceService.deleteById(carMaintenanceId);
 	    }
+	    
+	    @GetMapping("/getbycarid")
+	    public DataResult<List<CarMaintenanceListDto>> getByCarId(@RequestParam(required = true) int carId) {
+	        return this.carMaintenanceService.getByCarId(carId);
+	    }
 
 
 }

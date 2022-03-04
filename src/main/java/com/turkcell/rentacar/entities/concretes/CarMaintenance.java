@@ -1,7 +1,9 @@
 package com.turkcell.rentacar.entities.concretes;
 
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,7 +34,10 @@ public class CarMaintenance {
 	private String returnDate;
     
  
-    @ManyToOne
+    
+    @ManyToOne(fetch= FetchType.EAGER)
     @JoinColumn(name="car_id")
     private Car car;
+    
+   
 }
