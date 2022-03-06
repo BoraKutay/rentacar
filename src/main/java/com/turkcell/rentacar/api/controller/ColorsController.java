@@ -3,8 +3,9 @@ package com.turkcell.rentacar.api.controller;
 import com.turkcell.rentacar.business.abstracts.ColorService;
 import com.turkcell.rentacar.business.dtos.ColorByIdDto;
 import com.turkcell.rentacar.business.dtos.ColorListDto;
-import com.turkcell.rentacar.business.requests.CreateColorRequest;
-import com.turkcell.rentacar.business.requests.UpdateColorRequest;
+import com.turkcell.rentacar.business.requests.createRequests.CreateColorRequest;
+import com.turkcell.rentacar.business.requests.deleteRequests.DeleteColorRequest;
+import com.turkcell.rentacar.business.requests.updateRequests.UpdateColorRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -46,9 +47,9 @@ public class ColorsController {
     }
 
     @PostMapping("/deletebyid")
-    public Result deleteById(int colorId) {
+    public Result deleteById(@RequestBody DeleteColorRequest deleteColorRequest) {
 
-        return this.colorService.deleteById(colorId);
+        return this.colorService.deleteById(deleteColorRequest);
     }
 
 

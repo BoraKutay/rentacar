@@ -1,4 +1,4 @@
-package com.turkcell.rentacar.business.requests;
+package com.turkcell.rentacar.business.requests.createRequests;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;

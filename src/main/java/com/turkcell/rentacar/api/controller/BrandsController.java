@@ -3,8 +3,9 @@ package com.turkcell.rentacar.api.controller;
 import com.turkcell.rentacar.business.abstracts.BrandService;
 import com.turkcell.rentacar.business.dtos.BrandByIdDto;
 import com.turkcell.rentacar.business.dtos.BrandListDto;
-import com.turkcell.rentacar.business.requests.CreateBrandRequest;
-import com.turkcell.rentacar.business.requests.UpdateBrandRequest;
+import com.turkcell.rentacar.business.requests.createRequests.CreateBrandRequest;
+import com.turkcell.rentacar.business.requests.deleteRequests.DeleteBrandRequest;
+import com.turkcell.rentacar.business.requests.updateRequests.UpdateBrandRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -47,9 +48,9 @@ public class BrandsController {
     }
 
     @PostMapping("/deletebyid")
-    public Result deleteById(int brandId) {
+    public Result deleteById(@RequestBody DeleteBrandRequest deleteBrandRequest) {
 
-        return this.brandService.deleteById(brandId);
+        return this.brandService.deleteById(deleteBrandRequest);
     }
 
 

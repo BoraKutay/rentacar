@@ -2,8 +2,9 @@ package com.turkcell.rentacar.business.abstracts;
 
 import com.turkcell.rentacar.business.dtos.BrandByIdDto;
 import com.turkcell.rentacar.business.dtos.BrandListDto;
-import com.turkcell.rentacar.business.requests.CreateBrandRequest;
-import com.turkcell.rentacar.business.requests.UpdateBrandRequest;
+import com.turkcell.rentacar.business.requests.createRequests.CreateBrandRequest;
+import com.turkcell.rentacar.business.requests.deleteRequests.DeleteBrandRequest;
+import com.turkcell.rentacar.business.requests.updateRequests.UpdateBrandRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -20,5 +21,5 @@ public interface BrandService {
 
     Result update(UpdateBrandRequest updateBrandRequest) throws BusinessException;
 
-    Result deleteById(int brandId);
+    Result deleteById(DeleteBrandRequest deleteBrandRequest);
 }

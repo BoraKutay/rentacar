@@ -1,4 +1,6 @@
-package com.turkcell.rentacar.business.requests;
+package com.turkcell.rentacar.business.requests.updateRequests;
+
+import java.time.LocalDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,6 +13,7 @@ public class UpdateCarMaintenanceRequest {
 
 	private int carMaintenanceId;
 	private String description;
-	private String returnDate;
-	private int carId;
+	private LocalDate returnDate;
+	
+	private int carCarId;
 }

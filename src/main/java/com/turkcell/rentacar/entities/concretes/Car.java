@@ -37,10 +37,11 @@ public class Car {
     @JoinColumn(name = "color_id")
     private Color color;
     
-    
-   
     @OneToMany(mappedBy = "car",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<CarMaintenance> carMaintenances;
+    
+    @OneToMany(mappedBy = "car")
+    private List<Rental> rentals;
     
     
     

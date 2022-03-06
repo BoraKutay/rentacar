@@ -1,5 +1,7 @@
 package com.turkcell.rentacar.business.dtos;
 
+import java.time.LocalDate;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,7 +13,8 @@ public class CarMaintenanceListDto {
 
 	private int carMaintenanceId;
 	private String description;
-	private String returnDate;
-
+	private LocalDate returnDate;
+	
+	private int carCarId;
 
 }

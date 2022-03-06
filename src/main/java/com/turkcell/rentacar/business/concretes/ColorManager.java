@@ -3,8 +3,9 @@ package com.turkcell.rentacar.business.concretes;
 import com.turkcell.rentacar.business.abstracts.ColorService;
 import com.turkcell.rentacar.business.dtos.ColorByIdDto;
 import com.turkcell.rentacar.business.dtos.ColorListDto;
-import com.turkcell.rentacar.business.requests.CreateColorRequest;
-import com.turkcell.rentacar.business.requests.UpdateColorRequest;
+import com.turkcell.rentacar.business.requests.createRequests.CreateColorRequest;
+import com.turkcell.rentacar.business.requests.deleteRequests.DeleteColorRequest;
+import com.turkcell.rentacar.business.requests.updateRequests.UpdateColorRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
@@ -72,8 +73,8 @@ public class ColorManager implements ColorService {
     }
 
     @Override
-    public Result deleteById(int colorId) {
-        this.colorDao.deleteById(colorId);
+    public Result deleteById(DeleteColorRequest deleteColorRequest) {
+        this.colorDao.deleteById(deleteColorRequest.getColorId());
         return new SuccessResult("Color is deleted.");
 
     }

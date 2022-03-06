@@ -14,8 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.turkcell.rentacar.business.abstracts.CarMaintenanceService;
 import com.turkcell.rentacar.business.dtos.CarMaintenanceByIdDto;
 import com.turkcell.rentacar.business.dtos.CarMaintenanceListDto;
-import com.turkcell.rentacar.business.requests.CreateCarMaintenanceRequest;
-import com.turkcell.rentacar.business.requests.UpdateCarMaintenanceRequest;
+import com.turkcell.rentacar.business.requests.createRequests.CreateCarMaintenanceRequest;
+import com.turkcell.rentacar.business.requests.deleteRequests.DeleteCarMaintenanceRequest;
+import com.turkcell.rentacar.business.requests.updateRequests.UpdateCarMaintenanceRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -54,9 +55,9 @@ public class CarMaintenancesController {
 	    }
 
 	    @PostMapping("/deletebyid")
-	    public Result deleteById(int carMaintenanceId) {
+	    public Result deleteById(@RequestBody DeleteCarMaintenanceRequest deleteCarMaintenanceRequest) {
 
-	        return this.carMaintenanceService.deleteById(carMaintenanceId);
+	        return this.carMaintenanceService.deleteById(deleteCarMaintenanceRequest);
 	    }
 	    
 	    @GetMapping("/getbycarid")

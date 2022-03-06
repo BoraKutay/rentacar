@@ -3,8 +3,9 @@ package com.turkcell.rentacar.business.concretes;
 import com.turkcell.rentacar.business.abstracts.BrandService;
 import com.turkcell.rentacar.business.dtos.BrandByIdDto;
 import com.turkcell.rentacar.business.dtos.BrandListDto;
-import com.turkcell.rentacar.business.requests.CreateBrandRequest;
-import com.turkcell.rentacar.business.requests.UpdateBrandRequest;
+import com.turkcell.rentacar.business.requests.createRequests.CreateBrandRequest;
+import com.turkcell.rentacar.business.requests.deleteRequests.DeleteBrandRequest;
+import com.turkcell.rentacar.business.requests.updateRequests.UpdateBrandRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
@@ -74,8 +75,8 @@ public class BrandManager implements BrandService {
     }
 
     @Override
-    public Result deleteById(int brandId) {
-        this.brandDao.deleteById(brandId);
+    public Result deleteById(DeleteBrandRequest deleteBrandRequest) {
+        this.brandDao.deleteById(deleteBrandRequest.getBrandId());
         return new SuccessResult("Brand is deleted successfully.");
 
     }
