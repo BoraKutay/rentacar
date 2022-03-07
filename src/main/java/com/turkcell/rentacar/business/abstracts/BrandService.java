@@ -17,9 +17,9 @@ public interface BrandService {
 
     Result add(CreateBrandRequest createBrandRequest) throws BusinessException;
 
-    DataResult<BrandByIdDto> getById(int id);
+    DataResult<BrandByIdDto> getById(int id) throws BusinessException;
 
     Result update(UpdateBrandRequest updateBrandRequest) throws BusinessException;
 
-    Result deleteById(DeleteBrandRequest deleteBrandRequest);
+    Result deleteById(DeleteBrandRequest deleteBrandRequest) throws BusinessException;
 }

@@ -36,7 +36,7 @@ public class RentalsController {
 	}
 	
 	@GetMapping("/getAllByCarId")
-	DataResult<List<RentalListDto>> getAllByCarCarId(int id){
+	DataResult<List<RentalListDto>> getAllByCarCarId(int id) throws BusinessException{
 		return this.rentalService.getAllByCarCarId(id);
 		
 	}

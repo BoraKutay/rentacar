@@ -17,9 +17,9 @@ public interface ColorService {
 
     Result add(CreateColorRequest createColorRequest) throws BusinessException;
 
-    DataResult<ColorByIdDto> getById(int id);
+    DataResult<ColorByIdDto> getById(int id) throws BusinessException;
 
     Result update(UpdateColorRequest updateColorRequest) throws BusinessException;
 
-    Result deleteById(DeleteColorRequest deleteColorRequest);
+    Result deleteById(DeleteColorRequest deleteColorRequest) throws BusinessException;
 }

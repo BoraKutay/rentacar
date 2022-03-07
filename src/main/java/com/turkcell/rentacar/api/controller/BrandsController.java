@@ -38,7 +38,7 @@ public class BrandsController {
     }
 
     @GetMapping("/getbyid")
-    public DataResult<BrandByIdDto> getById(@RequestParam(required = true) int brandId) {
+    public DataResult<BrandByIdDto> getById(@RequestParam(required = true) int brandId) throws BusinessException {
         return this.brandService.getById(brandId);
     }
 
@@ -48,7 +48,7 @@ public class BrandsController {
     }
 
     @PostMapping("/deletebyid")
-    public Result deleteById(@RequestBody DeleteBrandRequest deleteBrandRequest) {
+    public Result deleteById(@RequestBody DeleteBrandRequest deleteBrandRequest) throws BusinessException {
 
         return this.brandService.deleteById(deleteBrandRequest);
     }

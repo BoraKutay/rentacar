@@ -52,7 +52,8 @@ public class ColorManager implements ColorService {
     }
 
     @Override
-    public DataResult<ColorByIdDto> getById(int colorId) {
+    public DataResult<ColorByIdDto> getById(int colorId) throws BusinessException {
+    	checkIfColorExist(colorId);
         Color color = this.colorDao.getById(colorId);
 
         ColorByIdDto response = this.modelMapperService.forDto().map(color, ColorByIdDto.class);
@@ -63,6 +64,7 @@ public class ColorManager implements ColorService {
 
     @Override
     public Result update(UpdateColorRequest updateColorRequest) throws BusinessException {
+    	checkIfColorExist(updateColorRequest.getColorId());
         Color color = this.modelMapperService.forRequest().map(updateColorRequest, Color.class);
 
         checkIfColorNameIsUnique(color.getColorName());
@@ -73,7 +75,8 @@ public class ColorManager implements ColorService {
     }
 
     @Override
-    public Result deleteById(DeleteColorRequest deleteColorRequest) {
+    public Result deleteById(DeleteColorRequest deleteColorRequest) throws BusinessException {
+    	checkIfColorExist(deleteColorRequest.getColorId());
         this.colorDao.deleteById(deleteColorRequest.getColorId());
         return new SuccessResult("Color is deleted.");
 
@@ -89,6 +92,13 @@ public class ColorManager implements ColorService {
 
         return true;
 
+    }
+    
+    private boolean checkIfColorExist(int id) throws BusinessException {
+    	if(colorDao.existsById(id) == false) {
+    		throw new BusinessException("Color does not exist by id:" + id);
+    	}
+		return true;
     }
 
 }

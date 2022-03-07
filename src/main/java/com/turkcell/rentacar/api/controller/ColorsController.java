@@ -31,7 +31,7 @@ public class ColorsController {
     }
 
     @GetMapping("/getbyid")
-    public DataResult<ColorByIdDto> getById(@RequestParam(required = true) int colorId) {
+    public DataResult<ColorByIdDto> getById(@RequestParam(required = true) int colorId) throws BusinessException {
         return this.colorService.getById(colorId);
     }
 
@@ -47,7 +47,7 @@ public class ColorsController {
     }
 
     @PostMapping("/deletebyid")
-    public Result deleteById(@RequestBody DeleteColorRequest deleteColorRequest) {
+    public Result deleteById(@RequestBody DeleteColorRequest deleteColorRequest) throws BusinessException {
 
         return this.colorService.deleteById(deleteColorRequest);
     }

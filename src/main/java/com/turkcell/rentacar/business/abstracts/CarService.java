@@ -5,6 +5,7 @@ import com.turkcell.rentacar.business.dtos.CarListDto;
 import com.turkcell.rentacar.business.requests.createRequests.CreateCarRequest;
 import com.turkcell.rentacar.business.requests.deleteRequests.DeleteCarRequest;
 import com.turkcell.rentacar.business.requests.updateRequests.UpdateCarRequest;
+import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
 
@@ -16,11 +17,11 @@ public interface CarService {
 
     Result add(CreateCarRequest createCarRequest);
 
-    Result update(UpdateCarRequest createCarRequest);
+    Result update(UpdateCarRequest createCarRequest) throws BusinessException;
 
-    DataResult<CarByIdDto> getById(int carId);
+    DataResult<CarByIdDto> getById(int carId) throws BusinessException;
 
-    Result deleteById(DeleteCarRequest deleteCarRequest);
+    Result deleteById(DeleteCarRequest deleteCarRequest) throws BusinessException;
 
     DataResult<List<CarListDto>> getAllPaged(int pageNo, int pageSize);
 
@@ -29,6 +30,8 @@ public interface CarService {
     DataResult<List<CarListDto>> getByDailyPriceIsLessThanEqual(double dailyPrice);
     
     DataResult<List<CarListDto>> getByModelYearIsLessThanEqual(int modelYear);
+    
+    boolean checkIfCarExist(int id) throws BusinessException;
     
     
 }
