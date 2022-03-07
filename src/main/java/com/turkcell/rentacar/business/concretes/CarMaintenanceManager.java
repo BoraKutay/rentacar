@@ -4,9 +4,11 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.CarMaintenanceService;
+import com.turkcell.rentacar.business.abstracts.CarService;
 import com.turkcell.rentacar.business.abstracts.RentalService;
 import com.turkcell.rentacar.business.dtos.CarMaintenanceByIdDto;
 import com.turkcell.rentacar.business.dtos.CarMaintenanceListDto;
@@ -31,11 +33,13 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 	private CarMaintenanceDao carMaintenanceDao;
 	private ModelMapperService modelMapperService;
 	private RentalService rentalService;
+	private CarService carService;
 	
-	public CarMaintenanceManager(CarMaintenanceDao carMaintenanceDao, ModelMapperService modelMapperService, RentalService rentalService) {
+	public CarMaintenanceManager(CarMaintenanceDao carMaintenanceDao, ModelMapperService modelMapperService, @Lazy RentalService rentalService, @Lazy CarService carService ) {
 		this.carMaintenanceDao = carMaintenanceDao;
 		this.modelMapperService = modelMapperService;
 		this.rentalService = rentalService;
+		this.carService = carService;
 	}
 	@Override
 	public DataResult<List<CarMaintenanceListDto>> getAll() {
@@ -88,8 +92,8 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 	
 	@Override
 	public DataResult<List<CarMaintenanceListDto>> getByCarId(int carId) throws BusinessException {
-		checkIfCarMaintenanceExist(carId);
-		List<CarMaintenance> result = this.carMaintenanceDao.getByCar_CarId(carId);
+		carService.checkIfCarExist(carId);
+		List<CarMaintenance> result = this.carMaintenanceDao.getByCarCarId(carId);
 		List<CarMaintenanceListDto> response = result.stream()
 				.map(carMaintenance -> this.modelMapperService.forDto().map(carMaintenance, CarMaintenanceListDto.class)).collect(Collectors.toList());
 		return new SuccessDataResult<List<CarMaintenanceListDto>>(response, "Car maintenances listed successfully.");

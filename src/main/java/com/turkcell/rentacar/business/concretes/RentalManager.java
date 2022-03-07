@@ -37,7 +37,7 @@ public class RentalManager implements RentalService {
 	
 	
 	public RentalManager(RentalDao rentalDao, ModelMapperService modelMapperService,
-			@Lazy CarMaintenanceService carMaintenanceService,CarService carService) {
+			@Lazy CarMaintenanceService carMaintenanceService,@Lazy CarService carService) {
 		
 		this.rentalDao = rentalDao;
 		this.modelMapperService = modelMapperService;
@@ -84,7 +84,8 @@ public class RentalManager implements RentalService {
 		List<CarMaintenance> response = result.getData().stream().map(carMaintenance -> this.modelMapperService.forDto().map(carMaintenance, CarMaintenance.class)).collect(Collectors.toList());
 		
 		for(CarMaintenance carMaintenance : response) {
-			if(carMaintenance.getReturnDate() == null || createRentalRequest.getEndDate().isBefore(carMaintenance.getReturnDate())) {
+			                                                                     //8 11                          //11 Mart
+			if(carMaintenance.getReturnDate() == null || createRentalRequest.getStartDate().isBefore(carMaintenance.getReturnDate())) {
 				throw new BusinessException("Car is not available!");
 			}
 		}
@@ -94,9 +95,10 @@ public class RentalManager implements RentalService {
 		checkIfRentalExist(updateRentalRequest.getRentalId());
 		DataResult<List<CarMaintenanceListDto>> result = this.carMaintenanceService.getByCarId(updateRentalRequest.getCarCarId());
 		List<CarMaintenance> response = result.getData().stream().map(carMaintenance -> this.modelMapperService.forDto().map(carMaintenance, CarMaintenance.class)).collect(Collectors.toList());
+
 		
 		for(CarMaintenance carMaintenance : response) {
-			if(carMaintenance.getReturnDate() == null || updateRentalRequest.getEndDate().isBefore(carMaintenance.getReturnDate())) {
+			if(carMaintenance.getReturnDate() == null || updateRentalRequest.getStartDate().isBefore(carMaintenance.getReturnDate())) {
 				throw new BusinessException("Car is not available!");
 			}
 		}

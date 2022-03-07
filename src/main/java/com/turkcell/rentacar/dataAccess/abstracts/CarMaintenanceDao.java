@@ -10,5 +10,5 @@ import com.turkcell.rentacar.entities.concretes.CarMaintenance;
 @Repository
 public interface CarMaintenanceDao extends JpaRepository<CarMaintenance, Integer>{
 	
-	List<CarMaintenance> getByCar_CarId(int carId);
+	List<CarMaintenance> getByCarCarId(int carId);
 }
