@@ -37,7 +37,7 @@ public class RentalManager implements RentalService {
 	
 	
 	public RentalManager(RentalDao rentalDao, ModelMapperService modelMapperService,
-			@Lazy CarMaintenanceService carMaintenanceService) {
+			@Lazy CarMaintenanceService carMaintenanceService,CarService carService) {
 		
 		this.rentalDao = rentalDao;
 		this.modelMapperService = modelMapperService;
