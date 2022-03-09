@@ -60,7 +60,7 @@ public class BrandManager implements BrandService {
     @Override
     public DataResult<BrandByIdDto> getById(int brandId) throws BusinessException {
     	
-    	checkIfBrandExist(brandId);
+    	checkIfBrandExists(brandId);
         Brand brand = this.brandDao.getById(brandId);
 
         BrandByIdDto response = this.modelMapperService.forDto().map(brand, BrandByIdDto.class);
@@ -71,7 +71,7 @@ public class BrandManager implements BrandService {
 
     @Override
     public Result update(UpdateBrandRequest updateBrandRequest) throws BusinessException {
-    	checkIfBrandExist(updateBrandRequest.getBrandId());
+    	checkIfBrandExists(updateBrandRequest.getBrandId());
         Brand brand = this.modelMapperService.forRequest().map(updateBrandRequest, Brand.class);
 
         checkIfBrandNameIsUnique(brand.getBrandName());
@@ -82,7 +82,7 @@ public class BrandManager implements BrandService {
 
     @Override
     public Result deleteById(DeleteBrandRequest deleteBrandRequest) throws BusinessException {
-    	checkIfBrandExist(deleteBrandRequest.getBrandId());
+    	checkIfBrandExists(deleteBrandRequest.getBrandId());
         this.brandDao.deleteById(deleteBrandRequest.getBrandId());
         return new SuccessResult("Brand is deleted successfully.");
 
@@ -100,7 +100,7 @@ public class BrandManager implements BrandService {
 
     }
     
-    private boolean checkIfBrandExist(int id) throws BusinessException {
+    private boolean checkIfBrandExists(int id) throws BusinessException {
     	if(brandDao.existsById(id) == false) {
     		throw new BusinessException("Brand does not exist by id:" + id);
     	}

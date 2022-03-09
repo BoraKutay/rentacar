@@ -55,7 +55,7 @@ public class CarManager implements CarService {
 
     @Override
     public Result update(UpdateCarRequest updateCarRequest) throws BusinessException {
-    	checkIfCarExist(updateCarRequest.getCarId());
+    	checkIfCarExists(updateCarRequest.getCarId());
         Car car = this.modelMapperService.forRequest().map(updateCarRequest, Car.class);
 
         this.carDao.save(car);
@@ -65,7 +65,7 @@ public class CarManager implements CarService {
 
     @Override
     public Result deleteById(DeleteCarRequest deleteCarRequest) throws BusinessException {
-    	checkIfCarExist(deleteCarRequest.getCarId());
+    	checkIfCarExists(deleteCarRequest.getCarId());
         this.carDao.deleteById(deleteCarRequest.getCarId());
         return new SuccessResult("Car is deleted.");
     }
@@ -106,7 +106,7 @@ public class CarManager implements CarService {
 
     @Override
     public DataResult<CarByIdDto> getById(int carId) throws BusinessException {
-    	checkIfCarExist(carId);
+    	checkIfCarExists(carId);
         Car car = this.carDao.getById(carId);
 
         CarByIdDto response = this.modelMapperService.forDto().map(car, CarByIdDto.class);
@@ -124,7 +124,7 @@ public class CarManager implements CarService {
 		return new SuccessDataResult<List<CarListDto>>(response, "Cars are listed by less than " + modelYear);
 	}
 	
-    public boolean checkIfCarExist(int id) throws BusinessException {
+    public boolean checkIfCarExists(int id) throws BusinessException {
     	if(carDao.existsById(id) == false) {
     		throw new BusinessException("Car does not exist by id:" + id);
     	}

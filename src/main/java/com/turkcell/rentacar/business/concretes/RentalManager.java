@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.CarMaintenanceService;
 import com.turkcell.rentacar.business.abstracts.CarService;
+import com.turkcell.rentacar.business.abstracts.OrderedAdditionalServiceService;
 import com.turkcell.rentacar.business.abstracts.RentalService;
 import com.turkcell.rentacar.business.dtos.CarMaintenanceListDto;
 import com.turkcell.rentacar.business.dtos.RentalDtoById;
@@ -34,15 +35,17 @@ public class RentalManager implements RentalService {
 	private ModelMapperService modelMapperService;
 	private CarMaintenanceService carMaintenanceService;
 	private CarService carService;
+	private OrderedAdditionalServiceService orderedAdditionalServiceService;
 	
 	
 	public RentalManager(RentalDao rentalDao, ModelMapperService modelMapperService,
-			@Lazy CarMaintenanceService carMaintenanceService,@Lazy CarService carService) {
+			@Lazy CarMaintenanceService carMaintenanceService,@Lazy CarService carService, @Lazy OrderedAdditionalServiceService orderedAdditionalServiceService) {
 		
 		this.rentalDao = rentalDao;
 		this.modelMapperService = modelMapperService;
 		this.carMaintenanceService = carMaintenanceService;
 		this.carService = carService;
+		this.orderedAdditionalServiceService = orderedAdditionalServiceService;
 	}
 
 	@Override
@@ -64,7 +67,7 @@ public class RentalManager implements RentalService {
 
 	@Override
 	public DataResult<RentalDtoById> getById(int id) throws BusinessException {
-		checkIfRentalExist(id);
+		checkIfRentalExists(id);
 		Rental rental = this.rentalDao.getById(id);
 		RentalDtoById rentalDtoById =this.modelMapperService.forDto().map(rental, RentalDtoById.class);
 		return new SuccessDataResult<RentalDtoById>(rentalDtoById,"Rent listed");
@@ -72,7 +75,7 @@ public class RentalManager implements RentalService {
 
 	@Override
 	public Result update(UpdateRentalRequest updateRentalRequest) throws BusinessException {
-		checkIfRentalExist(updateRentalRequest.getRentalId());
+		checkIfRentalExists(updateRentalRequest.getRentalId());
 		checkIfCarAvailableForUpdate(updateRentalRequest);
 		Rental rental = this.modelMapperService.forRequest().map(updateRentalRequest, Rental.class);
 		this.rentalDao.save(rental);
@@ -92,7 +95,7 @@ public class RentalManager implements RentalService {
 	}
 	
 	private void checkIfCarAvailableForUpdate(UpdateRentalRequest updateRentalRequest) throws BusinessException {
-		checkIfRentalExist(updateRentalRequest.getRentalId());
+		checkIfRentalExists(updateRentalRequest.getRentalId());
 		DataResult<List<CarMaintenanceListDto>> result = this.carMaintenanceService.getByCarId(updateRentalRequest.getCarCarId());
 		List<CarMaintenance> response = result.getData().stream().map(carMaintenance -> this.modelMapperService.forDto().map(carMaintenance, CarMaintenance.class)).collect(Collectors.toList());
 
@@ -106,7 +109,7 @@ public class RentalManager implements RentalService {
 
 	@Override
 	public DataResult<List<RentalListDto>> getAllByCarCarId(int id) throws BusinessException {
-		this.carService.checkIfCarExist(id);
+		this.carService.checkIfCarExists(id);
 		List<Rental> result = this.rentalDao.getAllByCarCarId(id);
 		List<RentalListDto> response = result.stream().map(rent -> this.modelMapperService.forDto().map(rent, RentalListDto.class))
 				.collect(Collectors.toList());
@@ -115,12 +118,12 @@ public class RentalManager implements RentalService {
 
 	@Override
 	public Result delete(DeleteRentalRequest deleteRentalRequest) throws BusinessException {
-		checkIfRentalExist(deleteRentalRequest.getRentalId());
+		checkIfRentalExists(deleteRentalRequest.getRentalId());
         this.rentalDao.deleteById(deleteRentalRequest.getRentalId());
         return new SuccessResult("Rental is deleted.");
 	}
 	
-    private boolean checkIfRentalExist(int id) throws BusinessException {
+    private boolean checkIfRentalExists(int id) throws BusinessException {
     	if(rentalDao.existsById(id) == false) {
     		throw new BusinessException("Rental does not exist by id:" + id);
     	}

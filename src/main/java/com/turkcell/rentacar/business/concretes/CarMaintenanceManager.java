@@ -64,7 +64,7 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 
 	@Override
 	public Result update(UpdateCarMaintenanceRequest updateCarMaintenanceRequest) throws BusinessException {
-		checkIfCarMaintenanceExist(updateCarMaintenanceRequest.getCarMaintenanceId());
+		checkIfCarMaintenanceExists(updateCarMaintenanceRequest.getCarMaintenanceId());
 		checkIfCarIsAvailableForUpdate(updateCarMaintenanceRequest);
         CarMaintenance carMaintenance = this.modelMapperService.forRequest().map(updateCarMaintenanceRequest, CarMaintenance.class);
         carMaintenance.setCarMaintenanceId(0);
@@ -75,7 +75,7 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 
 	@Override
 	public DataResult<CarMaintenanceByIdDto> getById(int carMaintenanceId) throws BusinessException {
-		checkIfCarMaintenanceExist(carMaintenanceId);
+		checkIfCarMaintenanceExists(carMaintenanceId);
         CarMaintenance carMaintenance = this.carMaintenanceDao.getById(carMaintenanceId);
 
         CarMaintenanceByIdDto response = this.modelMapperService.forDto().map(carMaintenance, CarMaintenanceByIdDto.class);
@@ -85,14 +85,14 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 
 	@Override
 	public Result deleteById(DeleteCarMaintenanceRequest deleteCarMaintenanceRequest) throws BusinessException {
-		checkIfCarMaintenanceExist(deleteCarMaintenanceRequest.getCarMaintenanceId());
+		checkIfCarMaintenanceExists(deleteCarMaintenanceRequest.getCarMaintenanceId());
         this.carMaintenanceDao.deleteById(deleteCarMaintenanceRequest.getCarMaintenanceId());
         return new SuccessResult("Maintenance is deleted.");
 	}
 	
 	@Override
 	public DataResult<List<CarMaintenanceListDto>> getByCarId(int carId) throws BusinessException {
-		carService.checkIfCarExist(carId);
+		carService.checkIfCarExists(carId);
 		List<CarMaintenance> result = this.carMaintenanceDao.getByCarCarId(carId);
 		List<CarMaintenanceListDto> response = result.stream()
 				.map(carMaintenance -> this.modelMapperService.forDto().map(carMaintenance, CarMaintenanceListDto.class)).collect(Collectors.toList());
@@ -138,7 +138,7 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 				
 	}
 	
-    private boolean checkIfCarMaintenanceExist(int id) throws BusinessException {
+    private boolean checkIfCarMaintenanceExists(int id) throws BusinessException {
     	if(carMaintenanceDao.existsById(id) == false) {
     		throw new BusinessException("Car maintenance does not exist by id:" + id);
     	}
