@@ -25,12 +25,11 @@ public class OrderedAdditionalService {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ordered_additional_service_id")
 	private int orderedAdditionalServiceId;
-    
 
     
     @ManyToOne
     @JoinColumn(name = "rental_id")
-    private Rental rent; 
+    private Rental rental; 
     
 	@ManyToOne
 	@JoinColumn(name = "additional_service_id")

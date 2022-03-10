@@ -42,12 +42,12 @@ public class CarsController {
         return this.carService.getById(carId);
     }
 
-    @PostMapping("/update")
+    @PutMapping("/update")
     public Result update(@RequestBody UpdateCarRequest updatecarRequest) throws BusinessException {
         return this.carService.update(updatecarRequest);
     }
 
-    @PostMapping("/deletebyid")
+    @DeleteMapping("/deletebyid")
     public Result deleteById(@RequestBody DeleteCarRequest deleteCarRequest) throws BusinessException {
 
         return this.carService.deleteById(deleteCarRequest);

@@ -3,10 +3,6 @@ package com.turkcell.rentacar.business.dtos;
 
 
 
-import java.util.List;
-
-import com.turkcell.rentacar.entities.concretes.AdditionalService;
-
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,8 +13,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OrderedAdditionalServiceByIdDto {
 	
-	private int orderedAdditionalServiceId;
+	 private int additionalServiceId;
 	
-	 private List<AdditionalService> AdditionalServices;
+	 private int rentalRentalId;
 	
 }

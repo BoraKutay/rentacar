@@ -39,6 +39,15 @@ public class Rental {
 	@JoinColumn(name = "car_id")
 	private Car car;
 	
-    @OneToMany(mappedBy = "rent")
+    @OneToMany(mappedBy = "rental")
     private List<OrderedAdditionalService> orderedAdditionalServices;
+    
+    @ManyToOne
+    @JoinColumn(name="city_pick_up_id")
+    private City cityOfPickUpLocation;
+    
+    
+    @ManyToOne
+    @JoinColumn(name="city_return_id")
+    private City cityOfReturnLocation;
 }

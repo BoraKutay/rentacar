@@ -6,10 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class UpdateOrderedAdditionalServiceRequest {
-	private int orderedAdditionalServiceId;
-	private int additionalServiceId;
-	private int rentalRentalId;
+@NoArgsConstructor
+public class UpdateCityRequest {
+	private int cityId;
+	private String cityName;
 }

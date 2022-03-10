@@ -4,8 +4,10 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -49,12 +51,12 @@ public class CarMaintenancesController {
 	        return this.carMaintenanceService.getById(carMaintenanceId);
 	    }
 
-	    @PostMapping("/update")
+	    @PutMapping("/update")
 	    public Result update(@RequestBody UpdateCarMaintenanceRequest updateCarMaintenanceRequest) throws BusinessException {
 	        return this.carMaintenanceService.update(updateCarMaintenanceRequest);
 	    }
 
-	    @PostMapping("/deletebyid")
+	    @DeleteMapping("/deletebyid")
 	    public Result deleteById(@RequestBody DeleteCarMaintenanceRequest deleteCarMaintenanceRequest) throws BusinessException {
 
 	        return this.carMaintenanceService.deleteById(deleteCarMaintenanceRequest);

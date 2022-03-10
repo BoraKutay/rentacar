@@ -1,15 +1,15 @@
 package com.turkcell.rentacar.business.dtos;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderedAdditionalServiceListDto {
+public class CityByIdDto {
 	
-	 private int orderedAdditionalServiceId;
-	 private int additionalServiceId;
-	 private int rentalRentalId;
+	private String cityName;
 }

@@ -41,12 +41,12 @@ public class ColorsController {
         return this.colorService.add(createColorRequest);
     }
 
-    @PostMapping("/update")
+    @PutMapping("/update")
     public Result update(@RequestBody UpdateColorRequest updateColorRequest) throws BusinessException {
         return this.colorService.update(updateColorRequest);
     }
 
-    @PostMapping("/deletebyid")
+    @DeleteMapping("/deletebyid")
     public Result deleteById(@RequestBody DeleteColorRequest deleteColorRequest) throws BusinessException {
 
         return this.colorService.deleteById(deleteColorRequest);

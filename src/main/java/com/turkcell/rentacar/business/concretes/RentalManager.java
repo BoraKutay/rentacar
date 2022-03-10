@@ -10,6 +10,7 @@ import com.turkcell.rentacar.business.abstracts.CarMaintenanceService;
 import com.turkcell.rentacar.business.abstracts.CarService;
 import com.turkcell.rentacar.business.abstracts.OrderedAdditionalServiceService;
 import com.turkcell.rentacar.business.abstracts.RentalService;
+import com.turkcell.rentacar.business.dtos.CarByIdDto;
 import com.turkcell.rentacar.business.dtos.CarMaintenanceListDto;
 import com.turkcell.rentacar.business.dtos.RentalDtoById;
 import com.turkcell.rentacar.business.dtos.RentalListDto;
@@ -23,6 +24,7 @@ import com.turkcell.rentacar.core.utilities.results.Result;
 import com.turkcell.rentacar.core.utilities.results.SuccessDataResult;
 import com.turkcell.rentacar.core.utilities.results.SuccessResult;
 import com.turkcell.rentacar.dataAccess.abstracts.RentalDao;
+import com.turkcell.rentacar.entities.concretes.Car;
 import com.turkcell.rentacar.entities.concretes.CarMaintenance;
 import com.turkcell.rentacar.entities.concretes.Rental;
 
@@ -60,6 +62,8 @@ public class RentalManager implements RentalService {
 	public Result add(CreateRentalRequest createRentalRequest) throws BusinessException {
 		
 		checkIfCarAvailable(createRentalRequest);
+
+		//Car car = this.modelMapperService.forDto().map(carService.getById(createRentalRequest.getCarCarId()), Car.class);
 		Rental rental = this.modelMapperService.forDto().map(createRentalRequest, Rental.class);
 		this.rentalDao.save(rental);
 		return new SuccessResult("Rent is added");

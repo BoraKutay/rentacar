@@ -42,12 +42,12 @@ public class BrandsController {
         return this.brandService.getById(brandId);
     }
 
-    @PostMapping("/update")
+    @PutMapping("/update")
     public Result update(@RequestBody UpdateBrandRequest updateBrandRequest) throws BusinessException {
         return this.brandService.update(updateBrandRequest);
     }
 
-    @PostMapping("/deletebyid")
+    @DeleteMapping("/deletebyid")
     public Result deleteById(@RequestBody DeleteBrandRequest deleteBrandRequest) throws BusinessException {
 
         return this.brandService.deleteById(deleteBrandRequest);

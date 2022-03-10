@@ -15,19 +15,26 @@ import com.turkcell.rentacar.core.utilities.results.SuccessResult;
 import com.turkcell.rentacar.dataAccess.abstracts.ColorDao;
 import com.turkcell.rentacar.entities.concretes.Color;
 import lombok.AllArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
 public class ColorManager implements ColorService {
 
     private ColorDao colorDao;
     private ModelMapperService modelMapperService;
+    
+    @Autowired
+    public ColorManager(ColorDao colorDao, ModelMapperService modelMapperService) {
+		this.colorDao = colorDao;
+		this.modelMapperService = modelMapperService;
+	}
 
-    @Override
+	@Override
     public DataResult<List<ColorListDto>> getAll() {
 
         List<Color> result = this.colorDao.findAll();
