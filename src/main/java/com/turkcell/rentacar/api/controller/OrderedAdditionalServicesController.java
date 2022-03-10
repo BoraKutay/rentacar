@@ -2,6 +2,8 @@ package com.turkcell.rentacar.api.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,7 +40,7 @@ public class OrderedAdditionalServicesController {
     }
 
 	@PostMapping("/add")
-	public Result add(@RequestBody CreateOrderedAdditionalServiceRequest createOrderedAdditionalServiceRequest) throws BusinessException{
+	public Result add(@RequestBody @Valid CreateOrderedAdditionalServiceRequest createOrderedAdditionalServiceRequest) throws BusinessException{
 		return this.orderedAdditionalServiceService.add(createOrderedAdditionalServiceRequest);
     	
     }
@@ -49,7 +51,7 @@ public class OrderedAdditionalServicesController {
     }
 
 	 @PutMapping("/update")
-	public Result update(UpdateOrderedAdditionalServiceRequest updateOrderedAdditionalServiceRequest) throws BusinessException{
+	public Result update(@RequestBody @Valid UpdateOrderedAdditionalServiceRequest updateOrderedAdditionalServiceRequest) throws BusinessException{
     	return this.orderedAdditionalServiceService.update(updateOrderedAdditionalServiceRequest);
     }
 

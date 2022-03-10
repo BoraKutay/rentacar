@@ -91,7 +91,7 @@ public class BrandManager implements BrandService {
     private boolean checkIfBrandNameIsUnique(String brandName) throws BusinessException {
 
         for (BrandListDto brandElement : this.getAll().getData()) {
-            if (brandElement.getBrandName().equals(brandName)) {
+            if (brandElement.getBrandName().equalsIgnoreCase(brandName)) {
                 throw new BusinessException("There can not be more than one brand with the same name.");
             }
         }

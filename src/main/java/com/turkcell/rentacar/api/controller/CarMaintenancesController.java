@@ -52,7 +52,7 @@ public class CarMaintenancesController {
 	    }
 
 	    @PutMapping("/update")
-	    public Result update(@RequestBody UpdateCarMaintenanceRequest updateCarMaintenanceRequest) throws BusinessException {
+	    public Result update(@RequestBody @Valid UpdateCarMaintenanceRequest updateCarMaintenanceRequest) throws BusinessException {
 	        return this.carMaintenanceService.update(updateCarMaintenanceRequest);
 	    }
 

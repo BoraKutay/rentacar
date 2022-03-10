@@ -14,7 +14,6 @@ import com.turkcell.rentacar.core.utilities.results.SuccessDataResult;
 import com.turkcell.rentacar.core.utilities.results.SuccessResult;
 import com.turkcell.rentacar.dataAccess.abstracts.ColorDao;
 import com.turkcell.rentacar.entities.concretes.Color;
-import lombok.AllArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -92,8 +91,8 @@ public class ColorManager implements ColorService {
     private boolean checkIfColorNameIsUnique(String colorName) throws BusinessException {
 
         for (ColorListDto colorElement : this.getAll().getData()) {
-            if (colorElement.getColorName().equals(colorName)) {
-                throw new BusinessException("Aynı isimde birden fazla renk olamaz");
+            if (colorElement.getColorName().equalsIgnoreCase(colorName)) {
+                throw new BusinessException("There can not be more than one color with the same name.");
             }
         }
 

@@ -6,7 +6,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,5 +29,16 @@ public class CreateRentalRequest {
 	@Positive
 	private int orderedAdditionalServiceId;
 	
+	
+	@NotNull
+	@Positive
+	private int cityOfPickUpLocationId;
+	
+	@NotNull
+	@Positive
+	private int cityOfReturnLocationId;
 
 }
+
+
+

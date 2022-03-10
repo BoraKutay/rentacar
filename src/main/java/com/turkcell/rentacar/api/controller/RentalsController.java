@@ -2,6 +2,8 @@ package com.turkcell.rentacar.api.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,7 +46,7 @@ public class RentalsController {
 	}
 	
 	@PostMapping("/add")
-	Result add(@RequestBody CreateRentalRequest createRentalRequest) throws BusinessException{
+	Result add(@RequestBody @Valid CreateRentalRequest createRentalRequest) throws BusinessException{
 		return this.rentalService.add(createRentalRequest);
 		
 	}
@@ -56,7 +58,7 @@ public class RentalsController {
 	}
 	
 	@PutMapping("/update")
-	Result update(@RequestBody UpdateRentalRequest updateRentalRequest) throws BusinessException{
+	Result update(@RequestBody @Valid UpdateRentalRequest updateRentalRequest) throws BusinessException{
 		return this.rentalService.update(updateRentalRequest);
 		
 	}

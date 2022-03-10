@@ -26,4 +26,16 @@ public class UpdateRentalRequest {
 	@NotNull
 	@Positive
 	private int carCarId;
+	
+	@NotNull
+	@Positive
+	private int orderedAdditionalServiceId;
+	
+	@NotNull
+	@Positive
+	private int cityOfPickUpLocationId;
+	
+	@NotNull
+	@Positive
+	private int cityOfReturnLocationId;
 }

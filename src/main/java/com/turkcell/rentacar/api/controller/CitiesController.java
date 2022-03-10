@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,7 +40,7 @@ public class CitiesController {
 	}
 
     @PostMapping("/add")
-    Result add(@Valid CreateCityRequest createCityRequest) throws BusinessException{
+    Result add(@RequestBody @Valid CreateCityRequest createCityRequest) throws BusinessException{
     	return this.cityService.add(createCityRequest);
     }
 
@@ -49,7 +50,7 @@ public class CitiesController {
     }
 
     @PutMapping("/update")
-    Result update(UpdateCityRequest updateCityRequest) throws BusinessException{
+    Result update(@RequestBody @Valid UpdateCityRequest updateCityRequest) throws BusinessException{
     	return this.cityService.update(updateCityRequest);
     }
 

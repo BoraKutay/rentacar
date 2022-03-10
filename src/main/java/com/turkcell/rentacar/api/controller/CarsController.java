@@ -32,7 +32,7 @@ public class CarsController {
     }
 
     @PostMapping("/add")
-    public Result add( @Valid CreateCarRequest createcarRequest) throws BusinessException {
+    public Result add(@RequestBody @Valid CreateCarRequest createcarRequest) throws BusinessException {
 
         return this.carService.add(createcarRequest);
     }
@@ -43,7 +43,7 @@ public class CarsController {
     }
 
     @PutMapping("/update")
-    public Result update(@RequestBody UpdateCarRequest updatecarRequest) throws BusinessException {
+    public Result update(@RequestBody @Valid UpdateCarRequest updatecarRequest) throws BusinessException {
         return this.carService.update(updatecarRequest);
     }
 

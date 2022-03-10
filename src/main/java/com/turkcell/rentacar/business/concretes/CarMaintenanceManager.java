@@ -54,7 +54,7 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 
 	@Override
 	public Result add(CreateCarMaintenanceRequest createCarMaintenanceRequest) throws BusinessException {
-		checkIfCarIsAvailable(createCarMaintenanceRequest);
+		checkIfCarIsAvailable(createCarMaintenanceRequest.getCarCarId());
         CarMaintenance carMaintenance = this.modelMapperService.forRequest().map(createCarMaintenanceRequest, CarMaintenance.class);
         carMaintenance.setCarMaintenanceId(0);
         this.carMaintenanceDao.save(carMaintenance);
@@ -65,7 +65,7 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 	@Override
 	public Result update(UpdateCarMaintenanceRequest updateCarMaintenanceRequest) throws BusinessException {
 		checkIfCarMaintenanceExists(updateCarMaintenanceRequest.getCarMaintenanceId());
-		checkIfCarIsAvailableForUpdate(updateCarMaintenanceRequest);
+		checkIfCarIsAvailable(updateCarMaintenanceRequest.getCarCarId());
         CarMaintenance carMaintenance = this.modelMapperService.forRequest().map(updateCarMaintenanceRequest, CarMaintenance.class);
         carMaintenance.setCarMaintenanceId(0);
         this.carMaintenanceDao.save(carMaintenance);
@@ -99,8 +99,8 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 		return new SuccessDataResult<List<CarMaintenanceListDto>>(response, "Car maintenances listed successfully.");
 	}
 	
-	private void checkIfCarIsAvailable(CreateCarMaintenanceRequest createCarMaintenanceRequest) throws BusinessException{
-		DataResult<List<RentalListDto>> result = this.rentalService.getAllByCarCarId(createCarMaintenanceRequest.getCarCarId());
+	private void checkIfCarIsAvailable(int carId) throws BusinessException{
+		DataResult<List<RentalListDto>> result = this.rentalService.getAllByCarCarId(carId);
 		
 		List<Rental> response = result.getData().stream()
 				.map(rental->this.modelMapperService.forDto().map(rental, Rental.class))
@@ -114,29 +114,9 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 				
 			}
 		}
-		
-				
+					
 	}
 	
-	private void checkIfCarIsAvailableForUpdate(UpdateCarMaintenanceRequest updateCarMaintenanceRequest) throws BusinessException{
-		
-		DataResult<List<RentalListDto>> result = this.rentalService.getAllByCarCarId(updateCarMaintenanceRequest.getCarCarId());
-		
-		List<Rental> response = result.getData().stream()
-				.map(rental->this.modelMapperService.forDto().map(rental, Rental.class))
-				.collect(Collectors.toList());
-		
-		for (Rental rental : response) {
-			
-			if(rental.getEndDate() == null || rental.getEndDate().isAfter(LocalDate.now())) {
-				
-				throw new BusinessException("Car is not available until " + rental.getEndDate());
-				
-			}
-		}
-		
-				
-	}
 	
     private boolean checkIfCarMaintenanceExists(int id) throws BusinessException {
     	if(carMaintenanceDao.existsById(id) == false) {

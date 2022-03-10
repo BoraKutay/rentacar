@@ -48,7 +48,7 @@ public class CityManager implements CityService {
 	@Override
 	public Result add(CreateCityRequest createCityRequest) throws BusinessException {
 		City city = this.modelMapperService.forRequest().map(createCityRequest, City.class);
-		
+		checkIfCityNameIsUnique(createCityRequest.getCityName());
 		this.cityDao.save(city);
 		return new SuccessResult("City is added: " + createCityRequest.getCityName());
 	}
@@ -66,7 +66,7 @@ public class CityManager implements CityService {
 	public Result update(UpdateCityRequest updateCityRequest) throws BusinessException {
 		checkIfCityExists(updateCityRequest.getCityId());
 		City city = this.modelMapperService.forRequest().map(updateCityRequest, City.class);
-
+		checkIfCityNameIsUnique(updateCityRequest.getCityName());
 
         this.cityDao.save(city);
 
@@ -86,5 +86,17 @@ public class CityManager implements CityService {
 		}
 		return true;
 	}
+	
+    private boolean checkIfCityNameIsUnique(String cityName) throws BusinessException {
+
+        for (CityListDto cityElement : this.getAll().getData()) {
+            if (cityElement.getCityName().equalsIgnoreCase(cityName)) {
+                throw new BusinessException("There can not be more than one city with the same name.");
+            }
+        }
+
+        return true;
+
+    }
 
 }
