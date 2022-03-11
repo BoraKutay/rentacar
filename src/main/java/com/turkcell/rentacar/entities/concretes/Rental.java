@@ -35,6 +35,9 @@ public class Rental {
 	@Column(name = "end_date")
 	private LocalDate endDate;
 	
+	@Column(name = "additional_price")
+	private double additionalPrice = 0;
+	
 	@ManyToOne
 	@JoinColumn(name = "car_id")
 	private Car car;

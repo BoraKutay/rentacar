@@ -3,7 +3,6 @@ package com.turkcell.rentacar.business.concretes;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -25,8 +24,6 @@ import com.turkcell.rentacar.core.utilities.results.Result;
 import com.turkcell.rentacar.core.utilities.results.SuccessDataResult;
 import com.turkcell.rentacar.core.utilities.results.SuccessResult;
 import com.turkcell.rentacar.dataAccess.abstracts.RentalDao;
-import com.turkcell.rentacar.entities.concretes.AdditionalService;
-import com.turkcell.rentacar.entities.concretes.Car;
 import com.turkcell.rentacar.entities.concretes.CarMaintenance;
 import com.turkcell.rentacar.entities.concretes.Rental;
 
@@ -67,7 +64,7 @@ public class RentalManager implements RentalService {
 		checkIfCarIsAvailable(createRentalRequest.getCarCarId(),createRentalRequest.getStartDate());
 
 		Rental rental = this.modelMapperService.forDto().map(createRentalRequest, Rental.class);
-		calculateAdditionalPriceForReturnLocation(rental);
+		rental.setAdditionalPrice(calculateAdditionalPriceForReturnLocation(rental));
 		this.rentalDao.save(rental);
 		return new SuccessResult("Rent is added");
 	}
@@ -85,7 +82,7 @@ public class RentalManager implements RentalService {
 		checkIfRentalExists(updateRentalRequest.getRentalId());
 		checkIfCarIsAvailable(updateRentalRequest.getCarCarId(),updateRentalRequest.getStartDate());
 		Rental rental = this.modelMapperService.forRequest().map(updateRentalRequest, Rental.class);
-		calculateAdditionalPriceForReturnLocation(rental);
+		rental.setAdditionalPrice(calculateAdditionalPriceForReturnLocation(rental));
 		this.rentalDao.save(rental);
 		return new SuccessResult("Rent updated");
 	}
@@ -157,12 +154,15 @@ public class RentalManager implements RentalService {
     	
     }
     
-    private void calculateAdditionalPriceForReturnLocation(Rental rental) {
+    private double calculateAdditionalPriceForReturnLocation(Rental rental) {
     	
     	double additionalPrice = 0;
+    	
     	if(checkIfRentalIsReturnDifferentCity(rental)) {
     		additionalPrice = 750;
     	}
+    	
+		return additionalPrice;
     	
     }
     

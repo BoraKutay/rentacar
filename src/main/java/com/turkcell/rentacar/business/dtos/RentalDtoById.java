@@ -19,6 +19,10 @@ public class RentalDtoById {
 	
 	private LocalDate endDate;
 	
+	private String cityOfPickUpLocation_CityName;
+	private String cityOfReturnLocation_CityName;
+	
+    private double additionalPrice;
 	private int carCarId;
 	
 	private List<OrderedAdditionalServiceByIdDto> orderedAdditionalServices;
