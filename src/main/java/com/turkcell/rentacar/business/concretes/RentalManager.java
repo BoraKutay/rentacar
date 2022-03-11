@@ -59,32 +59,15 @@ public class RentalManager implements RentalService {
 		return new SuccessDataResult<List<RentalListDto>>(response,"Rents listed");
 	}
     
-    private double calculateTotalPriceOfRental(Rental rental,int carId) throws BusinessException {
-		double totalPrice = 0;
-		double differentCityPrice = 0;
-		Car car = this.modelMapperService.forDto().map(carService.getById(carId), Car.class);
-		AdditionalService additionalService = this.modelMapperService.forDto().map(orderedAdditionalServiceService, AdditionalService.class);
-		long daysBetween = ChronoUnit.DAYS.between(rental.getStartDate(), rental.getEndDate());
-		
-		if(checkIfRentalIsReturnDifferentCity(rental)) {
-			differentCityPrice = 750;
-		}
-		
-		totalPrice = (car.getDailyPrice() + additionalService.getDailyPrice()) * daysBetween + differentCityPrice; 
-		
-    	
-    	return totalPrice;
-    	
-    }
+
 
 	@Override
 	public Result add(CreateRentalRequest createRentalRequest) throws BusinessException {
 		
-		checkIfCarAvailable(createRentalRequest.getCarCarId(),createRentalRequest.getStartDate());
+		checkIfCarIsAvailable(createRentalRequest.getCarCarId(),createRentalRequest.getStartDate());
 
-		//Car car = this.modelMapperService.forDto().map(carService.getById(createRentalRequest.getCarCarId()), Car.class);
 		Rental rental = this.modelMapperService.forDto().map(createRentalRequest, Rental.class);
-		double totalAmount = calculateTotalPriceOfRental(rental, createRentalRequest.getCarCarId());
+		calculateAdditionalPriceForReturnLocation(rental);
 		this.rentalDao.save(rental);
 		return new SuccessResult("Rent is added");
 	}
@@ -100,23 +83,45 @@ public class RentalManager implements RentalService {
 	@Override
 	public Result update(UpdateRentalRequest updateRentalRequest) throws BusinessException {
 		checkIfRentalExists(updateRentalRequest.getRentalId());
-		checkIfCarAvailable(updateRentalRequest.getCarCarId(),updateRentalRequest.getStartDate());
+		checkIfCarIsAvailable(updateRentalRequest.getCarCarId(),updateRentalRequest.getStartDate());
 		Rental rental = this.modelMapperService.forRequest().map(updateRentalRequest, Rental.class);
+		calculateAdditionalPriceForReturnLocation(rental);
 		this.rentalDao.save(rental);
 		return new SuccessResult("Rent updated");
 	}
 	
-	private void checkIfCarAvailable(int carId ,LocalDate startDate) throws BusinessException {
+	private void checkIfCarIsAvailable(int carId ,LocalDate startDate) throws BusinessException {
+		checkIfCarIsRented(carId,startDate);
+		checkIfCarIsInMaintenance(carId, startDate);
+	}
+	
+    private void checkIfCarIsRented(int carId, LocalDate startDate) throws BusinessException {
+    	this.carService.checkIfCarExists(carId);
+    	DataResult<List<RentalListDto>> result=getAllByCarCarId(carId);
+    	List<Rental> response = result.getData().stream()
+    			.map(rental -> this.modelMapperService.forDto()
+    			.map(rental, Rental.class))
+    			.collect(Collectors.toList());
+    	
+    	
+    	for (Rental rental:response) {
+    		if(!rental.getEndDate().isBefore(startDate)) {
+    			throw new BusinessException("Car is already rented!");
+    		}
+    	}
+    }
+    
+    private void checkIfCarIsInMaintenance(int carId, LocalDate startDate) throws BusinessException {
 		DataResult<List<CarMaintenanceListDto>> result = this.carMaintenanceService.getByCarId(carId);
 		List<CarMaintenance> response = result.getData().stream().map(carMaintenance -> this.modelMapperService.forDto().map(carMaintenance, CarMaintenance.class)).collect(Collectors.toList());
 		
 		for(CarMaintenance carMaintenance : response) {
 			                                                                     
 			if(carMaintenance.getReturnDate() == null || startDate.isBefore(carMaintenance.getReturnDate())) {
-				throw new BusinessException("Car is not available!");
+				throw new BusinessException("Car is in maintenance!");
 			}
 		}
-	}
+    }
 	
 
 	@Override
@@ -151,6 +156,17 @@ public class RentalManager implements RentalService {
     	return true;
     	
     }
+    
+    private void calculateAdditionalPriceForReturnLocation(Rental rental) {
+    	
+    	double additionalPrice = 0;
+    	if(checkIfRentalIsReturnDifferentCity(rental)) {
+    		additionalPrice = 750;
+    	}
+    	
+    }
+    
+
 
 	
 	

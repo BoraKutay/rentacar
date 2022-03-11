@@ -47,7 +47,7 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 	@Override
 	public Result add(CreateAdditionalServiceRequest createAdditionalServiceRequest) throws BusinessException {
 		AdditionalService additionalService = this.modelMapperService.forRequest().map(createAdditionalServiceRequest, AdditionalService.class);
-		
+		checkIfAdditionalServiceNameIsExists(createAdditionalServiceRequest.getAdditionalServiceName());
 		this.additionalServiceDao.save(additionalService);
 		return new SuccessResult("Additional Service is added.");
 
@@ -67,7 +67,7 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 	public Result update(UpdateAdditionalServiceRequest updateAdditionalServiceRequest) throws BusinessException {
 		checkIfAdditionalServiceExists(updateAdditionalServiceRequest.getAdditionalServiceId());
 		AdditionalService additionalService = this.modelMapperService.forRequest().map(updateAdditionalServiceRequest, AdditionalService.class);
-
+		checkIfAdditionalServiceNameIsExists(updateAdditionalServiceRequest.getAdditionalServiceName());
         this.additionalServiceDao.save(additionalService);
         return new SuccessResult("Additional Service is updated successfuly.");
 	}
@@ -78,6 +78,15 @@ public class AdditionalServiceManager implements AdditionalServiceService {
         this.additionalServiceDao.deleteById(deleteAdditionalServiceRequest.getAdditionalServiceId());
         return new SuccessResult("Additional Service is deleted successfully.");
 	}
+	
+	
+    private void checkIfAdditionalServiceNameIsExists(String additionalServiceName)throws BusinessException {
+        for (AdditionalServiceListDto additionalServiceElement : this.getAll().getData()) {
+            if (additionalServiceElement.getAdditionalServiceName().equalsIgnoreCase(additionalServiceName)) {
+                throw new BusinessException("There can not be more than one AdditionalService with the same name.");
+            }
+        }
+    }
 	
     private boolean checkIfAdditionalServiceExists(int id) throws BusinessException {
     	if(additionalServiceDao.existsById(id) == false) {
