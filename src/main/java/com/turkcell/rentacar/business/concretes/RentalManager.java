@@ -62,7 +62,7 @@ public class RentalManager implements RentalService {
 	public Result add(CreateRentalRequest createRentalRequest) throws BusinessException {
 		
 		checkIfCarIsAvailable(createRentalRequest.getCarCarId(),createRentalRequest.getStartDate());
-
+		checkIfStartDateBeforeThanEndDate(createRentalRequest.getStartDate(),createRentalRequest.getEndDate());
 		Rental rental = this.modelMapperService.forDto().map(createRentalRequest, Rental.class);
 		rental.setAdditionalPrice(calculateAdditionalPriceForReturnLocation(rental));
 		this.rentalDao.save(rental);
@@ -81,6 +81,7 @@ public class RentalManager implements RentalService {
 	public Result update(UpdateRentalRequest updateRentalRequest) throws BusinessException {
 		checkIfRentalExists(updateRentalRequest.getRentalId());
 		checkIfCarIsAvailable(updateRentalRequest.getCarCarId(),updateRentalRequest.getStartDate());
+		checkIfStartDateBeforeThanEndDate(updateRentalRequest.getStartDate(),updateRentalRequest.getEndDate());
 		Rental rental = this.modelMapperService.forRequest().map(updateRentalRequest, Rental.class);
 		rental.setAdditionalPrice(calculateAdditionalPriceForReturnLocation(rental));
 		this.rentalDao.save(rental);
@@ -165,6 +166,13 @@ public class RentalManager implements RentalService {
 		return additionalPrice;
     	
     }
+    
+    
+    private void checkIfStartDateBeforeThanEndDate(LocalDate startDate,LocalDate endDate) throws BusinessException {
+        if(endDate.isBefore(startDate)){
+            throw new BusinessException("End date should be after the start date! ");
+        }
+      }
     
 
 
