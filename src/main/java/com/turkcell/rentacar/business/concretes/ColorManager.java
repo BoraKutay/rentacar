@@ -109,7 +109,7 @@ public class ColorManager implements ColorService {
     private boolean checkIfColorExists(int id) throws BusinessException {
     	
     	if(colorDao.existsById(id) == false) {
-    		throw new BusinessException("Color does not exist by id:" + id);
+    		throw new BusinessException("Color does not exists by id:" + id);
     	}
 		return true;
     }

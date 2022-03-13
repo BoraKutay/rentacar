@@ -103,7 +103,7 @@ public class OrderedAdditionalServiceManager implements OrderedAdditionalService
     private boolean checkIfOrderedAdditionalServiceExists(int id) throws BusinessException {
     	
     	if(orderedAdditionalServiceDao.existsById(id) == false) {
-    		throw new BusinessException("Ordered Additional service does not exist by id:" + id);
+    		throw new BusinessException("Ordered Additional service does not exists by id:" + id);
     	}
 		return true;
     }

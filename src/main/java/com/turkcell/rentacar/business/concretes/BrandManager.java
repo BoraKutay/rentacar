@@ -109,7 +109,7 @@ public class BrandManager implements BrandService {
     private boolean checkIfBrandExists(int id) throws BusinessException {
     	
     	if(brandDao.existsById(id) == false) {
-    		throw new BusinessException("Brand does not exist by id:" + id);
+    		throw new BusinessException("Brand does not exists by id:" + id);
     	}
 		return true;
     }

@@ -158,7 +158,7 @@ public class RentalManager implements RentalService {
 	
     private boolean checkIfRentalExists(int id) throws BusinessException {
     	if(rentalDao.existsById(id) == false) {
-    		throw new BusinessException("Rental does not exist by id:" + id);
+    		throw new BusinessException("Rental does not exists by id:" + id);
     	}
 		return true;
     }

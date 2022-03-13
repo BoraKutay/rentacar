@@ -135,7 +135,7 @@ public class CarMaintenanceManager implements CarMaintenanceService {
     private boolean checkIfCarMaintenanceExists(int id) throws BusinessException {
     	
     	if(carMaintenanceDao.existsById(id) == false) {
-    		throw new BusinessException("Car maintenance does not exist by id:" + id);
+    		throw new BusinessException("Car maintenance does not exists by id:" + id);
     	}
 		return true;
     }

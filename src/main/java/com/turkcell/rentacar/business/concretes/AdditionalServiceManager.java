@@ -108,7 +108,7 @@ public class AdditionalServiceManager implements AdditionalServiceService {
     private boolean checkIfAdditionalServiceExists(int id) throws BusinessException {
     	
     	if(additionalServiceDao.existsById(id) == false) {
-    		throw new BusinessException("Additional service does not exist by id:" + id);
+    		throw new BusinessException("Additional service does not exists by id:" + id);
     	}
 		return true;
     }

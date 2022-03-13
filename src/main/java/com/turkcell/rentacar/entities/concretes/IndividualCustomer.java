@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = "invidual_customers")
 @PrimaryKeyJoinColumn(name = "invidual_customer_id")
-public class IndividiualCustomer extends Customer{
+public class IndividualCustomer extends Customer{
 	
 	@Column(name = "first_name")
 	private String firstName;
