@@ -1,8 +1,8 @@
 package com.turkcell.rentacar.business.concretes;
 
 import com.turkcell.rentacar.business.abstracts.ColorService;
-import com.turkcell.rentacar.business.dtos.ColorByIdDto;
-import com.turkcell.rentacar.business.dtos.ColorListDto;
+import com.turkcell.rentacar.business.dtos.colorDtos.ColorByIdDto;
+import com.turkcell.rentacar.business.dtos.colorDtos.ColorListDto;
 import com.turkcell.rentacar.business.requests.createRequests.CreateColorRequest;
 import com.turkcell.rentacar.business.requests.deleteRequests.DeleteColorRequest;
 import com.turkcell.rentacar.business.requests.updateRequests.UpdateColorRequest;
@@ -47,10 +47,10 @@ public class ColorManager implements ColorService {
 
     @Override
     public Result add(CreateColorRequest createColorRequest) throws BusinessException {
+    	
         Color color = this.modelMapperService.forRequest().map(createColorRequest, Color.class);
 
         checkIfColorNameIsUnique(color.getColorName());
-
 
         this.colorDao.save(color);
 
@@ -59,7 +59,9 @@ public class ColorManager implements ColorService {
 
     @Override
     public DataResult<ColorByIdDto> getById(int colorId) throws BusinessException {
+    	
     	checkIfColorExists(colorId);
+    	
         Color color = this.colorDao.getById(colorId);
 
         ColorByIdDto response = this.modelMapperService.forDto().map(color, ColorByIdDto.class);
@@ -70,10 +72,11 @@ public class ColorManager implements ColorService {
 
     @Override
     public Result update(UpdateColorRequest updateColorRequest) throws BusinessException {
+    	
     	checkIfColorExists(updateColorRequest.getColorId());
+    	checkIfColorNameIsUnique(updateColorRequest.getColorName());
+    	
         Color color = this.modelMapperService.forRequest().map(updateColorRequest, Color.class);
-
-        checkIfColorNameIsUnique(color.getColorName());
 
         this.colorDao.save(color);
 
@@ -82,8 +85,11 @@ public class ColorManager implements ColorService {
 
     @Override
     public Result deleteById(DeleteColorRequest deleteColorRequest) throws BusinessException {
+    	
     	checkIfColorExists(deleteColorRequest.getColorId());
+    	
         this.colorDao.deleteById(deleteColorRequest.getColorId());
+        
         return new SuccessResult("Color is deleted.");
 
     }
@@ -101,6 +107,7 @@ public class ColorManager implements ColorService {
     }
     
     private boolean checkIfColorExists(int id) throws BusinessException {
+    	
     	if(colorDao.existsById(id) == false) {
     		throw new BusinessException("Color does not exist by id:" + id);
     	}

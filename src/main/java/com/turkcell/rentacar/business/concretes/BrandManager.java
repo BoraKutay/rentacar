@@ -1,8 +1,8 @@
 package com.turkcell.rentacar.business.concretes;
 
 import com.turkcell.rentacar.business.abstracts.BrandService;
-import com.turkcell.rentacar.business.dtos.BrandByIdDto;
-import com.turkcell.rentacar.business.dtos.BrandListDto;
+import com.turkcell.rentacar.business.dtos.brandDtos.BrandByIdDto;
+import com.turkcell.rentacar.business.dtos.brandDtos.BrandListDto;
 import com.turkcell.rentacar.business.requests.createRequests.CreateBrandRequest;
 import com.turkcell.rentacar.business.requests.deleteRequests.DeleteBrandRequest;
 import com.turkcell.rentacar.business.requests.updateRequests.UpdateBrandRequest;
@@ -33,7 +33,9 @@ public class BrandManager implements BrandService {
 
 	@Override
     public DataResult<List<BrandListDto>> getAll() {
+		
         List<Brand> result = this.brandDao.findAll();
+
         List<BrandListDto> response = result.stream()
                 .map(brand -> this.modelMapperService.forDto().map(brand, BrandListDto.class))
                 .collect(Collectors.toList());
@@ -49,7 +51,6 @@ public class BrandManager implements BrandService {
 
         checkIfBrandNameIsUnique(brand.getBrandName());
 
-
         this.brandDao.save(brand);
 
         return new SuccessResult("Brand is added.");
@@ -61,6 +62,7 @@ public class BrandManager implements BrandService {
     public DataResult<BrandByIdDto> getById(int brandId) throws BusinessException {
     	
     	checkIfBrandExists(brandId);
+    	
         Brand brand = this.brandDao.getById(brandId);
 
         BrandByIdDto response = this.modelMapperService.forDto().map(brand, BrandByIdDto.class);
@@ -71,21 +73,25 @@ public class BrandManager implements BrandService {
 
     @Override
     public Result update(UpdateBrandRequest updateBrandRequest) throws BusinessException {
+    	
     	checkIfBrandExists(updateBrandRequest.getBrandId());
+    	checkIfBrandNameIsUnique(updateBrandRequest.getBrandName());
+    	
         Brand brand = this.modelMapperService.forRequest().map(updateBrandRequest, Brand.class);
 
-        checkIfBrandNameIsUnique(brand.getBrandName());
-
         this.brandDao.save(brand);
+        
         return new SuccessResult("Brand is updated successfuly.");
     }
 
     @Override
     public Result deleteById(DeleteBrandRequest deleteBrandRequest) throws BusinessException {
+    	
     	checkIfBrandExists(deleteBrandRequest.getBrandId());
+    	
         this.brandDao.deleteById(deleteBrandRequest.getBrandId());
+        
         return new SuccessResult("Brand is deleted successfully.");
-
     }
 
     private boolean checkIfBrandNameIsUnique(String brandName) throws BusinessException {
@@ -101,6 +107,7 @@ public class BrandManager implements BrandService {
     }
     
     private boolean checkIfBrandExists(int id) throws BusinessException {
+    	
     	if(brandDao.existsById(id) == false) {
     		throw new BusinessException("Brand does not exist by id:" + id);
     	}

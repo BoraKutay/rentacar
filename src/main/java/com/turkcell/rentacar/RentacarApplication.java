@@ -46,6 +46,8 @@ public class RentacarApplication {
     }
     
     
+    /* !!!!!!!!!!!!!!!!!!!core altına taşın!!!!!!!!!!!!!!!!!!!!!!!!!! */
+    
 	@ExceptionHandler
 	@ResponseStatus(code=HttpStatus.BAD_REQUEST)
 	public ErrorDataResult<Object> handleValidationExceptions(MethodArgumentNotValidException argumentNotValidException){

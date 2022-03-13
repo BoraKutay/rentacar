@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.turkcell.rentacar.business.abstracts.CityService;
-import com.turkcell.rentacar.business.dtos.CityByIdDto;
-import com.turkcell.rentacar.business.dtos.CityListDto;
+import com.turkcell.rentacar.business.dtos.cityDtos.CityByIdDto;
+import com.turkcell.rentacar.business.dtos.cityDtos.CityListDto;
 import com.turkcell.rentacar.business.requests.createRequests.CreateCityRequest;
 import com.turkcell.rentacar.business.requests.deleteRequests.DeleteCityRequest;
 import com.turkcell.rentacar.business.requests.updateRequests.UpdateCityRequest;

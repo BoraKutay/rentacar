@@ -1,7 +1,7 @@
 package com.turkcell.rentacar.business.abstracts;
 
-import com.turkcell.rentacar.business.dtos.CarByIdDto;
-import com.turkcell.rentacar.business.dtos.CarListDto;
+import com.turkcell.rentacar.business.dtos.carDtos.CarByIdDto;
+import com.turkcell.rentacar.business.dtos.carDtos.CarListDto;
 import com.turkcell.rentacar.business.requests.createRequests.CreateCarRequest;
 import com.turkcell.rentacar.business.requests.deleteRequests.DeleteCarRequest;
 import com.turkcell.rentacar.business.requests.updateRequests.UpdateCarRequest;

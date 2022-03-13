@@ -1,5 +1,4 @@
-package com.turkcell.rentacar.business.dtos;
-
+package com.turkcell.rentacar.business.dtos.carMaintenanceDtos;
 
 import java.time.LocalDate;
 
@@ -10,12 +9,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CarMaintenanceByIdDto {
+public class CarMaintenanceListDto {
 
 	private int carMaintenanceId;
 	private String description;
 	private LocalDate returnDate;
 	
 	private int carCarId;
-    
+
 }

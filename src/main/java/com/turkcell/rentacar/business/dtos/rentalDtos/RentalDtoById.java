@@ -1,7 +1,9 @@
-package com.turkcell.rentacar.business.dtos;
+package com.turkcell.rentacar.business.dtos.rentalDtos;
 
 import java.time.LocalDate;
 import java.util.List;
+
+import com.turkcell.rentacar.business.dtos.orderedAdditionalServiceDtos.OrderedAdditionalServiceByIdDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

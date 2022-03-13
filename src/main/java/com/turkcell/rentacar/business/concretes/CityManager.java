@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.CityService;
-import com.turkcell.rentacar.business.dtos.CityByIdDto;
-import com.turkcell.rentacar.business.dtos.CityListDto;
+import com.turkcell.rentacar.business.dtos.cityDtos.CityByIdDto;
+import com.turkcell.rentacar.business.dtos.cityDtos.CityListDto;
 import com.turkcell.rentacar.business.requests.createRequests.CreateCityRequest;
 import com.turkcell.rentacar.business.requests.deleteRequests.DeleteCityRequest;
 import com.turkcell.rentacar.business.requests.updateRequests.UpdateCityRequest;
@@ -38,6 +38,7 @@ public class CityManager implements CityService {
 	public DataResult<List<CityListDto>> getAll() {
 
         List<City> result = this.cityDao.findAll();
+        
         List<CityListDto> response = result.stream()
                 .map(city -> this.modelMapperService.forDto().map(city, CityListDto.class))
                 .collect(Collectors.toList());
@@ -47,16 +48,23 @@ public class CityManager implements CityService {
 
 	@Override
 	public Result add(CreateCityRequest createCityRequest) throws BusinessException {
+		
 		City city = this.modelMapperService.forRequest().map(createCityRequest, City.class);
+		
 		checkIfCityNameIsUnique(createCityRequest.getCityName());
+		
 		this.cityDao.save(city);
+		
 		return new SuccessResult("City is added: " + createCityRequest.getCityName());
 	}
 
 	@Override
 	public DataResult<CityByIdDto> getById(int id) throws BusinessException {
+		
 		checkIfCityExists(id);
+		
 		City city = this.cityDao.getById(id);
+		
 		CityByIdDto response = this.modelMapperService.forDto().map(city, CityByIdDto.class);
 		
 		return new SuccessDataResult<CityByIdDto>(response);
@@ -64,8 +72,11 @@ public class CityManager implements CityService {
 
 	@Override
 	public Result update(UpdateCityRequest updateCityRequest) throws BusinessException {
+		
 		checkIfCityExists(updateCityRequest.getCityId());
+		
 		City city = this.modelMapperService.forRequest().map(updateCityRequest, City.class);
+		
 		checkIfCityNameIsUnique(updateCityRequest.getCityName());
 
         this.cityDao.save(city);
@@ -75,12 +86,16 @@ public class CityManager implements CityService {
 
 	@Override
 	public Result deleteById(DeleteCityRequest deleteCityRequest) throws BusinessException {
+		
 		checkIfCityExists(deleteCityRequest.getCityId());
+		
 		this.cityDao.deleteById(deleteCityRequest.getCityId());
+		
 		return new SuccessResult("City is deleted.");
 	}
 	
 	private boolean checkIfCityExists(int id) throws BusinessException{
+		
 		if(cityDao.existsById(id) == false) {
 			throw new BusinessException("City does not exist by id:" + id);
 		}

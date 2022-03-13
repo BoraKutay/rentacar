@@ -2,8 +2,8 @@ package com.turkcell.rentacar.business.abstracts;
 
 import java.util.List;
 
-import com.turkcell.rentacar.business.dtos.RentalDtoById;
-import com.turkcell.rentacar.business.dtos.RentalListDto;
+import com.turkcell.rentacar.business.dtos.rentalDtos.RentalDtoById;
+import com.turkcell.rentacar.business.dtos.rentalDtos.RentalListDto;
 import com.turkcell.rentacar.business.requests.createRequests.CreateRentalRequest;
 import com.turkcell.rentacar.business.requests.deleteRequests.DeleteRentalRequest;
 import com.turkcell.rentacar.business.requests.updateRequests.UpdateRentalRequest;

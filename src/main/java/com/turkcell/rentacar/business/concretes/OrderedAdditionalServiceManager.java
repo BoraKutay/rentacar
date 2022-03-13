@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.OrderedAdditionalServiceService;
-import com.turkcell.rentacar.business.dtos.OrderedAdditionalServiceByIdDto;
-import com.turkcell.rentacar.business.dtos.OrderedAdditionalServiceListDto;
+import com.turkcell.rentacar.business.dtos.orderedAdditionalServiceDtos.OrderedAdditionalServiceByIdDto;
+import com.turkcell.rentacar.business.dtos.orderedAdditionalServiceDtos.OrderedAdditionalServiceListDto;
 import com.turkcell.rentacar.business.requests.createRequests.CreateOrderedAdditionalServiceRequest;
 import com.turkcell.rentacar.business.requests.deleteRequests.DeleteOrderedAdditionalServiceRequest;
 import com.turkcell.rentacar.business.requests.updateRequests.UpdateOrderedAdditionalServiceRequest;
@@ -37,7 +37,9 @@ public class OrderedAdditionalServiceManager implements OrderedAdditionalService
 
 	@Override
 	public DataResult<List<OrderedAdditionalServiceListDto>> getAll() {
+		
         List<OrderedAdditionalService> result = this.orderedAdditionalServiceDao.findAll();
+        
         List<OrderedAdditionalServiceListDto> response = result.stream()
                 .map(orderedAdditionalService -> this.modelMapperService.forDto().map(orderedAdditionalService, OrderedAdditionalServiceListDto.class))
                 .collect(Collectors.toList());
@@ -48,9 +50,11 @@ public class OrderedAdditionalServiceManager implements OrderedAdditionalService
 	@Override
 	public Result add(CreateOrderedAdditionalServiceRequest createOrderedAdditionalServiceRequest)
 			throws BusinessException {
+		
 		OrderedAdditionalService orderedAdditionalService = this.modelMapperService.forRequest().map(createOrderedAdditionalServiceRequest, OrderedAdditionalService.class);
 		
 		this.orderedAdditionalServiceDao.save(orderedAdditionalService);
+		
 		return new SuccessResult("Ordered Additional Service is added.");
 	}
 
@@ -58,35 +62,52 @@ public class OrderedAdditionalServiceManager implements OrderedAdditionalService
 	public DataResult<OrderedAdditionalServiceByIdDto> getById(int id) throws BusinessException {
 		
 		checkIfOrderedAdditionalServiceExists(id);
+		
 		OrderedAdditionalService orderedAdditionalService = this.orderedAdditionalServiceDao.getById(id);
 
         OrderedAdditionalServiceByIdDto response = this.modelMapperService.forDto().map(orderedAdditionalService, OrderedAdditionalServiceByIdDto.class);
+        
 		return new SuccessDataResult<OrderedAdditionalServiceByIdDto>(response,"Ordered Additional Service is found by id: " + id);
 	}
 
 	@Override
 	public Result update(UpdateOrderedAdditionalServiceRequest updateOrderedAdditionalServiceRequest)
 			throws BusinessException {
+		
 		checkIfOrderedAdditionalServiceExists(updateOrderedAdditionalServiceRequest.getOrderedAdditionalServiceId());
+		
 		OrderedAdditionalService orderedAdditionalService = this.modelMapperService.forRequest().map(updateOrderedAdditionalServiceRequest, OrderedAdditionalService.class);
 		
 		this.orderedAdditionalServiceDao.save(orderedAdditionalService);
+		
 		return new SuccessResult("Ordered Additional Service is updated.");
 	}
 
 	@Override
 	public Result deleteById(DeleteOrderedAdditionalServiceRequest deleteOrderedAdditionalServiceRequest)
 			throws BusinessException {
+		
 		checkIfOrderedAdditionalServiceExists(deleteOrderedAdditionalServiceRequest.getOrderedAdditionalServiceId());
+		
 		this.orderedAdditionalServiceDao.deleteById(deleteOrderedAdditionalServiceRequest.getOrderedAdditionalServiceId());
+		
 		return new SuccessResult("Ordered Additional Service is deleted.");
 	}
 	
+	@Override
+	public List<OrderedAdditionalService> getAllByRentalId(int rentalId) {
+		
+		return this.orderedAdditionalServiceDao.getAllByRental_RentalId(rentalId);
+	}
+	
     private boolean checkIfOrderedAdditionalServiceExists(int id) throws BusinessException {
+    	
     	if(orderedAdditionalServiceDao.existsById(id) == false) {
     		throw new BusinessException("Ordered Additional service does not exist by id:" + id);
     	}
 		return true;
     }
+
+
 
 }

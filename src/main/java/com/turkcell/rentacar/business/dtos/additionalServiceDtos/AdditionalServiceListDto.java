@@ -1,4 +1,4 @@
-package com.turkcell.rentacar.business.dtos;
+package com.turkcell.rentacar.business.dtos.additionalServiceDtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
