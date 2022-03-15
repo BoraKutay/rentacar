@@ -31,10 +31,10 @@ public class City {
 	@Column(name = "city_name")
 	private String cityName;
 	
-	@OneToMany(mappedBy = "cityOfPickUpLocation")
+	@OneToMany(mappedBy = "pickUpLocation")
 	private List<Rental> pickUpLocations;
 	
-	@OneToMany(mappedBy = "cityOfReturnLocation")
+	@OneToMany(mappedBy = "returnLocation")
 	private List<Rental> returnLocations;
 	
 	

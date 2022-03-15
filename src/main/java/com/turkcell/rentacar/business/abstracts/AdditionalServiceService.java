@@ -21,4 +21,10 @@ public interface AdditionalServiceService {
     Result update(UpdateAdditionalServiceRequest updateAdditionalServiceRequest) throws BusinessException;
 
     Result deleteById(DeleteAdditionalServiceRequest deleteAdditionalServiceRequest) throws BusinessException;
+    
+    boolean checkIfAdditionalServiceExists(int id) throws BusinessException;
+    
+    public void checkIfAdditionalServicesExists(List<Integer> additionalServicesId) throws BusinessException;
+    
+    public double calculateAdditionalPriceOfServices(List<Integer> orderedAdditionalServices);
 }

@@ -17,8 +17,10 @@ public class RentalListDto {
 	
 	private LocalDate endDate;
 	
-	private String cityOfPickUpLocation_CityName;
-	private String cityOfReturnLocation_CityName;
+	private String pickUpLocationCityName;
+	private String returnLocationCityName;
+	
+	private double totalPrice;
 	
 	private int carCarId;
 }

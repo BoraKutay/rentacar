@@ -3,10 +3,12 @@ package com.turkcell.rentacar.business.concretes;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import com.turkcell.rentacar.business.abstracts.AdditionalServiceService;
 import com.turkcell.rentacar.business.abstracts.CarMaintenanceService;
 import com.turkcell.rentacar.business.abstracts.CarService;
 import com.turkcell.rentacar.business.abstracts.OrderedAdditionalServiceService;
@@ -37,16 +39,18 @@ public class RentalManager implements RentalService {
 	private CarMaintenanceService carMaintenanceService;
 	private CarService carService;
 	private OrderedAdditionalServiceService orderedAdditionalServiceService;
+	private AdditionalServiceService additionalServiceService;
 	
 	
 	public RentalManager(RentalDao rentalDao, ModelMapperService modelMapperService,
-			@Lazy CarMaintenanceService carMaintenanceService,@Lazy CarService carService, @Lazy OrderedAdditionalServiceService orderedAdditionalServiceService) {
+			@Lazy CarMaintenanceService carMaintenanceService,@Lazy CarService carService, @Lazy OrderedAdditionalServiceService orderedAdditionalServiceService, @Lazy AdditionalServiceService additionalServiceService) {
 		
 		this.rentalDao = rentalDao;
 		this.modelMapperService = modelMapperService;
 		this.carMaintenanceService = carMaintenanceService;
 		this.carService = carService;
 		this.orderedAdditionalServiceService = orderedAdditionalServiceService;
+		this.additionalServiceService = additionalServiceService;
 	}
 
 	@Override
@@ -61,12 +65,19 @@ public class RentalManager implements RentalService {
 	@Override
 	public Result add(CreateRentalRequest createRentalRequest) throws BusinessException {
 		
-		checkIfCarIsAvailable(createRentalRequest.getCarCarId(),createRentalRequest.getStartDate());
+		checkIfCarIsAvailable(createRentalRequest.getCar_CarId(),createRentalRequest.getStartDate());
 		checkIfStartDateBeforeThanEndDate(createRentalRequest.getStartDate(),createRentalRequest.getEndDate());
 		
 		Rental rental = this.modelMapperService.forDto().map(createRentalRequest, Rental.class);
+		rental.setRentalId(0);
+		this.rentalDao.saveAndFlush(rental);
 		rental.setOrderedAdditionalServices(this.orderedAdditionalServiceService.getAllByRentalId(rental.getRentalId()));	
-		rental.setAdditionalPrice(calculateAdditionalPriceForReturnLocation(rental));
+		
+		
+		
+		this.orderedAdditionalServiceService.orderAdditionalServices(createRentalRequest.getAdditionalServicesId() ,rental.getRentalId());
+		
+		rental.setTotalPrice(calculateTotalPriceOfRental(rental,createRentalRequest.getAdditionalServicesId(),createRentalRequest.getPickUpLocationIdCityId(),createRentalRequest.getReturnLocationIdCityId()));
 		
 		this.rentalDao.save(rental);
 		
@@ -92,7 +103,12 @@ public class RentalManager implements RentalService {
 		checkIfStartDateBeforeThanEndDate(updateRentalRequest.getStartDate(),updateRentalRequest.getEndDate());
 		
 		Rental rental = this.modelMapperService.forRequest().map(updateRentalRequest, Rental.class);
-		rental.setAdditionalPrice(calculateAdditionalPriceForReturnLocation(rental));
+		this.rentalDao.saveAndFlush(rental);
+		
+		
+		this.orderedAdditionalServiceService.orderAdditionalServices(updateRentalRequest.getAdditionalServicesId() ,rental.getRentalId());
+		
+		rental.setTotalPrice(calculateTotalPriceOfRental(rental,updateRentalRequest.getAdditionalServicesId(),updateRentalRequest.getCityOfPickUpLocationId(),updateRentalRequest.getCityOfReturnLocationId())); 
 		
 		this.rentalDao.save(rental);
 		
@@ -163,9 +179,10 @@ public class RentalManager implements RentalService {
 		return true;
     }
     
-    private boolean checkIfRentalIsReturnDifferentCity(Rental rental) {
+    private boolean checkIfRentalIsReturnDifferentCity(int pickUpLocationId, int returnLocationId) {
 		
-    	if(rental.getCityOfPickUpLocation() == rental.getCityOfReturnLocation()) {
+
+    	if( pickUpLocationId == returnLocationId ) {
     		return false;
     	}
     	
@@ -173,11 +190,11 @@ public class RentalManager implements RentalService {
     	
     }
     
-    private double calculateAdditionalPriceForReturnLocation(Rental rental) {
+    private double calculateAdditionalPriceForReturnLocation(int pickUpLocationId, int returnLocationId) {
     	
     	double additionalPrice = 0;
     	
-    	if(checkIfRentalIsReturnDifferentCity(rental)) {
+    	if(checkIfRentalIsReturnDifferentCity(pickUpLocationId, returnLocationId)) {
     		additionalPrice = 750;
     	}
     	
@@ -191,6 +208,25 @@ public class RentalManager implements RentalService {
             throw new BusinessException("End date should be after the start date! ");
         }
       }
+    
+    private double calculateTotalPriceOfRental(Rental rental, List<Integer> orderedAdditionalServicesId, int pickUpLocationId, int returnLocationId) throws BusinessException {
+    	
+    	double totalPrice = 0;
+    	
+    	
+    	int daysBetween = (int)ChronoUnit.DAYS.between(rental.getStartDate(), rental.getEndDate());
+    	
+
+    	double additionalServicePrice = this.additionalServiceService.calculateAdditionalPriceOfServices(orderedAdditionalServicesId);
+
+    	double carDailyPrice = carService.getById(rental.getCar().getCarId()).getData().getDailyPrice();
+    	
+    	totalPrice = (carDailyPrice + additionalServicePrice) * daysBetween + calculateAdditionalPriceForReturnLocation(pickUpLocationId,returnLocationId); 
+    	
+    	
+    	return totalPrice;
+    	
+    }
     
 
 

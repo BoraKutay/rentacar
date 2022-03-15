@@ -24,4 +24,6 @@ public interface OrderedAdditionalServiceService {
     Result deleteById(DeleteOrderedAdditionalServiceRequest deleteOrderedAdditionalServiceRequest) throws BusinessException;
 
 	List<OrderedAdditionalService> getAllByRentalId(int rentalId);
+	
+	public void orderAdditionalServices(List<Integer> additonalServices, int rentalId) throws BusinessException;
 }

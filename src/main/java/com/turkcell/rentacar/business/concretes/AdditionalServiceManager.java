@@ -105,12 +105,27 @@ public class AdditionalServiceManager implements AdditionalServiceService {
         }
     }
 	
-    private boolean checkIfAdditionalServiceExists(int id) throws BusinessException {
+    public boolean checkIfAdditionalServiceExists(int id) throws BusinessException {
     	
     	if(additionalServiceDao.existsById(id) == false) {
     		throw new BusinessException("Additional service does not exists by id:" + id);
     	}
 		return true;
+    }
+    
+	public void checkIfAdditionalServicesExists(List<Integer> additionalServicesId) throws BusinessException {
+		for(int id = 0; id < additionalServicesId.size();id++) {
+			checkIfAdditionalServiceExists(id);
+		}
+	}
+	
+    
+    public double calculateAdditionalPriceOfServices(List<Integer> orderedAdditionalServices) {
+    	double additionalServicePrice = 0;
+        for (int i = 0; i < orderedAdditionalServices.size(); i++) {
+        	additionalServicePrice = additionalServicePrice + this.additionalServiceDao.getById(orderedAdditionalServices.get(i)).getDailyPrice();
+        }
+		return additionalServicePrice;
     }
 
 }

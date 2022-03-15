@@ -142,7 +142,6 @@ public class CarManager implements CarService {
 	}
 	
     public boolean checkIfCarExists(int id) throws BusinessException {
-    	
     	if(carDao.existsById(id) == false) {
     		throw new BusinessException("Car does not exists by id:" + id);
     	}

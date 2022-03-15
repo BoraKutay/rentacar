@@ -1,6 +1,7 @@
 package com.turkcell.rentacar.business.requests.updateRequests;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -27,9 +28,7 @@ public class UpdateRentalRequest {
 	@Positive
 	private int carCarId;
 	
-	@NotNull
-	@Positive
-	private int orderedAdditionalServiceId;
+	private List<Integer> additionalServicesId;
 	
 	@NotNull
 	@Positive

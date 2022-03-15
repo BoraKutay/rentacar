@@ -38,8 +38,8 @@ public class Rental {
 	@Column(name = "end_date")
 	private LocalDate endDate;
 	
-	@Column(name = "additional_price")
-	private double additionalPrice;
+	@Column(name = "total_price")
+	private double totalPrice;
 	
 	@ManyToOne
 	@JoinColumn(name = "car_id")
@@ -50,13 +50,13 @@ public class Rental {
     private List<OrderedAdditionalService> orderedAdditionalServices;
     
     @ManyToOne
-    @JoinColumn(name="city_pick_up_id")
-    private City cityOfPickUpLocation;
+    @JoinColumn(name="pick_up_location_id")
+    private City pickUpLocation;
     
     
     @ManyToOne
-    @JoinColumn(name="city_return_id")
-    private City cityOfReturnLocation;
+    @JoinColumn(name="return_location_id")
+    private City returnLocation;
     
     @OneToOne(mappedBy = "rental", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Invoice invoice;

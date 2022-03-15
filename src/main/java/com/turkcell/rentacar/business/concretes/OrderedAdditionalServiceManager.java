@@ -1,11 +1,13 @@
 package com.turkcell.rentacar.business.concretes;
 
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.turkcell.rentacar.business.abstracts.AdditionalServiceService;
 import com.turkcell.rentacar.business.abstracts.OrderedAdditionalServiceService;
 import com.turkcell.rentacar.business.dtos.orderedAdditionalServiceDtos.OrderedAdditionalServiceByIdDto;
 import com.turkcell.rentacar.business.dtos.orderedAdditionalServiceDtos.OrderedAdditionalServiceListDto;
@@ -30,7 +32,7 @@ public class OrderedAdditionalServiceManager implements OrderedAdditionalService
 	
 	@Autowired
 	public OrderedAdditionalServiceManager(OrderedAdditionalServiceDao orderedAdditionalServiceDao,
-			ModelMapperService modelMapperService) {
+			ModelMapperService modelMapperService, AdditionalServiceService additionalServiceService) {
 		this.orderedAdditionalServiceDao = orderedAdditionalServiceDao;
 		this.modelMapperService = modelMapperService;
 	}
@@ -57,6 +59,18 @@ public class OrderedAdditionalServiceManager implements OrderedAdditionalService
 		
 		return new SuccessResult("Ordered Additional Service is added.");
 	}
+
+	@Override
+	public void orderAdditionalServices(List<Integer> additonalServices, int rentalId) throws BusinessException {
+		for(int i = 0; i<additonalServices.size(); i++) {
+			CreateOrderedAdditionalServiceRequest createOrderedAdditionalServiceRequest = new CreateOrderedAdditionalServiceRequest(additonalServices.get(i),rentalId);
+			this.add(createOrderedAdditionalServiceRequest);
+			
+		}
+	}
+	
+
+
 
 	@Override
 	public DataResult<OrderedAdditionalServiceByIdDto> getById(int id) throws BusinessException {
@@ -107,6 +121,9 @@ public class OrderedAdditionalServiceManager implements OrderedAdditionalService
     	}
 		return true;
     }
+
+    
+
 
 
 
