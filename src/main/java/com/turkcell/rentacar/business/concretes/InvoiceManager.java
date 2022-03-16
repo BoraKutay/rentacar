@@ -116,7 +116,7 @@ public class InvoiceManager implements InvoiceService {
 				.map(invoice -> this.modelMapperService.forDto().map(invoice, InvoiceListDto.class))
 				.collect(Collectors.toList());
 		
-		return new SuccessDataResult<List<InvoiceListDto>>(response,"Invoices by customer are listed.");
+		return new SuccessDataResult<List<InvoiceListDto>>(response,"Invoices between "+ startDate + " and " + endDate + " are listed.");
 	}
 	
     private boolean checkIfInvoiceExists(int id) throws BusinessException {
