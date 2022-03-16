@@ -1,11 +1,14 @@
 package com.turkcell.rentacar.entities.concretes;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
@@ -22,12 +25,17 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Inheritance(strategy = InheritanceType.JOINED)
+@PrimaryKeyJoinColumn(name= "customer_id", referencedColumnName = "user_id")
 @Table(name = "customers")
-@PrimaryKeyJoinColumn(name = "customer_id",referencedColumnName = "user_id")
 public class Customer extends User{
 	
-	@Column(name = "customer_id",insertable = false,updatable = false)
+
+	@Column(name = "customer_id", insertable = false,updatable = false)
 	private int customerId;
+	
+	@Column(name = "registered_date")
+	private LocalDate registeredDate;
 
     @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     List<Rental> rentals;

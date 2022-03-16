@@ -20,6 +20,10 @@ public class RentalListDto {
 	private String pickUpLocationCityName;
 	private String returnLocationCityName;
 	
+	private int startKilometer;
+	
+	private int endKilometer;
+	
 	private double totalPrice;
 	
 	private int carCarId;

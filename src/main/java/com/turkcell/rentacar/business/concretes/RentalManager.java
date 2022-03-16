@@ -16,6 +16,7 @@ import com.turkcell.rentacar.business.abstracts.RentalService;
 import com.turkcell.rentacar.business.dtos.carMaintenanceDtos.CarMaintenanceListDto;
 import com.turkcell.rentacar.business.dtos.rentalDtos.RentalDtoById;
 import com.turkcell.rentacar.business.dtos.rentalDtos.RentalListDto;
+import com.turkcell.rentacar.business.requests.FinishRentalRequest;
 import com.turkcell.rentacar.business.requests.createRequests.CreateRentalRequest;
 import com.turkcell.rentacar.business.requests.deleteRequests.DeleteRentalRequest;
 import com.turkcell.rentacar.business.requests.updateRequests.UpdateRentalRequest;
@@ -251,6 +252,25 @@ public class RentalManager implements RentalService {
     	
     	return daysBetween;
     }
+
+	@Override
+	public Result finishRental(FinishRentalRequest finishRentalRequest) throws BusinessException {
+		
+		checkIfRentalExists(finishRentalRequest.getRentalId());
+		
+		Rental rental = this.rentalDao.getById(finishRentalRequest.getRentalId());
+		
+		rental.setEndKilometer(finishRentalRequest.getEndKilometer());
+		
+		this.carService.updateCarKilometer(rental.getCar().getCarId(), finishRentalRequest.getEndKilometer());
+		
+		this.rentalDao.save(rental);
+		
+		return new SuccessResult("Rent finished.");
+		
+		
+
+	}
     
 
 

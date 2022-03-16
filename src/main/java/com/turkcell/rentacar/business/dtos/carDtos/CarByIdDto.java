@@ -13,6 +13,7 @@ public class CarByIdDto {
     private double dailyPrice;
     private int modelYear;
     private String description;
+    private int carKilometer;
     private String brandName;
     private String colorName;
 }

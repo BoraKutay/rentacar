@@ -28,6 +28,10 @@ public class Car {
 
     @Column(name = "description")
     private String carDescription;
+    
+    
+    @Column(name = "car_kilometer")
+    private int carKilometer;
 
     @ManyToOne
     @JoinColumn(name = "brand_id")
@@ -42,6 +46,9 @@ public class Car {
     
     @OneToMany(mappedBy = "car")
     private List<Rental> rentals;
+    
+    @OneToMany(mappedBy = "car")
+    private List<CarDamage> carDamages;
     
     
     

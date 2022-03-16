@@ -3,6 +3,7 @@ package com.turkcell.rentacar.business.requests.createRequests;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,6 +23,10 @@ public class CreateCarRequest {
     private int modelYear;
 	
     private String description;
+    
+    @NotNull
+    @PositiveOrZero
+    private int carKilometer;
     
     @NotNull
     @Positive

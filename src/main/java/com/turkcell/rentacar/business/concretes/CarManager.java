@@ -141,11 +141,25 @@ public class CarManager implements CarService {
 		return new SuccessDataResult<List<CarListDto>>(response, "Cars are listed by less than " + modelYear);
 	}
 	
+	@Override
+	public Result updateCarKilometer(int carId, int carKilometer) {
+		
+		Car car = this.carDao.getById(carId);
+		
+		car.setCarKilometer(carKilometer);
+		
+		this.carDao.save(car);
+		
+		return new SuccessResult("Kilometer updated.");
+	}
+	
     public boolean checkIfCarExists(int id) throws BusinessException {
     	if(carDao.existsById(id) == false) {
     		throw new BusinessException("Car does not exists by id:" + id);
     	}
 		return true;
     }
+
+
 
 }

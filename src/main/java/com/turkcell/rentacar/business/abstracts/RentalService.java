@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.turkcell.rentacar.business.dtos.rentalDtos.RentalDtoById;
 import com.turkcell.rentacar.business.dtos.rentalDtos.RentalListDto;
+import com.turkcell.rentacar.business.requests.FinishRentalRequest;
 import com.turkcell.rentacar.business.requests.createRequests.CreateRentalRequest;
 import com.turkcell.rentacar.business.requests.deleteRequests.DeleteRentalRequest;
 import com.turkcell.rentacar.business.requests.updateRequests.UpdateRentalRequest;
@@ -24,4 +25,6 @@ public interface RentalService {
 	Result update(UpdateRentalRequest updateRentalRequest) throws BusinessException;
 	
 	Result delete(DeleteRentalRequest deleteRentalRequest) throws BusinessException;
+	
+	Result finishRental(FinishRentalRequest finishRentalRequest) throws BusinessException;
 }

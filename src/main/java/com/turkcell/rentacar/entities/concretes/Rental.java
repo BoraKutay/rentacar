@@ -38,6 +38,12 @@ public class Rental {
 	@Column(name = "total_price")
 	private double totalPrice;
 	
+	@Column(name = "start_kilometer")
+	private int startKilometer;
+	
+	@Column(name = "end_kilometer")
+	private int endKilometer;
+	
 	@ManyToOne
 	@JoinColumn(name = "car_id")
 	private Car car;

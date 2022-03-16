@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.turkcell.rentacar.business.abstracts.RentalService;
 import com.turkcell.rentacar.business.dtos.rentalDtos.RentalDtoById;
 import com.turkcell.rentacar.business.dtos.rentalDtos.RentalListDto;
+import com.turkcell.rentacar.business.requests.FinishRentalRequest;
 import com.turkcell.rentacar.business.requests.createRequests.CreateRentalRequest;
 import com.turkcell.rentacar.business.requests.deleteRequests.DeleteRentalRequest;
 import com.turkcell.rentacar.business.requests.updateRequests.UpdateRentalRequest;
@@ -66,5 +67,10 @@ public class RentalsController {
 	@DeleteMapping("/delete")
 	Result delete(@RequestBody DeleteRentalRequest deleteRentalRequest) throws BusinessException {
 		return this.rentalService.delete(deleteRentalRequest);
+	}
+	
+	@PostMapping("/endRental")
+	Result finishRental(FinishRentalRequest finishRentalRequest) throws BusinessException {
+		return this.rentalService.finishRental(finishRentalRequest);
 	}
 }

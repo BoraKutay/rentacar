@@ -53,4 +53,6 @@ public class Invoice {
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name = "customer_id")
 	private Customer customer;
+	
+	//denormalize edilmesi gereken alan
 }
