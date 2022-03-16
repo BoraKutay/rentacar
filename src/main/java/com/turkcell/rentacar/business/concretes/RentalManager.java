@@ -231,6 +231,8 @@ public class RentalManager implements RentalService {
     	
     	int daysBetween = (int)ChronoUnit.DAYS.between(rental.getStartDate(), rental.getEndDate());
     	
+    	daysBetween = manageDaysBetweenIfZero(daysBetween);
+    	
     	double additionalServicePrice = this.additionalServiceService.calculateAdditionalPriceOfServices(orderedAdditionalServicesId);
 
     	double carDailyPrice = carService.getById(rental.getCar().getCarId()).getData().getDailyPrice();
@@ -239,6 +241,15 @@ public class RentalManager implements RentalService {
     	
     	return totalPrice;
     	
+    }
+    
+    private int manageDaysBetweenIfZero(int daysBetween) {
+    	
+    	if (daysBetween == 0) {
+    		return 1;
+    	}
+    	
+    	return daysBetween;
     }
     
 
