@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.turkcell.rentacar.business.dtos.orderedAdditionalServiceDtos.OrderedAdditionalServiceByIdDto;
+import com.turkcell.rentacar.entities.concretes.Customer;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,8 +15,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RentalDtoById {
-
-	private int rentalId;
 	
 	private LocalDate startDate;
 	
@@ -26,6 +25,8 @@ public class RentalDtoById {
 	
     private double totalPrice;
 	private int carCarId;
+	
+	private Customer customer;
 	
 	private List<OrderedAdditionalServiceByIdDto> orderedAdditionalServices;
 }

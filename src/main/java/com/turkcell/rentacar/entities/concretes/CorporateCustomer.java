@@ -7,9 +7,11 @@ import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,6 +19,10 @@ import lombok.NoArgsConstructor;
 @PrimaryKeyJoinColumn(name = "corporate_customer_id")
 public class CorporateCustomer extends Customer {
    
+	
+	@Column(name = "corporate_customer_id",insertable = false, updatable = false)
+	private int corporateCustomerId;
+	
 	@Column(name = "company_name")
     private String companyName;
 

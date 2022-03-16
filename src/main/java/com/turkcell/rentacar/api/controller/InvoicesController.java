@@ -1,5 +1,6 @@
 package com.turkcell.rentacar.api.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,7 @@ public class InvoicesController {
 	}
 	
 	@PostMapping("/add")
-	Result add(CreateInvoiceRequest createInvoiceRequest) {
+	Result add(CreateInvoiceRequest createInvoiceRequest) throws BusinessException {
 		return this.invoiceService.add(createInvoiceRequest);
 		
 	}
@@ -59,6 +60,17 @@ public class InvoicesController {
 	@PutMapping("/update")
 	Result update(UpdateInvoiceRequest updateInvoiceRequest) throws BusinessException{
 		return this.invoiceService.update(updateInvoiceRequest);
+		
+	}
+	@GetMapping("/getAllByCustomerId")
+	DataResult<List<InvoiceListDto>> getAllByCustomer_CustomerId(int customerId){
+		return this.invoiceService.getAllByCustomer_CustomerId(customerId);
+		
+	}
+	
+	@GetMapping("/getBillingsDateBetween")
+	DataResult<List<InvoiceListDto>> getAllByBillingDateBetween(LocalDate startDate, LocalDate endDate){
+		return this.invoiceService.getAllByBillingDateBetween(startDate, endDate);
 		
 	}
 }

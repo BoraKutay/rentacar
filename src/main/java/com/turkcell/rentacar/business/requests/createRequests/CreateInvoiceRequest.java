@@ -1,6 +1,7 @@
 package com.turkcell.rentacar.business.requests.createRequests;
 
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,9 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CreateInvoiceRequest {
 	
-	private int rentalDayNumber;
-
-	private int customerId;
+	private int rentalId;
 	
-	private int rentId;
 }

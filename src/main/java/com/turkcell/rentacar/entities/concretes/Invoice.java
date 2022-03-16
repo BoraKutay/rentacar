@@ -1,8 +1,12 @@
 package com.turkcell.rentacar.entities.concretes;
 
 
+import java.time.LocalDate;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,11 +34,23 @@ public class Invoice {
 	@Column(name = "rental_day_number")
 	private int rentalDayNumber;
 	
+	@Column(name = "start_date_rental")
+	private LocalDate startDateRental;
+	
+	@Column(name = "end_date_rental")
+	private LocalDate endDateRental;
+	
+	@Column(name = "billing_date")
+	private LocalDate billingDate;
+	
+	@Column(name= "billing_price")
+	private double billingPrice;
+	
 	@OneToOne
 	@JoinColumn(name = "rental_id")
 	private Rental rental;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name = "customer_id")
 	private Customer customer;
 }

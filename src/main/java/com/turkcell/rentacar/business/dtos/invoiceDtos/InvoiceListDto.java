@@ -14,13 +14,15 @@ public class InvoiceListDto {
 
     private int rentalDayNumber;
 
-    private double additionalPrice;
+    private double billingPrice;
 
     private int rentalId;
 
-    private int customerId;
+    private int customerCustomerId;
 
     private LocalDate startDate;
 
     private LocalDate endDate;
+    
+    private LocalDate billingDate;
 }

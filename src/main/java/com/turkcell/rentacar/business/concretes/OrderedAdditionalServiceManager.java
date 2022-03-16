@@ -62,7 +62,9 @@ public class OrderedAdditionalServiceManager implements OrderedAdditionalService
 
 	@Override
 	public void orderAdditionalServices(List<Integer> additonalServices, int rentalId) throws BusinessException {
+		
 		for(int i = 0; i<additonalServices.size(); i++) {
+			
 			CreateOrderedAdditionalServiceRequest createOrderedAdditionalServiceRequest = new CreateOrderedAdditionalServiceRequest(additonalServices.get(i),rentalId);
 			this.add(createOrderedAdditionalServiceRequest);
 			
