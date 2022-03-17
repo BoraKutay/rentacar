@@ -11,13 +11,15 @@ import org.springframework.stereotype.Service;
 import com.turkcell.rentacar.business.abstracts.AdditionalServiceService;
 import com.turkcell.rentacar.business.abstracts.CarMaintenanceService;
 import com.turkcell.rentacar.business.abstracts.CarService;
+import com.turkcell.rentacar.business.abstracts.CustomerService;
 import com.turkcell.rentacar.business.abstracts.OrderedAdditionalServiceService;
 import com.turkcell.rentacar.business.abstracts.RentalService;
 import com.turkcell.rentacar.business.dtos.carMaintenanceDtos.CarMaintenanceListDto;
 import com.turkcell.rentacar.business.dtos.rentalDtos.RentalDtoById;
 import com.turkcell.rentacar.business.dtos.rentalDtos.RentalListDto;
 import com.turkcell.rentacar.business.requests.FinishRentalRequest;
-import com.turkcell.rentacar.business.requests.createRequests.CreateRentalRequest;
+import com.turkcell.rentacar.business.requests.createRequests.CreateRentalRequestForCorporateCustomer;
+import com.turkcell.rentacar.business.requests.createRequests.CreateRentalRequestForIndividualCustomer;
 import com.turkcell.rentacar.business.requests.deleteRequests.DeleteRentalRequest;
 import com.turkcell.rentacar.business.requests.updateRequests.UpdateRentalRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
@@ -41,10 +43,11 @@ public class RentalManager implements RentalService {
 	private CarService carService;
 	private OrderedAdditionalServiceService orderedAdditionalServiceService;
 	private AdditionalServiceService additionalServiceService;
-	
+	private CustomerService customerService;
 	
 	public RentalManager(RentalDao rentalDao, ModelMapperService modelMapperService,
-			@Lazy CarMaintenanceService carMaintenanceService,CarService carService, OrderedAdditionalServiceService orderedAdditionalServiceService, AdditionalServiceService additionalServiceService) {
+			@Lazy CarMaintenanceService carMaintenanceService,CarService carService, OrderedAdditionalServiceService orderedAdditionalServiceService, 
+			AdditionalServiceService additionalServiceService, @Lazy CustomerService customerService) {
 		
 		this.rentalDao = rentalDao;
 		this.modelMapperService = modelMapperService;
@@ -62,32 +65,58 @@ public class RentalManager implements RentalService {
 		
 		return new SuccessDataResult<List<RentalListDto>>(response,"Rents listed");
 	}
-    
-
-
-	@Override
-	public Result add(CreateRentalRequest createRentalRequest) throws BusinessException {
+	
+	public Result addForIndividualCustomer(CreateRentalRequestForIndividualCustomer createRentalRequestForIndividualCustomer) throws BusinessException {
+	
 		
-		checkIfCarIsAvailable(createRentalRequest.getCar_CarId(),createRentalRequest.getStartDate());
-		checkIfStartDateBeforeThanEndDate(createRentalRequest.getStartDate(),createRentalRequest.getEndDate());
+		checkIfCarIsAvailable(createRentalRequestForIndividualCustomer.getCar_CarId(),createRentalRequestForIndividualCustomer.getStartDate());
+		checkIfStartDateBeforeThanEndDate(createRentalRequestForIndividualCustomer.getStartDate(),createRentalRequestForIndividualCustomer.getEndDate());
 		
-		Rental rental = this.modelMapperService.forDto().map(createRentalRequest, Rental.class);
+		Rental rental = this.modelMapperService.forDto().map(createRentalRequestForIndividualCustomer, Rental.class);
 		
 		rental.setRentalId(0);
 		
 		this.rentalDao.saveAndFlush(rental);
 		
 		rental.setOrderedAdditionalServices(this.orderedAdditionalServiceService.getAllByRentalId(rental.getRentalId()));	
-		
-		this.orderedAdditionalServiceService.orderAdditionalServices(createRentalRequest.getAdditionalServicesId() ,rental.getRentalId());
-		
-		rental.setStartKilometer(this.carService.getById(createRentalRequest.getCar_CarId()).getData().getCarKilometer());
-		
-		rental.setTotalPrice(calculateTotalPriceOfRental(rental,createRentalRequest.getAdditionalServicesId(),createRentalRequest.getPickUpLocationIdCityId(),createRentalRequest.getReturnLocationIdCityId()));
+		this.orderedAdditionalServiceService.orderAdditionalServices(createRentalRequestForIndividualCustomer.getAdditionalServicesId() ,rental.getRentalId());
+		rental.setStartKilometer(this.carService.getById(createRentalRequestForIndividualCustomer.getCar_CarId()).getData().getCarKilometer());
+		rental.setTotalPrice(calculateTotalPriceOfRental(rental,createRentalRequestForIndividualCustomer.getAdditionalServicesId(),createRentalRequestForIndividualCustomer.getPickUpLocationIdCityId(),createRentalRequestForIndividualCustomer.getReturnLocationIdCityId()));
+		rental.setCustomer(this.customerService.getById(createRentalRequestForIndividualCustomer.getInvidualCustomerId()));
 		
 		this.rentalDao.save(rental);
 		
 		return new SuccessResult("Rent is added");
+	
+		
+		
+	}
+	
+	
+	
+	public Result addForCorporateCustomer(CreateRentalRequestForCorporateCustomer createRentalRequestForCorporateCustomer) throws BusinessException {
+		
+		checkIfCarIsAvailable(createRentalRequestForCorporateCustomer.getCar_CarId(),createRentalRequestForCorporateCustomer.getStartDate());
+		checkIfStartDateBeforeThanEndDate(createRentalRequestForCorporateCustomer.getStartDate(),createRentalRequestForCorporateCustomer.getEndDate());
+		
+		Rental rental = this.modelMapperService.forDto().map(createRentalRequestForCorporateCustomer, Rental.class);
+		
+		rental.setRentalId(0);
+		
+		this.rentalDao.saveAndFlush(rental);
+		
+		rental.setOrderedAdditionalServices(this.orderedAdditionalServiceService.getAllByRentalId(rental.getRentalId()));	
+		this.orderedAdditionalServiceService.orderAdditionalServices(createRentalRequestForCorporateCustomer.getAdditionalServicesId() ,rental.getRentalId());
+		rental.setStartKilometer(this.carService.getById(createRentalRequestForCorporateCustomer.getCar_CarId()).getData().getCarKilometer());
+		rental.setTotalPrice(calculateTotalPriceOfRental(rental,createRentalRequestForCorporateCustomer.getAdditionalServicesId(),createRentalRequestForCorporateCustomer.getPickUpLocationIdCityId(),createRentalRequestForCorporateCustomer.getReturnLocationIdCityId()));
+		rental.setCustomer(this.customerService.getById(createRentalRequestForCorporateCustomer.getCorporateCustomerId()));
+		
+		this.rentalDao.save(rental);
+		
+		return new SuccessResult("Rent is added");
+	
+		
+		
 	}
 	
 	

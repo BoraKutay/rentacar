@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 
 import lombok.AllArgsConstructor;
@@ -14,8 +15,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateRentalRequest {
-
+public class CreateRentalRequestForIndividualCustomer {
+	
 	@NotNull
 	private LocalDate startDate;
 	
@@ -25,6 +26,9 @@ public class CreateRentalRequest {
 	@PositiveOrZero
 	private int car_CarId;
 	
+	@NotNull
+	@Positive
+	private int invidualCustomerId;
 	
 	@NotNull
 	@PositiveOrZero
@@ -36,8 +40,4 @@ public class CreateRentalRequest {
 	
 
 	private List<Integer> additionalServicesId;
-
 }
-
-
-

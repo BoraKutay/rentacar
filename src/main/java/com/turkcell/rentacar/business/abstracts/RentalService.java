@@ -5,7 +5,8 @@ import java.util.List;
 import com.turkcell.rentacar.business.dtos.rentalDtos.RentalDtoById;
 import com.turkcell.rentacar.business.dtos.rentalDtos.RentalListDto;
 import com.turkcell.rentacar.business.requests.FinishRentalRequest;
-import com.turkcell.rentacar.business.requests.createRequests.CreateRentalRequest;
+import com.turkcell.rentacar.business.requests.createRequests.CreateRentalRequestForCorporateCustomer;
+import com.turkcell.rentacar.business.requests.createRequests.CreateRentalRequestForIndividualCustomer;
 import com.turkcell.rentacar.business.requests.deleteRequests.DeleteRentalRequest;
 import com.turkcell.rentacar.business.requests.updateRequests.UpdateRentalRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
@@ -18,7 +19,9 @@ public interface RentalService {
 	
 	DataResult<List<RentalListDto>> getAllByCarCarId(int id) throws BusinessException;
 	
-	Result add(CreateRentalRequest createRentalRequest) throws BusinessException;
+	Result addForIndividualCustomer(CreateRentalRequestForIndividualCustomer createRentalRequestForIndividualCustomer) throws BusinessException;
+	
+	Result addForCorporateCustomer(CreateRentalRequestForCorporateCustomer createRentalRequestForCorporateCustomer) throws BusinessException;
 	
 	DataResult<RentalDtoById> getById(int id) throws BusinessException;
 	
