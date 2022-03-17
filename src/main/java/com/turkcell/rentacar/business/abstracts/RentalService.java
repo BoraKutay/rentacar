@@ -17,7 +17,7 @@ public interface RentalService {
 	DataResult<List<RentalListDto>> getAll();
 	
 	DataResult<List<RentalListDto>> getAllByCarCarId(int id) throws BusinessException;
-		
+	
 	Result add(CreateRentalRequest createRentalRequest) throws BusinessException;
 	
 	DataResult<RentalDtoById> getById(int id) throws BusinessException;

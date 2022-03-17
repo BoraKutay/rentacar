@@ -81,12 +81,16 @@ public class RentalManager implements RentalService {
 		
 		this.orderedAdditionalServiceService.orderAdditionalServices(createRentalRequest.getAdditionalServicesId() ,rental.getRentalId());
 		
+		rental.setStartKilometer(this.carService.getById(createRentalRequest.getCar_CarId()).getData().getCarKilometer());
+		
 		rental.setTotalPrice(calculateTotalPriceOfRental(rental,createRentalRequest.getAdditionalServicesId(),createRentalRequest.getPickUpLocationIdCityId(),createRentalRequest.getReturnLocationIdCityId()));
 		
 		this.rentalDao.save(rental);
 		
 		return new SuccessResult("Rent is added");
 	}
+	
+	
 
 	@Override
 	public DataResult<RentalDtoById> getById(int id) throws BusinessException {
