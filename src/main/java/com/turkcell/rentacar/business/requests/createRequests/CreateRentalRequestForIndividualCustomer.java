@@ -28,7 +28,7 @@ public class CreateRentalRequestForIndividualCustomer {
 	
 	@NotNull
 	@Positive
-	private int invidualCustomerId;
+	private int individualCustomerId;
 	
 	@NotNull
 	@PositiveOrZero

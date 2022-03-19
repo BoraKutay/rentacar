@@ -42,4 +42,7 @@ public class Customer extends User{
 
     @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     List<Invoice> invoices;
+    
+    @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    List<Payment> payments;
 }

@@ -12,6 +12,7 @@ import com.turkcell.rentacar.business.requests.updateRequests.UpdateRentalReques
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
+import com.turkcell.rentacar.entities.concretes.Rental;
 
 public interface RentalService {
 
@@ -19,7 +20,7 @@ public interface RentalService {
 	
 	DataResult<List<RentalListDto>> getAllByCarCarId(int id) throws BusinessException;
 	
-	Result addForIndividualCustomer(CreateRentalRequestForIndividualCustomer createRentalRequestForIndividualCustomer) throws BusinessException;
+	DataResult<Rental> addForIndividualCustomer(CreateRentalRequestForIndividualCustomer createRentalRequestForIndividualCustomer) throws BusinessException;
 	
 	Result addForCorporateCustomer(CreateRentalRequestForCorporateCustomer createRentalRequestForCorporateCustomer) throws BusinessException;
 	

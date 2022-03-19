@@ -47,10 +47,11 @@ public class InvoicesController {
 	}
 	
 	@PostMapping("/add")
-	Result add(CreateInvoiceRequest createInvoiceRequest) throws BusinessException {
-		return this.invoiceService.add(createInvoiceRequest);
+	Result add(int id) throws BusinessException {
+		return this.invoiceService.add(id);
 		
 	}
+	
 	
 	@DeleteMapping("/delete")
 	Result delete(DeleteInvoiceRequest deleteInvoiceRequest) throws BusinessException{

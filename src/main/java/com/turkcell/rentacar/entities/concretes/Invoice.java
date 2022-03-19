@@ -2,6 +2,7 @@ package com.turkcell.rentacar.entities.concretes;
 
 
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -53,6 +55,10 @@ public class Invoice {
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name = "customer_id")
 	private Customer customer;
+	
+	
+	@OneToMany(mappedBy = "invoice")
+	private List<Payment> payments;
 	
 	//denormalize edilmesi gereken alan
 }

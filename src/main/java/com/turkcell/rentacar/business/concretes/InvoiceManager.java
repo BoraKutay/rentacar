@@ -61,10 +61,10 @@ public class InvoiceManager implements InvoiceService {
 		return new SuccessDataResult<InvoiceByIdDto>(response, "Invoice is listed");
 	}
 	@Override
-	public Result add(CreateInvoiceRequest createInvoiceRequest) throws BusinessException {
+	public Result add(int rentalId) throws BusinessException {
 		
-		Invoice invoice = this.modelMapperService.forRequest().map(createInvoiceRequest, Invoice.class);
-		RentalDtoById rentalDtoById = this.rentalService.getById(createInvoiceRequest.getRentalId()).getData();
+		RentalDtoById rentalDtoById = this.rentalService.getById(rentalId).getData();
+		Invoice invoice = new Invoice();
 	
 		setInvoiceFields(invoice,rentalDtoById);
 		

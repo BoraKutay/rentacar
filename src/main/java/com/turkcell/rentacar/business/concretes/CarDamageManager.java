@@ -3,7 +3,6 @@ package com.turkcell.rentacar.business.concretes;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.CarDamageService;
@@ -31,8 +30,7 @@ public class CarDamageManager implements CarDamageService {
 	
 	
 
-	public CarDamageManager(CarDamageDao carDamageDao, ModelMapperService modelMapperService, 
-			@Lazy CarService carService) {
+	public CarDamageManager(CarDamageDao carDamageDao, ModelMapperService modelMapperService, CarService carService) {
 		this.carDamageDao = carDamageDao;
 		this.modelMapperService = modelMapperService;
 		this.carService = carService;

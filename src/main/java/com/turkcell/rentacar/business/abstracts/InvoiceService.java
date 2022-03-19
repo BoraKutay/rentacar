@@ -16,7 +16,7 @@ import com.turkcell.rentacar.core.utilities.results.Result;
 public interface InvoiceService {
 	DataResult<List<InvoiceListDto>> getAll();
 	DataResult<InvoiceByIdDto> getById(int id) throws BusinessException;
-	Result add(CreateInvoiceRequest createInvoiceRequest) throws BusinessException;
+	Result add(int id) throws BusinessException;
 	Result delete(DeleteInvoiceRequest deleteInvoiceRequest) throws BusinessException;
 	Result update(UpdateInvoiceRequest updateInvoiceRequest) throws BusinessException;
 	DataResult<List<InvoiceListDto>> getAllByCustomer_CustomerId(int customerId);

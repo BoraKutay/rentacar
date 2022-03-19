@@ -10,6 +10,7 @@ import com.turkcell.rentacar.business.requests.updateRequests.UpdateIndividualCu
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
+import com.turkcell.rentacar.entities.concretes.IndividualCustomer;
 
 public interface IndividualCustomerService {
 	DataResult<List<IndividualCustomerListDto>> getAll();
@@ -17,4 +18,5 @@ public interface IndividualCustomerService {
 	Result add(CreateIndividualCustomerRequest createIndividualCustomerRequest);
 	Result delete(DeleteIndividualCustomerRequest deleteIndividualCustomerRequest) throws BusinessException;
 	Result update(UpdateIndividualCustomerRequest updateIndividualCustomerRequest) throws BusinessException;
+	IndividualCustomer getCustomerById(int id);
 }

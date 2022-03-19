@@ -12,8 +12,10 @@ import com.turkcell.rentacar.business.abstracts.AdditionalServiceService;
 import com.turkcell.rentacar.business.abstracts.CarMaintenanceService;
 import com.turkcell.rentacar.business.abstracts.CarService;
 import com.turkcell.rentacar.business.abstracts.CustomerService;
+import com.turkcell.rentacar.business.abstracts.IndividualCustomerService;
 import com.turkcell.rentacar.business.abstracts.OrderedAdditionalServiceService;
 import com.turkcell.rentacar.business.abstracts.RentalService;
+import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.business.dtos.carMaintenanceDtos.CarMaintenanceListDto;
 import com.turkcell.rentacar.business.dtos.rentalDtos.RentalDtoById;
 import com.turkcell.rentacar.business.dtos.rentalDtos.RentalListDto;
@@ -30,6 +32,7 @@ import com.turkcell.rentacar.core.utilities.results.SuccessDataResult;
 import com.turkcell.rentacar.core.utilities.results.SuccessResult;
 import com.turkcell.rentacar.dataAccess.abstracts.RentalDao;
 import com.turkcell.rentacar.entities.concretes.CarMaintenance;
+import com.turkcell.rentacar.entities.concretes.IndividualCustomer;
 import com.turkcell.rentacar.entities.concretes.Rental;
 
 @Service
@@ -44,10 +47,11 @@ public class RentalManager implements RentalService {
 	private OrderedAdditionalServiceService orderedAdditionalServiceService;
 	private AdditionalServiceService additionalServiceService;
 	private CustomerService customerService;
+	private IndividualCustomerService individualCustomerService;
 	
 	public RentalManager(RentalDao rentalDao, ModelMapperService modelMapperService,
 			@Lazy CarMaintenanceService carMaintenanceService,CarService carService, OrderedAdditionalServiceService orderedAdditionalServiceService, 
-			AdditionalServiceService additionalServiceService, @Lazy CustomerService customerService) {
+			AdditionalServiceService additionalServiceService, @Lazy CustomerService customerService, @Lazy IndividualCustomerService individualCustomerService) {
 		
 		this.rentalDao = rentalDao;
 		this.modelMapperService = modelMapperService;
@@ -55,6 +59,7 @@ public class RentalManager implements RentalService {
 		this.carService = carService;
 		this.orderedAdditionalServiceService = orderedAdditionalServiceService;
 		this.additionalServiceService = additionalServiceService;
+		this.individualCustomerService = individualCustomerService;
 	}
 
 	@Override
@@ -66,7 +71,7 @@ public class RentalManager implements RentalService {
 		return new SuccessDataResult<List<RentalListDto>>(response,"Rents listed");
 	}
 	
-	public Result addForIndividualCustomer(CreateRentalRequestForIndividualCustomer createRentalRequestForIndividualCustomer) throws BusinessException {
+	public DataResult addForIndividualCustomer(CreateRentalRequestForIndividualCustomer createRentalRequestForIndividualCustomer) throws BusinessException {
 	
 		
 		checkIfCarIsAvailable(createRentalRequestForIndividualCustomer.getCar_CarId(),createRentalRequestForIndividualCustomer.getStartDate());
@@ -82,11 +87,12 @@ public class RentalManager implements RentalService {
 		this.orderedAdditionalServiceService.orderAdditionalServices(createRentalRequestForIndividualCustomer.getAdditionalServicesId() ,rental.getRentalId());
 		rental.setStartKilometer(this.carService.getById(createRentalRequestForIndividualCustomer.getCar_CarId()).getData().getCarKilometer());
 		rental.setTotalPrice(calculateTotalPriceOfRental(rental,createRentalRequestForIndividualCustomer.getAdditionalServicesId(),createRentalRequestForIndividualCustomer.getPickUpLocationIdCityId(),createRentalRequestForIndividualCustomer.getReturnLocationIdCityId()));
-		rental.setCustomer(this.customerService.getById(createRentalRequestForIndividualCustomer.getInvidualCustomerId()));
+		//rental.setCustomer(this.customerService.getById(createRentalRequestForIndividualCustomer.getIndividualCustomerId()));
+		rental.setCustomer(this.individualCustomerService.getCustomerById(createRentalRequestForIndividualCustomer.getIndividualCustomerId()));
 		
 		this.rentalDao.save(rental);
 		
-		return new SuccessResult("Rent is added");
+		return new SuccessDataResult<Rental>(rental,"Rent is added");
 	
 		
 		
@@ -184,7 +190,7 @@ public class RentalManager implements RentalService {
 		for(CarMaintenance carMaintenance : response) {
 			                                                                     
 			if(carMaintenance.getReturnDate() == null || startDate.isBefore(carMaintenance.getReturnDate())) {
-				throw new BusinessException("Car is in maintenance!");
+				throw new BusinessException(BusinessMessages.CAR_IS_IN_MAINTENANCE);
 			}
 		}
     }

@@ -95,4 +95,9 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 		return true;
 	}
 
+	@Override
+	public IndividualCustomer getCustomerById(int id) {
+		return this.individualCustomerDao.getById(id);
+	}
+
 }
