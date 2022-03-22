@@ -20,11 +20,13 @@ public interface RentalService {
 	
 	DataResult<List<RentalListDto>> getAllByCarCarId(int id) throws BusinessException;
 	
-	DataResult<Rental> addForIndividualCustomer(CreateRentalRequestForIndividualCustomer createRentalRequestForIndividualCustomer) throws BusinessException;
+	Result addForIndividualCustomer(CreateRentalRequestForIndividualCustomer createRentalRequestForIndividualCustomer) throws BusinessException;
 	
 	Result addForCorporateCustomer(CreateRentalRequestForCorporateCustomer createRentalRequestForCorporateCustomer) throws BusinessException;
 	
 	DataResult<RentalDtoById> getById(int id) throws BusinessException;
+	
+	Rental getRentalById(int id) throws BusinessException;
 	
 	Result update(UpdateRentalRequest updateRentalRequest) throws BusinessException;
 	

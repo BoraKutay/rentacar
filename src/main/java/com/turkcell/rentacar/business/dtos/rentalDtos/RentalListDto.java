@@ -27,4 +27,6 @@ public class RentalListDto {
 	private double totalPrice;
 	
 	private int carCarId;
+	
+	private int customerId;
 }

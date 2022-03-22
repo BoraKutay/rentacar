@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.AdditionalServiceService;
 import com.turkcell.rentacar.business.abstracts.OrderedAdditionalServiceService;
+import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.business.dtos.orderedAdditionalServiceDtos.OrderedAdditionalServiceByIdDto;
 import com.turkcell.rentacar.business.dtos.orderedAdditionalServiceDtos.OrderedAdditionalServiceListDto;
 import com.turkcell.rentacar.business.requests.createRequests.CreateOrderedAdditionalServiceRequest;
@@ -46,7 +47,7 @@ public class OrderedAdditionalServiceManager implements OrderedAdditionalService
                 .map(orderedAdditionalService -> this.modelMapperService.forDto().map(orderedAdditionalService, OrderedAdditionalServiceListDto.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<List<OrderedAdditionalServiceListDto>>(response, "Ordered Additional Services are listed successfully.");
+        return new SuccessDataResult<List<OrderedAdditionalServiceListDto>>(response, BusinessMessages.ORDERED_ADDITIONAL_SERVICES + BusinessMessages.LIST);
 	}
 
 	@Override
@@ -57,7 +58,7 @@ public class OrderedAdditionalServiceManager implements OrderedAdditionalService
 		
 		this.orderedAdditionalServiceDao.save(orderedAdditionalService);
 		
-		return new SuccessResult("Ordered Additional Service is added.");
+		return new SuccessResult(BusinessMessages.ORDERED_ADDITIONAL_SERVICE + BusinessMessages.ADD);
 	}
 
 	@Override
@@ -83,7 +84,7 @@ public class OrderedAdditionalServiceManager implements OrderedAdditionalService
 
         OrderedAdditionalServiceByIdDto response = this.modelMapperService.forDto().map(orderedAdditionalService, OrderedAdditionalServiceByIdDto.class);
         
-		return new SuccessDataResult<OrderedAdditionalServiceByIdDto>(response,"Ordered Additional Service is found by id: " + id);
+		return new SuccessDataResult<OrderedAdditionalServiceByIdDto>(response,BusinessMessages.ORDERED_ADDITIONAL_SERVICE + BusinessMessages.GET_BY_ID + id);
 	}
 
 	@Override
@@ -96,7 +97,7 @@ public class OrderedAdditionalServiceManager implements OrderedAdditionalService
 		
 		this.orderedAdditionalServiceDao.save(orderedAdditionalService);
 		
-		return new SuccessResult("Ordered Additional Service is updated.");
+		return new SuccessResult(BusinessMessages.ORDERED_ADDITIONAL_SERVICE + BusinessMessages.UPDATE);
 	}
 
 	@Override
@@ -107,7 +108,7 @@ public class OrderedAdditionalServiceManager implements OrderedAdditionalService
 		
 		this.orderedAdditionalServiceDao.deleteById(deleteOrderedAdditionalServiceRequest.getOrderedAdditionalServiceId());
 		
-		return new SuccessResult("Ordered Additional Service is deleted.");
+		return new SuccessResult(BusinessMessages.ORDERED_ADDITIONAL_SERVICE + BusinessMessages.DELETE);
 	}
 	
 	@Override
@@ -119,7 +120,7 @@ public class OrderedAdditionalServiceManager implements OrderedAdditionalService
     private boolean checkIfOrderedAdditionalServiceExists(int id) throws BusinessException {
     	
     	if(orderedAdditionalServiceDao.existsById(id) == false) {
-    		throw new BusinessException("Ordered Additional service does not exists by id:" + id);
+    		throw new BusinessException(BusinessMessages.ORDERED_ADDITIONAL_SERVICE + BusinessMessages.DOES_NOT_EXISTS + id);
     	}
 		return true;
     }

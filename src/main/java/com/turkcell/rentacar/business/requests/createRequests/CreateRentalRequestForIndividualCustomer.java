@@ -7,6 +7,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,8 +20,10 @@ import lombok.NoArgsConstructor;
 public class CreateRentalRequestForIndividualCustomer {
 	
 	@NotNull
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 	private LocalDate startDate;
 	
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 	private LocalDate endDate;
 	
 	@NotNull

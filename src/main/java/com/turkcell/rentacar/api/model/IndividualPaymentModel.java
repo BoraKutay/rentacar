@@ -1,8 +1,7 @@
 package com.turkcell.rentacar.api.model;
 
 import com.turkcell.rentacar.business.requests.CreateCreditCardRequest;
-import com.turkcell.rentacar.business.requests.createRequests.CreateInvoiceRequest;
-import com.turkcell.rentacar.business.requests.createRequests.CreateRentalRequestForIndividualCustomer;
+import com.turkcell.rentacar.business.requests.createRequests.CreatePaymentRequest;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,6 +13,6 @@ import lombok.NoArgsConstructor;
 public class IndividualPaymentModel {
 	
 	CreateCreditCardRequest createCreditCardRequest;
-	CreateRentalRequestForIndividualCustomer createRentalRequestForIndividualCustomer;
+	CreatePaymentRequest createPaymentRequest;
 	
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.CarDamageService;
 import com.turkcell.rentacar.business.abstracts.CarService;
+import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.business.dtos.carDamageDtos.CarDamageByIdDto;
 import com.turkcell.rentacar.business.dtos.carDamageDtos.CarDamageListDto;
 import com.turkcell.rentacar.business.requests.createRequests.CreateCarDamageRequest;
@@ -43,7 +44,7 @@ public class CarDamageManager implements CarDamageService {
 		List<CarDamageListDto> response = result.stream().map(cardamage -> this.modelMapperService.forDto()
 				.map(cardamage, CarDamageListDto.class)).collect(Collectors.toList());
 		
-		return new SuccessDataResult<List<CarDamageListDto>>(response,"Car damages listed.");
+		return new SuccessDataResult<List<CarDamageListDto>>(response,BusinessMessages.CAR_DAMAGES + BusinessMessages.LIST);
 	}
 
 	@Override
@@ -55,7 +56,7 @@ public class CarDamageManager implements CarDamageService {
 		
 		this.carDamageDao.save(result);
 		
-		return new SuccessResult("Car damage saved.");
+		return new SuccessResult(BusinessMessages.CAR_DAMAGE + BusinessMessages.ADD);
 	}
 
 	@Override
@@ -65,7 +66,7 @@ public class CarDamageManager implements CarDamageService {
 		CarDamage result = this.carDamageDao.getById(id);
 		CarDamageByIdDto response = this.modelMapperService.forDto().map(result, CarDamageByIdDto.class);
 		
-		return new SuccessDataResult<CarDamageByIdDto>(response,"Car damage listed.");
+		return new SuccessDataResult<CarDamageByIdDto>(response,BusinessMessages.CAR_DAMAGE + BusinessMessages.GET_BY_ID + id);
 	}
 
 	@Override
@@ -78,7 +79,7 @@ public class CarDamageManager implements CarDamageService {
 		
 		this.carDamageDao.save(result);
 		
-		return new SuccessResult("Car damage updated.");
+		return new SuccessResult(BusinessMessages.CAR_DAMAGE + BusinessMessages.UPDATE);
 	}
 
 	@Override
@@ -88,13 +89,13 @@ public class CarDamageManager implements CarDamageService {
 		
 		this.carDamageDao.deleteById(deleteCarDamageRequest.getCarDamageId());
 		
-		return new SuccessResult("Car Damage deleted.");
+		return new SuccessResult(BusinessMessages.CAR_DAMAGE + BusinessMessages.DELETE);
 	}
 	
     private boolean checkIfCarDamageExists(int id) throws BusinessException {
     	
     	if(carDamageDao.existsById(id) == false) {
-    		throw new BusinessException("Car damage does not exists by id:" + id);
+    		throw new BusinessException(BusinessMessages.CAR_DAMAGE + BusinessMessages.DOES_NOT_EXISTS + id);
     	}
 		return true;
     }

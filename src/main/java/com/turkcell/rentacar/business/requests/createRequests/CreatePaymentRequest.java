@@ -1,7 +1,6 @@
 package com.turkcell.rentacar.business.requests.createRequests;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 
 import lombok.AllArgsConstructor;
@@ -16,5 +15,6 @@ public class CreatePaymentRequest {
 	@NotNull
 	@PositiveOrZero
 	private int rentalId;
+	
 	
 }

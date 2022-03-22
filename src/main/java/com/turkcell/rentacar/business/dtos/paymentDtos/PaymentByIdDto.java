@@ -15,5 +15,5 @@ public class PaymentByIdDto {
 	
 	private int rentalId;
 	private int invoiceId;
-	private int customerId;
+	private int customerCustomerId;
 }

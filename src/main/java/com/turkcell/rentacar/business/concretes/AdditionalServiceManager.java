@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.AdditionalServiceService;
+import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.business.dtos.additionalServiceDtos.AdditionalServiceByIdDto;
 import com.turkcell.rentacar.business.dtos.additionalServiceDtos.AdditionalServiceListDto;
 import com.turkcell.rentacar.business.requests.createRequests.CreateAdditionalServiceRequest;
@@ -43,7 +44,7 @@ public class AdditionalServiceManager implements AdditionalServiceService {
                 .map(additionalService -> this.modelMapperService.forDto().map(additionalService, AdditionalServiceListDto.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<List<AdditionalServiceListDto>>(response, "Additional Services are listed successfully.");
+        return new SuccessDataResult<List<AdditionalServiceListDto>>(response, BusinessMessages.ADDITIONAL_SERVICES + BusinessMessages.LIST);
 	}
 
 	@Override
@@ -55,7 +56,7 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 		
 		this.additionalServiceDao.save(additionalService);
 		
-		return new SuccessResult("Additional Service is added.");
+		return new SuccessResult(BusinessMessages.ADDITIONAL_SERVICE + BusinessMessages.ADD);
 
 	}
 
@@ -68,7 +69,7 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 
         AdditionalServiceByIdDto response = this.modelMapperService.forDto().map(additionalService, AdditionalServiceByIdDto.class);
         
-		return new SuccessDataResult<AdditionalServiceByIdDto>(response,"Additional Service is found by id: " + id);
+		return new SuccessDataResult<AdditionalServiceByIdDto>(response,BusinessMessages.ADDITIONAL_SERVICE + BusinessMessages.GET_BY_ID + id);
 	}
 
 	@Override
@@ -82,7 +83,7 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 		
         this.additionalServiceDao.save(additionalService);
         
-        return new SuccessResult("Additional Service is updated successfuly.");
+        return new SuccessResult(BusinessMessages.ADDITIONAL_SERVICE + BusinessMessages.UPDATE);
 	}
 
 	@Override
@@ -92,7 +93,7 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 		
         this.additionalServiceDao.deleteById(deleteAdditionalServiceRequest.getAdditionalServiceId());
         
-        return new SuccessResult("Additional Service is deleted successfully.");
+        return new SuccessResult(BusinessMessages.ADDITIONAL_SERVICE + BusinessMessages.DELETE);
 	}
 	
 	
@@ -100,7 +101,7 @@ public class AdditionalServiceManager implements AdditionalServiceService {
     	
         for (AdditionalServiceListDto additionalServiceElement : this.getAll().getData()) {
             if (additionalServiceElement.getAdditionalServiceName().equalsIgnoreCase(additionalServiceName)) {
-                throw new BusinessException("There can not be more than one AdditionalService with the same name.");
+                throw new BusinessException(BusinessMessages.NOT_UNIQUE + BusinessMessages.ADDITIONAL_SERVICE);
             }
         }
     }
@@ -108,7 +109,7 @@ public class AdditionalServiceManager implements AdditionalServiceService {
     public boolean checkIfAdditionalServiceExists(int id) throws BusinessException {
     	
     	if(additionalServiceDao.existsById(id) == false) {
-    		throw new BusinessException("Additional service does not exists by id:" + id);
+    		throw new BusinessException(BusinessMessages.ADDITIONAL_SERVICE + BusinessMessages.DOES_NOT_EXISTS + id);
     	}
 		return true;
     }

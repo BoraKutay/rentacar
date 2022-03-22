@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.CityService;
+import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.business.dtos.cityDtos.CityByIdDto;
 import com.turkcell.rentacar.business.dtos.cityDtos.CityListDto;
 import com.turkcell.rentacar.business.requests.createRequests.CreateCityRequest;
@@ -43,7 +44,7 @@ public class CityManager implements CityService {
                 .map(city -> this.modelMapperService.forDto().map(city, CityListDto.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<List<CityListDto>>(response, "Cities are listed successfully.");
+        return new SuccessDataResult<List<CityListDto>>(response, BusinessMessages.CITIES + BusinessMessages.LIST);
 	}
 
 	@Override
@@ -55,7 +56,7 @@ public class CityManager implements CityService {
 		
 		this.cityDao.save(city);
 		
-		return new SuccessResult("City is added: " + createCityRequest.getCityName());
+		return new SuccessResult(BusinessMessages.CITY + BusinessMessages.ADD);
 	}
 
 	@Override
@@ -67,7 +68,7 @@ public class CityManager implements CityService {
 		
 		CityByIdDto response = this.modelMapperService.forDto().map(city, CityByIdDto.class);
 		
-		return new SuccessDataResult<CityByIdDto>(response);
+		return new SuccessDataResult<CityByIdDto>(response,BusinessMessages.CITY + BusinessMessages.GET_BY_ID + id);
 	}
 
 	@Override
@@ -81,7 +82,7 @@ public class CityManager implements CityService {
 
         this.cityDao.save(city);
 
-        return new SuccessResult("City is updated.");
+        return new SuccessResult(BusinessMessages.CITY + BusinessMessages.UPDATE);
 	}
 
 	@Override
@@ -91,13 +92,13 @@ public class CityManager implements CityService {
 		
 		this.cityDao.deleteById(deleteCityRequest.getCityId());
 		
-		return new SuccessResult("City is deleted.");
+		return new SuccessResult(BusinessMessages.CITY + BusinessMessages.DELETE);
 	}
 	
 	private boolean checkIfCityExists(int id) throws BusinessException{
 		
 		if(cityDao.existsById(id) == false) {
-			throw new BusinessException("City does not exists by id:" + id);
+			throw new BusinessException(BusinessMessages.CITY + BusinessMessages.DOES_NOT_EXISTS + id);
 		}
 		return true;
 	}
@@ -106,7 +107,7 @@ public class CityManager implements CityService {
 
         for (CityListDto cityElement : this.getAll().getData()) {
             if (cityElement.getCityName().equalsIgnoreCase(cityName)) {
-                throw new BusinessException("There can not be more than one city with the same name.");
+                throw new BusinessException(BusinessMessages.NOT_UNIQUE + BusinessMessages.CITY);
             }
         }
 

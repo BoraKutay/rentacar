@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.turkcell.rentacar.business.abstracts.CarMaintenanceService;
 import com.turkcell.rentacar.business.abstracts.CarService;
 import com.turkcell.rentacar.business.abstracts.RentalService;
+import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.business.dtos.carMaintenanceDtos.CarMaintenanceByIdDto;
 import com.turkcell.rentacar.business.dtos.carMaintenanceDtos.CarMaintenanceListDto;
 import com.turkcell.rentacar.business.dtos.rentalDtos.RentalListDto;
@@ -50,7 +51,7 @@ public class CarMaintenanceManager implements CarMaintenanceService {
                 .map(carMaintenance -> this.modelMapperService.forDto().map(carMaintenance, CarMaintenanceListDto.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<List<CarMaintenanceListDto>>(response, "Maintenance are listed successfuly.");
+        return new SuccessDataResult<List<CarMaintenanceListDto>>(response, BusinessMessages.CAR_MAINTENANCES + BusinessMessages.LIST);
 	}
 
 	@Override
@@ -63,7 +64,7 @@ public class CarMaintenanceManager implements CarMaintenanceService {
         
         this.carMaintenanceDao.save(carMaintenance);
 
-        return new SuccessResult("Maintenance is added.");
+        return new SuccessResult(BusinessMessages.CAR_MAINTENANCE + BusinessMessages.ADD);
 	}
 
 	@Override
@@ -76,7 +77,7 @@ public class CarMaintenanceManager implements CarMaintenanceService {
         carMaintenance.setCarMaintenanceId(0);
         this.carMaintenanceDao.save(carMaintenance);
 
-        return new SuccessResult("Maintenance is updated.");
+        return new SuccessResult(BusinessMessages.CAR_MAINTENANCE + BusinessMessages.UPDATE);
 	}
 
 	@Override
@@ -87,7 +88,7 @@ public class CarMaintenanceManager implements CarMaintenanceService {
         CarMaintenance carMaintenance = this.carMaintenanceDao.getById(carMaintenanceId);
         CarMaintenanceByIdDto response = this.modelMapperService.forDto().map(carMaintenance, CarMaintenanceByIdDto.class);
 
-        return new SuccessDataResult<CarMaintenanceByIdDto>(response);
+        return new SuccessDataResult<CarMaintenanceByIdDto>(response, BusinessMessages.CAR_MAINTENANCE + BusinessMessages.GET_BY_ID + carMaintenanceId);
 	}
 
 	@Override
@@ -97,7 +98,7 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 		
         this.carMaintenanceDao.deleteById(deleteCarMaintenanceRequest.getCarMaintenanceId());
         
-        return new SuccessResult("Maintenance is deleted.");
+        return new SuccessResult(BusinessMessages.CAR_MAINTENANCE + BusinessMessages.DELETE);
 	}
 	
 	@Override
@@ -109,7 +110,7 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 		List<CarMaintenanceListDto> response = result.stream()
 				.map(carMaintenance -> this.modelMapperService.forDto().map(carMaintenance, CarMaintenanceListDto.class)).collect(Collectors.toList());
 		
-		return new SuccessDataResult<List<CarMaintenanceListDto>>(response, "Car maintenances listed successfully.");
+		return new SuccessDataResult<List<CarMaintenanceListDto>>(response, BusinessMessages.CAR_MAINTENANCES + BusinessMessages.LIST);
 	}
 	
 	private void checkIfCarIsAvailable(int carId) throws BusinessException{
@@ -124,7 +125,7 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 			
 			if(rental.getEndDate() == null || rental.getEndDate().isAfter(LocalDate.now())) {
 				
-				throw new BusinessException("Car is not available until " + rental.getEndDate());
+				throw new BusinessException(BusinessMessages.CAR_IS_NOT_AVAILABLE + rental.getEndDate());
 				
 			}
 		}
@@ -135,7 +136,7 @@ public class CarMaintenanceManager implements CarMaintenanceService {
     private boolean checkIfCarMaintenanceExists(int id) throws BusinessException {
     	
     	if(carMaintenanceDao.existsById(id) == false) {
-    		throw new BusinessException("Car maintenance does not exists by id:" + id);
+    		throw new BusinessException(BusinessMessages.CAR_MAINTENANCE + BusinessMessages.DOES_NOT_EXISTS + id);
     	}
 		return true;
     }

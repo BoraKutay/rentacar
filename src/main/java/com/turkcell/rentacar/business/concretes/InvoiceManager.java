@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.InvoiceService;
 import com.turkcell.rentacar.business.abstracts.RentalService;
+import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.business.dtos.invoiceDtos.InvoiceByIdDto;
 import com.turkcell.rentacar.business.dtos.invoiceDtos.InvoiceListDto;
 import com.turkcell.rentacar.business.dtos.rentalDtos.RentalDtoById;
-import com.turkcell.rentacar.business.requests.createRequests.CreateInvoiceRequest;
 import com.turkcell.rentacar.business.requests.deleteRequests.DeleteInvoiceRequest;
 import com.turkcell.rentacar.business.requests.updateRequests.UpdateInvoiceRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
@@ -24,7 +24,6 @@ import com.turkcell.rentacar.core.utilities.results.SuccessDataResult;
 import com.turkcell.rentacar.core.utilities.results.SuccessResult;
 import com.turkcell.rentacar.dataAccess.abstracts.InvoiceDao;
 import com.turkcell.rentacar.entities.concretes.Invoice;
-
 
 @Service
 public class InvoiceManager implements InvoiceService {
@@ -47,7 +46,7 @@ public class InvoiceManager implements InvoiceService {
 		List<InvoiceListDto> response = result.stream().map(invoice -> this.modelMapperService.forDto().map(invoice, InvoiceListDto.class) )
 				.collect(Collectors.toList());
 		
-		return new SuccessDataResult<List<InvoiceListDto>>(response, "Invoices are listed.");
+		return new SuccessDataResult<List<InvoiceListDto>>(response, BusinessMessages.INVOICES + BusinessMessages.LIST);
 	}
 	
 	@Override
@@ -58,19 +57,19 @@ public class InvoiceManager implements InvoiceService {
 		Invoice result = this.invoiceDao.getById(id);
 		InvoiceByIdDto response = this.modelMapperService.forDto().map(result, InvoiceByIdDto.class);
 		
-		return new SuccessDataResult<InvoiceByIdDto>(response, "Invoice is listed");
+		return new SuccessDataResult<InvoiceByIdDto>(response, BusinessMessages.INVOICE + BusinessMessages.GET_BY_ID + id);
 	}
 	@Override
 	public Result add(int rentalId) throws BusinessException {
 		
 		RentalDtoById rentalDtoById = this.rentalService.getById(rentalId).getData();
-		Invoice invoice = new Invoice();
-	
+		Invoice invoice = this.modelMapperService.forRequest().map(rentalId, Invoice.class);
+		
 		setInvoiceFields(invoice,rentalDtoById);
 		
 		this.invoiceDao.save(invoice);
 		
-		return new SuccessResult("Invoice added.");
+		return new SuccessResult(BusinessMessages.INVOICE + BusinessMessages.ADD);
 	}
 	@Override
 	public Result delete(DeleteInvoiceRequest deleteInvoiceRequest) throws BusinessException {
@@ -79,7 +78,7 @@ public class InvoiceManager implements InvoiceService {
 		
 		this.invoiceDao.deleteById(deleteInvoiceRequest.getInvoiceNo());
 		
-		return new SuccessResult("Invoice deleted.");
+		return new SuccessResult(BusinessMessages.INVOICE + BusinessMessages.DELETE);
 	}
 
 	@Override
@@ -94,7 +93,7 @@ public class InvoiceManager implements InvoiceService {
 		
 		this.invoiceDao.save(invoice);
 		
-		return new SuccessResult("Invoice updated");
+		return new SuccessResult(BusinessMessages.INVOICE + BusinessMessages.UPDATE);
 	}
 	
 	@Override
@@ -105,7 +104,7 @@ public class InvoiceManager implements InvoiceService {
 				.map(invoice -> this.modelMapperService.forDto().map(invoice, InvoiceListDto.class))
 				.collect(Collectors.toList());
 		
-		return new SuccessDataResult<List<InvoiceListDto>>(response,"Invoices by customer are listed.");
+		return new SuccessDataResult<List<InvoiceListDto>>(response,BusinessMessages.INVOICES + BusinessMessages.LIST + BusinessMessages.BY_CUSTOMER);
 	}
 	
 	@Override
@@ -116,12 +115,21 @@ public class InvoiceManager implements InvoiceService {
 				.map(invoice -> this.modelMapperService.forDto().map(invoice, InvoiceListDto.class))
 				.collect(Collectors.toList());
 		
-		return new SuccessDataResult<List<InvoiceListDto>>(response,"Invoices between "+ startDate + " and " + endDate + " are listed.");
+		return new SuccessDataResult<List<InvoiceListDto>>(response,BusinessMessages.INVOICE + BusinessMessages.LIST + BusinessMessages.BETWEEN + startDate + BusinessMessages.AND + endDate);
+	}
+	
+	@Override
+	public Invoice getInvoiceById(int id) throws BusinessException {
+		checkIfInvoiceExists(id);
+		
+		Invoice invoice = this.invoiceDao.getById(id);
+		
+		return invoice;
 	}
 	
     private boolean checkIfInvoiceExists(int id) throws BusinessException {
     	if(invoiceDao.existsById(id) == false) {
-    		throw new BusinessException("Invoice does not exists by id:" + id);
+    		throw new BusinessException(BusinessMessages.INVOICE + BusinessMessages.DOES_NOT_EXISTS + id);
     	}
 		return true;
     }
@@ -135,8 +143,10 @@ public class InvoiceManager implements InvoiceService {
 		invoice.setStartDateRental(rentalDtoById.getStartDate());
 		invoice.setEndDateRental(rentalDtoById.getEndDate());
 		invoice.setBillingDate(LocalDate.now());
-		invoice.setInvoiceNo(0);
+		invoice.setInvoiceNo(invoice.getInvoiceNo());
 	}
+
+
 
 
 }

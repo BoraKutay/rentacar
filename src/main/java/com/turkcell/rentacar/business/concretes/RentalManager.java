@@ -32,7 +32,6 @@ import com.turkcell.rentacar.core.utilities.results.SuccessDataResult;
 import com.turkcell.rentacar.core.utilities.results.SuccessResult;
 import com.turkcell.rentacar.dataAccess.abstracts.RentalDao;
 import com.turkcell.rentacar.entities.concretes.CarMaintenance;
-import com.turkcell.rentacar.entities.concretes.IndividualCustomer;
 import com.turkcell.rentacar.entities.concretes.Rental;
 
 @Service
@@ -68,10 +67,10 @@ public class RentalManager implements RentalService {
 		List<Rental> result = this.rentalDao.findAll();
 		List<RentalListDto> response = result.stream().map(rental->this.modelMapperService.forDto().map(rental,RentalListDto.class)).collect(Collectors.toList());
 		
-		return new SuccessDataResult<List<RentalListDto>>(response,"Rents listed");
+		return new SuccessDataResult<List<RentalListDto>>(response, BusinessMessages.RENTALS + BusinessMessages.LIST);
 	}
 	
-	public DataResult addForIndividualCustomer(CreateRentalRequestForIndividualCustomer createRentalRequestForIndividualCustomer) throws BusinessException {
+	public Result addForIndividualCustomer(CreateRentalRequestForIndividualCustomer createRentalRequestForIndividualCustomer) throws BusinessException {
 	
 		
 		checkIfCarIsAvailable(createRentalRequestForIndividualCustomer.getCar_CarId(),createRentalRequestForIndividualCustomer.getStartDate());
@@ -87,12 +86,11 @@ public class RentalManager implements RentalService {
 		this.orderedAdditionalServiceService.orderAdditionalServices(createRentalRequestForIndividualCustomer.getAdditionalServicesId() ,rental.getRentalId());
 		rental.setStartKilometer(this.carService.getById(createRentalRequestForIndividualCustomer.getCar_CarId()).getData().getCarKilometer());
 		rental.setTotalPrice(calculateTotalPriceOfRental(rental,createRentalRequestForIndividualCustomer.getAdditionalServicesId(),createRentalRequestForIndividualCustomer.getPickUpLocationIdCityId(),createRentalRequestForIndividualCustomer.getReturnLocationIdCityId()));
-		//rental.setCustomer(this.customerService.getById(createRentalRequestForIndividualCustomer.getIndividualCustomerId()));
 		rental.setCustomer(this.individualCustomerService.getCustomerById(createRentalRequestForIndividualCustomer.getIndividualCustomerId()));
 		
 		this.rentalDao.save(rental);
 		
-		return new SuccessDataResult<Rental>(rental,"Rent is added");
+		return new SuccessResult(BusinessMessages.RENTAL + BusinessMessages.ADD);
 	
 		
 		
@@ -119,13 +117,11 @@ public class RentalManager implements RentalService {
 		
 		this.rentalDao.save(rental);
 		
-		return new SuccessResult("Rent is added");
+		return new SuccessResult(BusinessMessages.RENTAL + BusinessMessages.ADD);
 	
 		
 		
 	}
-	
-	
 
 	@Override
 	public DataResult<RentalDtoById> getById(int id) throws BusinessException {
@@ -135,7 +131,16 @@ public class RentalManager implements RentalService {
 		Rental rental = this.rentalDao.getById(id);
 		RentalDtoById rentalDtoById =this.modelMapperService.forDto().map(rental, RentalDtoById.class);
 		
-		return new SuccessDataResult<RentalDtoById>(rentalDtoById,"Rent listed");
+		return new SuccessDataResult<RentalDtoById>(rentalDtoById,BusinessMessages.RENTAL + BusinessMessages.GET_BY_ID + id);
+	}
+	
+	@Override
+	public Rental getRentalById(int id) throws BusinessException{
+		checkIfRentalExists(id);
+		
+		Rental rental = this.rentalDao.getById(id);
+		
+		return rental;
 	}
 
 	@Override
@@ -154,7 +159,7 @@ public class RentalManager implements RentalService {
 		
 		this.rentalDao.save(rental);
 		
-		return new SuccessResult("Rent updated");
+		return new SuccessResult(BusinessMessages.RENTAL + BusinessMessages.UPDATE);
 	}
 	
 	private void checkIfCarIsAvailable(int carId ,LocalDate startDate) throws BusinessException {
@@ -205,7 +210,7 @@ public class RentalManager implements RentalService {
 		List<RentalListDto> response = result.stream().map(rent -> this.modelMapperService.forDto().map(rent, RentalListDto.class))
 				.collect(Collectors.toList());
 		
-		return new SuccessDataResult<List<RentalListDto>>(response,"Car's rent info listed");
+		return new SuccessDataResult<List<RentalListDto>>(response,BusinessMessages.RENTALS + BusinessMessages.LIST + BusinessMessages.BY_CAR + id);
 	}
 
 	@Override
@@ -215,14 +220,14 @@ public class RentalManager implements RentalService {
 		
         this.rentalDao.deleteById(deleteRentalRequest.getRentalId());
         
-        return new SuccessResult("Rental is deleted.");
+        return new SuccessResult(BusinessMessages.RENTAL + BusinessMessages.DELETE);
 	}
 	
     private boolean checkIfRentalExists(int id) throws BusinessException {
     	
     	if(rentalDao.existsById(id) == false) {
     		
-    		throw new BusinessException("Rental does not exists by id:" + id);
+    		throw new BusinessException(BusinessMessages.RENTAL + BusinessMessages.DOES_NOT_EXISTS + id);
     		
     	}
 		return true;
@@ -260,7 +265,7 @@ public class RentalManager implements RentalService {
     	
         if(endDate.isBefore(startDate)){
         	
-            throw new BusinessException("End date should be after the start date! ");
+            throw new BusinessException(BusinessMessages.END_DATE_CANNOT_BEFORE_START_DATE);
             
         }
       }
@@ -305,7 +310,7 @@ public class RentalManager implements RentalService {
 		
 		this.rentalDao.save(rental);
 		
-		return new SuccessResult("Rent finished.");
+		return new SuccessResult(BusinessMessages.RENT_IS_OVER);
 		
 		
 

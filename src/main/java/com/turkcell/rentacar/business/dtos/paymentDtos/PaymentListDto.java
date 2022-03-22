@@ -13,5 +13,5 @@ public class PaymentListDto {
 	
 	private int rentalId;
 	private int invoiceId;
-	private int customerId;
+	private int customerCustomerId;
 }

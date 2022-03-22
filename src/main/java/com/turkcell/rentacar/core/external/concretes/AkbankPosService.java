@@ -1,15 +1,9 @@
 package com.turkcell.rentacar.core.external.concretes;
 
 import java.util.Random;
-
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import com.turkcell.rentacar.business.requests.CreateCreditCardRequest;
-import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.external.abstracts.PosService;
-import com.turkcell.rentacar.core.utilities.results.Result;
-import com.turkcell.rentacar.core.utilities.results.SuccessResult;
 
 @Service
 public class AkbankPosService implements PosService {
@@ -20,28 +14,28 @@ public class AkbankPosService implements PosService {
 	}
 
 	@Override
-	public Result isCardValid(CreateCreditCardRequest createCreditCardRequest) throws BusinessException {
+	public boolean isCardValid(String cardHolder, String cardNumber, int cvv, int month, int year){
 		Random isSuccess = new Random();
 		int num = isSuccess.nextInt(100);
 		
 		if(num > 95) {
-			throw new BusinessException("Card is not valid");
+			return false;
 		}
 		
-		return new SuccessResult("Success");
+		return true;
 	}
 
 	@Override
-	public Result isPaymentSuccess(double totalPayment) throws BusinessException {
+	public boolean isPaymentSuccess(double totalPayment){
 		
 		Random isSuccess = new Random();
 		int num = isSuccess.nextInt(100);
 		
 		if(num > 95) {
-			throw new BusinessException("Not enough money");
+			return false;
 		}
 		
-		return new SuccessResult("Payment success");
+		return true;
 	}
 
 }
