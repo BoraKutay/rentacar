@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CorporatePaymentModel {
+public class CorporatePaymentModel{
 	
 	CreateCreditCardRequest createCreditCardRequest;
 	CreatePaymentRequest createPaymentRequest;

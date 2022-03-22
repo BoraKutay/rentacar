@@ -15,6 +15,7 @@ import com.turkcell.rentacar.business.abstracts.RentalService;
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.business.dtos.paymentDtos.PaymentByIdDto;
 import com.turkcell.rentacar.business.dtos.paymentDtos.PaymentListDto;
+import com.turkcell.rentacar.business.requests.CreateCreditCardRequest;
 import com.turkcell.rentacar.core.adapters.abstracts.PosAdapterService;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
@@ -58,19 +59,13 @@ public class PaymentManager implements PaymentService{
 	@Transactional
 	public Result makePaymentForIndividualCustomer(IndividualPaymentModel individualPaymentModel) throws BusinessException {
 
+		checkIfCreditCardIsValid(individualPaymentModel.getCreateCreditCardRequest());
 
-		this.posAdapterService.isCardValid(individualPaymentModel.getCreateCreditCardRequest().getCardHolder(), 
-				individualPaymentModel.getCreateCreditCardRequest().getCardNumber(),
-				individualPaymentModel.getCreateCreditCardRequest().getCvv(),
-				individualPaymentModel.getCreateCreditCardRequest().getMonth(),
-				individualPaymentModel.getCreateCreditCardRequest().getYear());
-		
 		Payment payment = this.modelMapperService.forRequest().map(individualPaymentModel.getCreatePaymentRequest(), Payment.class);
 		Rental rental = this.rentalService.getRentalById(individualPaymentModel.getCreatePaymentRequest().getRentalId());
 		
 		this.posAdapterService.isPaymentSuccess(rental.getTotalPrice());
 		this.invoiceService.add(rental.getRentalId());
-		
 		
 		setPaymentFields(payment,rental);
 		
@@ -85,18 +80,13 @@ public class PaymentManager implements PaymentService{
 	@Transactional
 	public Result makePaymentForCorporateCustomer(CorporatePaymentModel corporatePaymentModel) throws BusinessException {
 		
-		this.posAdapterService.isCardValid(corporatePaymentModel.getCreateCreditCardRequest().getCardHolder(), 
-				corporatePaymentModel.getCreateCreditCardRequest().getCardNumber(),
-				corporatePaymentModel.getCreateCreditCardRequest().getCvv(),
-				corporatePaymentModel.getCreateCreditCardRequest().getMonth(),
-				corporatePaymentModel.getCreateCreditCardRequest().getYear());
+		checkIfCreditCardIsValid(corporatePaymentModel.getCreateCreditCardRequest());
 		
 		Payment payment = this.modelMapperService.forRequest().map(corporatePaymentModel.getCreatePaymentRequest(), Payment.class);
 		Rental rental = this.rentalService.getRentalById(corporatePaymentModel.getCreatePaymentRequest().getRentalId());
 		
 		this.posAdapterService.isPaymentSuccess(rental.getTotalPrice());
 		this.invoiceService.add(rental.getRentalId());
-		
 		
 		setPaymentFields(payment,rental);
 		
@@ -134,6 +124,18 @@ public class PaymentManager implements PaymentService{
 		payment.setTotalAmount(rental.getTotalPrice());
 		
     }
+    
+    private void checkIfCreditCardIsValid(CreateCreditCardRequest createCreditCardRequest) throws BusinessException {	
+    	
+    	this.posAdapterService.isCardValid(createCreditCardRequest.getCardHolder(), 
+    			createCreditCardRequest.getCardNumber(),
+    			createCreditCardRequest.getCvv(),
+    			createCreditCardRequest.getMonth(),
+    			createCreditCardRequest.getYear());
+		
+    }
+    
+
     
 
     

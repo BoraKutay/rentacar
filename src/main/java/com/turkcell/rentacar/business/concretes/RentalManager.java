@@ -313,7 +313,6 @@ public class RentalManager implements RentalService {
 		return new SuccessResult(BusinessMessages.RENT_IS_OVER);
 		
 		
-
 	}
     
 

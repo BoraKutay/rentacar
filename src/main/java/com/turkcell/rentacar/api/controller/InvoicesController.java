@@ -16,7 +16,6 @@ import com.turkcell.rentacar.business.abstracts.InvoiceService;
 import com.turkcell.rentacar.business.dtos.invoiceDtos.InvoiceByIdDto;
 import com.turkcell.rentacar.business.dtos.invoiceDtos.InvoiceListDto;
 import com.turkcell.rentacar.business.requests.deleteRequests.DeleteInvoiceRequest;
-import com.turkcell.rentacar.business.requests.updateRequests.UpdateInvoiceRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -59,8 +58,8 @@ public class InvoicesController {
 	}
 	
 	@PutMapping("/update")
-	Result update(UpdateInvoiceRequest updateInvoiceRequest) throws BusinessException{
-		return this.invoiceService.update(updateInvoiceRequest);
+	Result update(int id) throws BusinessException{
+		return this.invoiceService.update(id);
 		
 	}
 	@GetMapping("/getAllByCustomerId")

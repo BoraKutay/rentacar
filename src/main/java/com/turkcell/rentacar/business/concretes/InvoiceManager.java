@@ -15,7 +15,6 @@ import com.turkcell.rentacar.business.dtos.invoiceDtos.InvoiceByIdDto;
 import com.turkcell.rentacar.business.dtos.invoiceDtos.InvoiceListDto;
 import com.turkcell.rentacar.business.dtos.rentalDtos.RentalDtoById;
 import com.turkcell.rentacar.business.requests.deleteRequests.DeleteInvoiceRequest;
-import com.turkcell.rentacar.business.requests.updateRequests.UpdateInvoiceRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
@@ -116,18 +115,12 @@ public class InvoiceManager implements InvoiceService {
 		return new SuccessDataResult<List<InvoiceListDto>>(response,BusinessMessages.INVOICE + BusinessMessages.LIST + BusinessMessages.BETWEEN + startDate + BusinessMessages.AND + endDate);
 	}
 	
-	@Override
-	public Invoice getInvoiceById(int id) throws BusinessException {
-		checkIfInvoiceExists(id);
-		
-		Invoice invoice = this.invoiceDao.getById(id);
-		
-		return invoice;
-	}
-	
     private boolean checkIfInvoiceExists(int id) throws BusinessException {
+    	
     	if(invoiceDao.existsById(id) == false) {
+    		
     		throw new BusinessException(BusinessMessages.INVOICE + BusinessMessages.DOES_NOT_EXISTS + id);
+    		
     	}
 		return true;
     }
@@ -143,6 +136,7 @@ public class InvoiceManager implements InvoiceService {
 		invoice.setEndDateRental(rentalDtoById.getEndDate());
 		invoice.setBillingDate(LocalDate.now());
 		invoice.setInvoiceNo(invoice.getInvoiceNo());
+		
 	}
 
 
