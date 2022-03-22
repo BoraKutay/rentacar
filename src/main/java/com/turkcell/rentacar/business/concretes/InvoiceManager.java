@@ -65,7 +65,7 @@ public class InvoiceManager implements InvoiceService {
 		RentalDtoById rentalDtoById = this.rentalService.getById(rentalId).getData();
 		Invoice invoice = this.modelMapperService.forRequest().map(rentalId, Invoice.class);
 		
-		setInvoiceFields(invoice,rentalDtoById);
+		setInvoiceFields(invoice,rentalDtoById,rentalId);
 		
 		this.invoiceDao.save(invoice);
 		
@@ -82,14 +82,12 @@ public class InvoiceManager implements InvoiceService {
 	}
 
 	@Override
-	public Result update(UpdateInvoiceRequest updateInvoiceRequest) throws BusinessException {
+	public Result update(int rentalId) throws BusinessException {
 		
-		checkIfInvoiceExists(updateInvoiceRequest.getInvoiceNo());
+		RentalDtoById rentalDtoById = this.rentalService.getById(rentalId).getData();
+		Invoice invoice = this.modelMapperService.forRequest().map(rentalId, Invoice.class);
 		
-		Invoice invoice = this.modelMapperService.forRequest().map(updateInvoiceRequest, Invoice.class);
-		RentalDtoById rentalDtoById = this.rentalService.getById(updateInvoiceRequest.getRentalId()).getData();
-		
-		setInvoiceFields(invoice,rentalDtoById);
+		setInvoiceFields(invoice,rentalDtoById,rentalId);
 		
 		this.invoiceDao.save(invoice);
 		
@@ -135,10 +133,11 @@ public class InvoiceManager implements InvoiceService {
     }
 
 	
-	private void setInvoiceFields(Invoice invoice, RentalDtoById rentalDtoById) {
+	private void setInvoiceFields(Invoice invoice, RentalDtoById rentalDtoById,int rentalId) throws BusinessException {
 		
 		invoice.setRentalDayNumber((int)ChronoUnit.DAYS.between(rentalDtoById.getStartDate(), rentalDtoById.getEndDate()));
 		invoice.setCustomer(rentalDtoById.getCustomer());
+		invoice.setRental(this.rentalService.getRentalById(rentalId));
 		invoice.setBillingPrice(rentalDtoById.getTotalPrice());
 		invoice.setStartDateRental(rentalDtoById.getStartDate());
 		invoice.setEndDateRental(rentalDtoById.getEndDate());
