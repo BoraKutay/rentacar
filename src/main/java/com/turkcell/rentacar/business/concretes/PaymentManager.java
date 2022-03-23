@@ -61,7 +61,7 @@ public class PaymentManager implements PaymentService{
 	public Result makePaymentForIndividualCustomer(IndividualPaymentModel individualPaymentModel) throws BusinessException {
 
 		checkIfCreditCardIsValid(individualPaymentModel.getCreateCreditCardRequest());
-
+		
 		Payment payment = this.modelMapperService.forRequest().map(individualPaymentModel.getCreatePaymentRequest(), Payment.class);
 		Rental rental = this.rentalService.getRentalById(individualPaymentModel.getCreatePaymentRequest().getRentalId());
 		
@@ -80,6 +80,7 @@ public class PaymentManager implements PaymentService{
 	@Override
 	@Transactional
 	public Result makePaymentForCorporateCustomer(CorporatePaymentModel corporatePaymentModel) throws BusinessException {
+		
 		
 		checkIfCreditCardIsValid(corporatePaymentModel.getCreateCreditCardRequest());
 		
@@ -135,6 +136,7 @@ public class PaymentManager implements PaymentService{
     			createCreditCardRequest.getYear());
 		
     }
+    
     
 
     

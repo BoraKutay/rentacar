@@ -97,11 +97,13 @@ public class ColorManager implements ColorService {
 
     private boolean checkIfColorNameIsUnique(String colorName) throws BusinessException {
 
-        for (ColorListDto colorElement : this.getAll().getData()) {
-            if (colorElement.getColorName().equalsIgnoreCase(colorName)) {
-                throw new BusinessException(BusinessMessages.NOT_UNIQUE + BusinessMessages.COLOR);
-            }
+
+        if (this.colorDao.existsByColorName(colorName)) {
+      	
+            throw new BusinessException(BusinessMessages.NOT_UNIQUE + BusinessMessages.COLOR);
+            
         }
+
 
         return true;
 

@@ -7,5 +7,5 @@ import com.turkcell.rentacar.entities.concretes.Payment;
 
 @Repository
 public interface PaymentDao extends JpaRepository<Payment, Integer> {
-
+	boolean existsByRentalId(int id);
 }

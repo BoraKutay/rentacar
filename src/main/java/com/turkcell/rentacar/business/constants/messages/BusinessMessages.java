@@ -69,6 +69,7 @@ public class BusinessMessages {
 	public static final String CARD_IS_NOT_VALID = "Card is not valid!";
 	public static final String CARD_IS_VALID = "Card is valid.";
 	public static final String PAYMENT_SUCCEED = "Payment succeed.";
+	public static final String ALREADY_PAID = "Paid alread!";
 	
 
 }
