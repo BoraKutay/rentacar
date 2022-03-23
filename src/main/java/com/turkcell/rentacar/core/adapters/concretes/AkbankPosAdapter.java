@@ -1,5 +1,6 @@
 package com.turkcell.rentacar.core.adapters.concretes;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
@@ -11,6 +12,7 @@ import com.turkcell.rentacar.core.utilities.results.SuccessResult;
 
 
 @Service
+@Primary
 public class AkbankPosAdapter implements PosAdapterService {
 
 	AkbankPosService akbankPosService = new AkbankPosService();

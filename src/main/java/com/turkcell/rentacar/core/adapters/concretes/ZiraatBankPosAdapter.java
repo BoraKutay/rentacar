@@ -1,5 +1,6 @@
 package com.turkcell.rentacar.core.adapters.concretes;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
@@ -10,6 +11,7 @@ import com.turkcell.rentacar.core.utilities.results.Result;
 import com.turkcell.rentacar.core.utilities.results.SuccessResult;
 
 @Service
+@Qualifier("ZiraatBank")
 public class ZiraatBankPosAdapter implements PosAdapterService {
 	
 	ZiraatBankPosService ziraatBankPosService = new ZiraatBankPosService();

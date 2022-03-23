@@ -2,13 +2,11 @@ package com.turkcell.rentacar.core.external.concretes;
 
 import java.util.Random;
 
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.core.external.abstracts.PosService;
 
 @Service
-@Primary
 public class AkbankPosService implements PosService {
 
 	
