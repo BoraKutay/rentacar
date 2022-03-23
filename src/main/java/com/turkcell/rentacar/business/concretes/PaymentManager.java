@@ -3,7 +3,7 @@ package com.turkcell.rentacar.business.concretes;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +36,7 @@ public class PaymentManager implements PaymentService{
 	private PosAdapterService posAdapterService;
 	private InvoiceService invoiceService;
 	
+	@Autowired
 	public PaymentManager(PaymentDao paymentDao, ModelMapperService modelMapperService,PosAdapterService posAdapterService,RentalService rentalService,InvoiceService invoiceService) {
 		this.paymentDao = paymentDao;
 		this.modelMapperService = modelMapperService;

@@ -2,17 +2,17 @@ package com.turkcell.rentacar.core.external.concretes;
 
 import java.util.Random;
 
-import org.springframework.context.annotation.Primary;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.core.external.abstracts.PosService;
 
-@Service
-@Primary
-public class AkbankPosService implements PosService {
 
+@Service
+@Qualifier("ZiraatBank")
+public class ZiraatBankPosService implements PosService {
 	
-	public AkbankPosService() {
+	public ZiraatBankPosService() {
 		super();
 	}
 
@@ -21,7 +21,7 @@ public class AkbankPosService implements PosService {
 		Random isSuccess = new Random();
 		int num = isSuccess.nextInt(100);
 		
-		if(num > 95) {
+		if(num > 65) {
 			return false;
 		}
 		
@@ -34,7 +34,7 @@ public class AkbankPosService implements PosService {
 		Random isSuccess = new Random();
 		int num = isSuccess.nextInt(100);
 		
-		if(num > 95) {
+		if(num > 65) {
 			return false;
 		}
 		
