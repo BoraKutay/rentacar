@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
+import com.turkcell.rentacar.business.requests.CreateCreditCardRequest;
 import com.turkcell.rentacar.core.adapters.abstracts.PosAdapterService;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.external.concretes.ZiraatBankPosService;
@@ -17,9 +18,9 @@ public class ZiraatBankPosAdapter implements PosAdapterService {
 	ZiraatBankPosService ziraatBankPosService = new ZiraatBankPosService();
 	
 	@Override
-	public Result isCardValid(String cardHolder, String cardNumber, int cvv, int month, int year) throws BusinessException {
+	public Result isCardValid(CreateCreditCardRequest createCreditCardRequest) throws BusinessException {
 		
-		if(ziraatBankPosService.isCardValid(cardHolder, cardNumber, cvv, month, year))	{
+		if(ziraatBankPosService.isCardValid(createCreditCardRequest.getCardNumber(), createCreditCardRequest.getCvv(), createCreditCardRequest.getMonth(), createCreditCardRequest.getYear(),createCreditCardRequest.getCardHolder()))	{
 			
 			return new SuccessResult(BusinessMessages.CARD_IS_VALID);
 		}
@@ -28,10 +29,10 @@ public class ZiraatBankPosAdapter implements PosAdapterService {
 	}
 
 	@Override
-	public Result isPaymentSuccess(double totalPayment) throws BusinessException {
+	public Result makePayment(CreateCreditCardRequest createCreditCardRequest, double totalPayment) throws BusinessException {
 		
 
-		if(ziraatBankPosService.isPaymentSuccess(totalPayment)){
+		if(ziraatBankPosService.makePayment(createCreditCardRequest.getCardNumber(), createCreditCardRequest.getCvv(), createCreditCardRequest.getMonth(), createCreditCardRequest.getYear(),createCreditCardRequest.getCardHolder(),totalPayment)){
 			
 			return new SuccessResult(BusinessMessages.PAYMENT_SUCCEED);
 		}

@@ -7,13 +7,13 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.turkcell.rentacar.business.abstracts.InvoiceService;
 import com.turkcell.rentacar.business.abstracts.RentalService;
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.business.dtos.invoiceDtos.InvoiceByIdDto;
 import com.turkcell.rentacar.business.dtos.invoiceDtos.InvoiceListDto;
-import com.turkcell.rentacar.business.dtos.rentalDtos.RentalDtoById;
 import com.turkcell.rentacar.business.requests.deleteRequests.DeleteInvoiceRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
@@ -23,6 +23,7 @@ import com.turkcell.rentacar.core.utilities.results.SuccessDataResult;
 import com.turkcell.rentacar.core.utilities.results.SuccessResult;
 import com.turkcell.rentacar.dataAccess.abstracts.InvoiceDao;
 import com.turkcell.rentacar.entities.concretes.Invoice;
+import com.turkcell.rentacar.entities.concretes.Rental;
 
 @Service
 public class InvoiceManager implements InvoiceService {
@@ -58,17 +59,18 @@ public class InvoiceManager implements InvoiceService {
 		
 		return new SuccessDataResult<InvoiceByIdDto>(response, BusinessMessages.INVOICE + BusinessMessages.GET_BY_ID + id);
 	}
+	
 	@Override
-	public Result add(int rentalId) throws BusinessException {
+	@Transactional
+	public Invoice add(int rentalId) throws BusinessException {
 		
-		RentalDtoById rentalDtoById = this.rentalService.getById(rentalId).getData();
-		Invoice invoice = this.modelMapperService.forRequest().map(rentalId, Invoice.class);
+		//RentalDtoById rentalDtoById = this.rentalService.getById(rentalId).getData();
+		Rental rental = this.rentalService.getRentalById(rentalId);
+		Invoice invoice = new Invoice();
+			
+		setInvoiceFields(invoice,rental);
 		
-		setInvoiceFields(invoice,rentalDtoById,rentalId);
-		
-		this.invoiceDao.save(invoice);
-		
-		return new SuccessResult(BusinessMessages.INVOICE + BusinessMessages.ADD);
+		return this.invoiceDao.save(invoice);
 	}
 	@Override
 	public Result delete(DeleteInvoiceRequest deleteInvoiceRequest) throws BusinessException {
@@ -83,10 +85,10 @@ public class InvoiceManager implements InvoiceService {
 	@Override
 	public Result update(int rentalId) throws BusinessException {
 		
-		RentalDtoById rentalDtoById = this.rentalService.getById(rentalId).getData();
+		Rental rental = this.rentalService.getRentalById(rentalId);
 		Invoice invoice = this.modelMapperService.forRequest().map(rentalId, Invoice.class);
 		
-		setInvoiceFields(invoice,rentalDtoById,rentalId);
+		setInvoiceFields(invoice,rental);
 		
 		this.invoiceDao.save(invoice);
 		
@@ -126,14 +128,14 @@ public class InvoiceManager implements InvoiceService {
     }
 
 	
-	private void setInvoiceFields(Invoice invoice, RentalDtoById rentalDtoById,int rentalId) throws BusinessException {
+	private void setInvoiceFields(Invoice invoice, Rental rental) throws BusinessException {
 		
-		invoice.setRentalDayNumber((int)ChronoUnit.DAYS.between(rentalDtoById.getStartDate(), rentalDtoById.getEndDate()));
-		invoice.setCustomer(rentalDtoById.getCustomer());
-		invoice.setRental(this.rentalService.getRentalById(rentalId));
-		invoice.setBillingPrice(rentalDtoById.getTotalPrice());
-		invoice.setStartDateRental(rentalDtoById.getStartDate());
-		invoice.setEndDateRental(rentalDtoById.getEndDate());
+		invoice.setRentalDayNumber((int)ChronoUnit.DAYS.between(rental.getStartDate(), rental.getEndDate()));
+		invoice.setCustomer(rental.getCustomer());
+		invoice.setRental(rental);
+		invoice.setBillingPrice(rental.getTotalPrice());
+		invoice.setStartDateRental(rental.getStartDate());
+		invoice.setEndDateRental(rental.getEndDate());
 		invoice.setBillingDate(LocalDate.now());
 		invoice.setInvoiceNo(invoice.getInvoiceNo());
 		

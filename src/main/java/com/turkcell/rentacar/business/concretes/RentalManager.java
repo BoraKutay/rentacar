@@ -70,7 +70,8 @@ public class RentalManager implements RentalService {
 		return new SuccessDataResult<List<RentalListDto>>(response, BusinessMessages.RENTALS + BusinessMessages.LIST);
 	}
 	
-	public Result addForIndividualCustomer(CreateRentalRequestForIndividualCustomer createRentalRequestForIndividualCustomer) throws BusinessException {
+	@Override
+	public DataResult<Rental> addForIndividualCustomer(CreateRentalRequestForIndividualCustomer createRentalRequestForIndividualCustomer) throws BusinessException {
 	
 		
 		checkIfCarIsAvailable(createRentalRequestForIndividualCustomer.getCar_CarId(),createRentalRequestForIndividualCustomer.getStartDate());
@@ -88,17 +89,17 @@ public class RentalManager implements RentalService {
 		rental.setTotalPrice(calculateTotalPriceOfRental(rental,createRentalRequestForIndividualCustomer.getAdditionalServicesId(),createRentalRequestForIndividualCustomer.getPickUpLocationIdCityId(),createRentalRequestForIndividualCustomer.getReturnLocationIdCityId()));
 		rental.setCustomer(this.individualCustomerService.getCustomerById(createRentalRequestForIndividualCustomer.getIndividualCustomerId()));
 		
-		this.rentalDao.save(rental);
+		Rental rentalEntity = this.rentalDao.save(rental);
 		
-		return new SuccessResult(BusinessMessages.RENTAL + BusinessMessages.ADD);
+		return new SuccessDataResult<Rental>(rentalEntity, BusinessMessages.RENTAL + BusinessMessages.ADD);
 	
 		
 		
 	}
 	
 	
-	
-	public Result addForCorporateCustomer(CreateRentalRequestForCorporateCustomer createRentalRequestForCorporateCustomer) throws BusinessException {
+	@Override
+	public DataResult<Rental> addForCorporateCustomer(CreateRentalRequestForCorporateCustomer createRentalRequestForCorporateCustomer) throws BusinessException {
 		
 		checkIfCarIsAvailable(createRentalRequestForCorporateCustomer.getCar_CarId(),createRentalRequestForCorporateCustomer.getStartDate());
 		checkIfStartDateBeforeThanEndDate(createRentalRequestForCorporateCustomer.getStartDate(),createRentalRequestForCorporateCustomer.getEndDate());
@@ -113,11 +114,11 @@ public class RentalManager implements RentalService {
 		this.orderedAdditionalServiceService.orderAdditionalServices(createRentalRequestForCorporateCustomer.getAdditionalServicesId() ,rental.getRentalId());
 		rental.setStartKilometer(this.carService.getById(createRentalRequestForCorporateCustomer.getCar_CarId()).getData().getCarKilometer());
 		rental.setTotalPrice(calculateTotalPriceOfRental(rental,createRentalRequestForCorporateCustomer.getAdditionalServicesId(),createRentalRequestForCorporateCustomer.getPickUpLocationIdCityId(),createRentalRequestForCorporateCustomer.getReturnLocationIdCityId()));
-		rental.setCustomer(this.customerService.getById(createRentalRequestForCorporateCustomer.getCorporateCustomerId()));
+		rental.setCustomer(this.customerService.getCustomerById(createRentalRequestForCorporateCustomer.getCorporateCustomerId()));
 		
-		this.rentalDao.save(rental);
+		Rental rentalEntity = this.rentalDao.save(rental);
 		
-		return new SuccessResult(BusinessMessages.RENTAL + BusinessMessages.ADD);
+		return new SuccessDataResult<Rental>(rentalEntity,BusinessMessages.RENTAL + BusinessMessages.ADD);
 	
 		
 		

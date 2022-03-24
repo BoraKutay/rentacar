@@ -20,6 +20,7 @@ import com.turkcell.rentacar.core.utilities.results.SuccessDataResult;
 import com.turkcell.rentacar.core.utilities.results.SuccessResult;
 import com.turkcell.rentacar.dataAccess.abstracts.CorporateCustomerDao;
 import com.turkcell.rentacar.entities.concretes.CorporateCustomer;
+import com.turkcell.rentacar.entities.concretes.Customer;
 
 @Service
 public class CorporateCustomerManager implements CorporateCustomerService{
@@ -89,6 +90,21 @@ public class CorporateCustomerManager implements CorporateCustomerService{
 	}
 	
 	private boolean checkIfCorporateCustomerIsExists(int id) throws BusinessException{
+		
+		if(corporateCustomerDao.existsById(id) == false) {
+			throw new BusinessException(BusinessMessages.CORPORATE_CUSTOMER + BusinessMessages.DOES_NOT_EXISTS  + id);
+		}
+		return true;
+	}
+
+	@Override
+	public Customer getCustomerById(int id) {
+		return null;
+		
+	}
+
+	@Override
+	public boolean checkIfCustomerExists(int id) throws BusinessException {
 		
 		if(corporateCustomerDao.existsById(id) == false) {
 			throw new BusinessException(BusinessMessages.CORPORATE_CUSTOMER + BusinessMessages.DOES_NOT_EXISTS  + id);

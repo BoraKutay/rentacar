@@ -12,7 +12,7 @@ import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
 import com.turkcell.rentacar.entities.concretes.IndividualCustomer;
 
-public interface IndividualCustomerService {
+public interface IndividualCustomerService extends CustomerService {
 	DataResult<List<IndividualCustomerListDto>> getAll();
 	DataResult<IndividualCustomerByIdDto> getById(int id) throws BusinessException;
 	Result add(CreateIndividualCustomerRequest createIndividualCustomerRequest);

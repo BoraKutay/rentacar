@@ -10,12 +10,15 @@ public class BusinessMessages {
 	public static final String CAR_MAINTENANCE = "Car Maintenance is ";
 	public static final String CITY = "City is ";
 	public static final String COLOR = "Color is ";
+	public static final String CUSTOMER = "Customer is ";
 	public static final String CORPORATE_CUSTOMER = "Corporate Customer is ";
 	public static final String INDIVIDUAL_CUSTOMER = "Individual Customer is ";
 	public static final String INVOICE = "Invoice is ";
 	public static final String ORDERED_ADDITIONAL_SERVICE = "Ordered Additional Service is ";
 	public static final String PAYMENT = "Payment is ";
 	public static final String RENTAL = "Rental is ";
+	public static final String CREDIT_CARD = "Credit card is";
+	
 	
 	//ENTITIES LIST
 	public static final String ADDITIONAL_SERVICES = "Additional Services: ";
@@ -25,12 +28,14 @@ public class BusinessMessages {
 	public static final String CAR_MAINTENANCES = "Car Maintenances: ";
 	public static final String CITIES = "Cities: ";
 	public static final String COLORS = "Colors: ";
+	public static final String CUSTOMERS = "Customers: ";
 	public static final String CORPORATE_CUSTOMERS = "Corporate Customers: ";
 	public static final String INDIVIDUAL_CUSTOMERS = "Individual Customers: ";
 	public static final String INVOICES = "Invoices: ";
 	public static final String ORDERED_ADDITIONAL_SERVICES = "Ordered Additional Services: ";
 	public static final String PAYMENTS = "Payments: ";
 	public static final String RENTALS = "Rentals: ";
+	public static final String CREDIT_CARDS = "Credit Cards:";
 	
 	
 	//CRUD

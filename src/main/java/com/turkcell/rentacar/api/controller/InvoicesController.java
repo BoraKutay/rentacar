@@ -42,14 +42,7 @@ public class InvoicesController {
 	DataResult<InvoiceByIdDto> getById(int id) throws BusinessException{
 		return this.invoiceService.getById(id);
 		
-	}
-	
-	@PostMapping("/add")
-	Result add(int id) throws BusinessException {
-		return this.invoiceService.add(id);
-		
-	}
-	
+	}	
 	
 	@DeleteMapping("/delete")
 	Result delete(DeleteInvoiceRequest deleteInvoiceRequest) throws BusinessException{

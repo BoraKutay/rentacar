@@ -4,17 +4,11 @@ import java.util.Random;
 
 import org.springframework.stereotype.Service;
 
-import com.turkcell.rentacar.core.external.abstracts.PosService;
 
 @Service
-public class AkbankPosService implements PosService {
+public class AkbankPosService{
 
-	
-	public AkbankPosService() {
-		super();
-	}
 
-	@Override
 	public boolean isCardValid(String cardHolder, String cardNumber, int cvv, int month, int year){
 		Random isSuccess = new Random();
 		int num = isSuccess.nextInt(100);
@@ -26,13 +20,12 @@ public class AkbankPosService implements PosService {
 		return true;
 	}
 
-	@Override
-	public boolean isPaymentSuccess(double totalPayment){
+	public boolean makePayment(String cardHolder, String cardNumber, int cvv, int month, int year, double totalPayment){
 		
 		Random isSuccess = new Random();
 		int num = isSuccess.nextInt(100);
 		
-		if(num > 95) {
+		if(num > 5) {
 			return false;
 		}
 		

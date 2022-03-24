@@ -38,11 +38,14 @@ public class Customer extends User{
 	private LocalDate registeredDate;
 
     @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    List<Rental> rentals;
+    private List<Rental> rentals;
 
     @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    List<Invoice> invoices;
+    private List<Invoice> invoices;
     
     @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    List<Payment> payments;
+    private List<Payment> payments;
+    
+    @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<CreditCard> creditCards;
 }

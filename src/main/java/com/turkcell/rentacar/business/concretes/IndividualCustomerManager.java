@@ -3,6 +3,7 @@ package com.turkcell.rentacar.business.concretes;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.IndividualCustomerService;
@@ -22,6 +23,7 @@ import com.turkcell.rentacar.dataAccess.abstracts.IndividualCustomerDao;
 import com.turkcell.rentacar.entities.concretes.IndividualCustomer;
 
 @Service
+@Primary
 public class IndividualCustomerManager implements IndividualCustomerService {
 	
 	private IndividualCustomerDao individualCustomerDao;
@@ -98,7 +100,17 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 
 	@Override
 	public IndividualCustomer getCustomerById(int id) {
+		
 		return this.individualCustomerDao.getById(id);
+	}
+
+	@Override
+	public boolean checkIfCustomerExists(int id) throws BusinessException {
+		
+		if(individualCustomerDao.existsById(id) == false) {
+			throw new BusinessException(BusinessMessages.INDIVIDUAL_CUSTOMER + BusinessMessages.DOES_NOT_EXISTS + id);
+		}
+		return true;
 	}
 
 }

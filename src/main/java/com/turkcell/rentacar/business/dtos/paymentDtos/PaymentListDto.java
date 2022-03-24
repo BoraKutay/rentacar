@@ -12,6 +12,6 @@ public class PaymentListDto {
 	private double totalAmount;
 	
 	private int rentalId;
-	private int invoiceId;
+	private int invoiceNo;
 	private int customerCustomerId;
 }

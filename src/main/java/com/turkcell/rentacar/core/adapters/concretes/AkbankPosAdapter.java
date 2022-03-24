@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
+import com.turkcell.rentacar.business.requests.CreateCreditCardRequest;
 import com.turkcell.rentacar.core.adapters.abstracts.PosAdapterService;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.external.concretes.AkbankPosService;
@@ -18,9 +19,9 @@ public class AkbankPosAdapter implements PosAdapterService {
 	AkbankPosService akbankPosService = new AkbankPosService();
 	
 	@Override
-	public Result isCardValid(String cardHolder, String cardNumber, int cvv, int month, int year) throws BusinessException {
+	public Result isCardValid(CreateCreditCardRequest createCreditCardRequest) throws BusinessException {
 		
-		if(akbankPosService.isCardValid(cardHolder, cardNumber, cvv, month, year))	{
+		if(akbankPosService.isCardValid(createCreditCardRequest.getCardHolder(), createCreditCardRequest.getCardNumber(), createCreditCardRequest.getCvv(), createCreditCardRequest.getMonth(), createCreditCardRequest.getYear()))	{
 			
 			return new SuccessResult(BusinessMessages.CARD_IS_VALID);
 		}
@@ -29,10 +30,10 @@ public class AkbankPosAdapter implements PosAdapterService {
 	}
 
 	@Override
-	public Result isPaymentSuccess(double totalPayment) throws BusinessException {
+	public Result makePayment(CreateCreditCardRequest createCreditCardRequest,double totalPayment) throws BusinessException {
 		
 
-		if(akbankPosService.isPaymentSuccess(totalPayment)){
+		if(akbankPosService.makePayment(createCreditCardRequest.getCardHolder(), createCreditCardRequest.getCardNumber(), createCreditCardRequest.getCvv(), createCreditCardRequest.getMonth(), createCreditCardRequest.getYear(),totalPayment)){
 			
 			return new SuccessResult(BusinessMessages.PAYMENT_SUCCEED);
 		}
