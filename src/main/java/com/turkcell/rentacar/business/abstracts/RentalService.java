@@ -32,5 +32,7 @@ public interface RentalService {
 	
 	Result delete(DeleteRentalRequest deleteRentalRequest) throws BusinessException;
 	
-	Result finishRental(FinishRentalRequest finishRentalRequest) throws BusinessException;
+	Result finishRentalForIndividualCustomer(FinishRentalRequest finishRentalRequest) throws BusinessException;
+
+	Result finishRentalForCorporateCustomer(FinishRentalRequest finishRentalRequest) throws BusinessException;
 }

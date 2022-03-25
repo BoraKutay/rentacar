@@ -1,5 +1,6 @@
 package com.turkcell.rentacar.business.concretes;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.time.LocalDate;
@@ -32,6 +33,7 @@ import com.turkcell.rentacar.core.utilities.results.SuccessDataResult;
 import com.turkcell.rentacar.core.utilities.results.SuccessResult;
 import com.turkcell.rentacar.dataAccess.abstracts.RentalDao;
 import com.turkcell.rentacar.entities.concretes.CarMaintenance;
+import com.turkcell.rentacar.entities.concretes.OrderedAdditionalService;
 import com.turkcell.rentacar.entities.concretes.Rental;
 
 @Service
@@ -97,6 +99,48 @@ public class RentalManager implements RentalService {
 		
 	}
 	
+	@Override
+	public Result finishRentalForIndividualCustomer(FinishRentalRequest finishRentalRequest) throws BusinessException {
+		
+		checkIfRentalExists(finishRentalRequest.getRentalId());
+		
+		
+		Rental rental = this.rentalDao.getById(finishRentalRequest.getRentalId());
+		
+		checkRentalReturnDateExpiredForIndiviual(rental);
+		
+		rental.setEndKilometer(finishRentalRequest.getEndKilometer());
+		
+		this.carService.updateCarKilometer(rental.getCar().getCarId(), finishRentalRequest.getEndKilometer());
+		
+		this.rentalDao.save(rental);
+		
+		return new SuccessResult(BusinessMessages.RENT_IS_OVER);
+		
+		
+	}
+	
+	@Override
+	public Result finishRentalForCorporateCustomer(FinishRentalRequest finishRentalRequest) throws BusinessException {
+		
+		checkIfRentalExists(finishRentalRequest.getRentalId());
+		
+		
+		Rental rental = this.rentalDao.getById(finishRentalRequest.getRentalId());
+		
+		checkRentalReturnDateExpiredForCorporate(rental);
+		
+		rental.setEndKilometer(finishRentalRequest.getEndKilometer());
+		
+		this.carService.updateCarKilometer(rental.getCar().getCarId(), finishRentalRequest.getEndKilometer());
+		
+		this.rentalDao.save(rental);
+		
+		return new SuccessResult(BusinessMessages.RENT_IS_OVER);
+		
+		
+	}
+		
 	
 	@Override
 	public DataResult<Rental> addForCorporateCustomer(CreateRentalRequestForCorporateCustomer createRentalRequestForCorporateCustomer) throws BusinessException {
@@ -297,22 +341,71 @@ public class RentalManager implements RentalService {
     	
     	return daysBetween;
     }
+    
+    
+	private List<Integer> setIdOfAdditionalServices(List<OrderedAdditionalService> orderedAdditionalServices){
+		
+		List<Integer> additionalServicesIds = new ArrayList<Integer>();
+		
+		for (int i = 0; i < orderedAdditionalServices.size(); i++) {
+			
+			additionalServicesIds.add(orderedAdditionalServices.get(i).getAdditionalService().getAdditionalServiceId());
+			
+		}
+		
+		return additionalServicesIds;
+		
+	}
 
-	@Override
-	public Result finishRental(FinishRentalRequest finishRentalRequest) throws BusinessException {
+	private void checkRentalReturnDateExpiredForIndiviual(Rental rental) throws BusinessException {
+		if(LocalDate.now().isAfter(rental.getEndDate())) {
+
+			
+			addForIndividualCustomer(setCreateRentalRequestForIndividualCustomer(rental));
+					
+		}
 		
-		checkIfRentalExists(finishRentalRequest.getRentalId());
+	}
+	
+	
+	private void checkRentalReturnDateExpiredForCorporate(Rental rental) throws BusinessException {
+		if(LocalDate.now().isAfter(rental.getEndDate())) {
+
+			addForCorporateCustomer(setCreateRentalRequestForCorporateCustomerFields(rental));
+					
+		}
 		
-		Rental rental = this.rentalDao.getById(finishRentalRequest.getRentalId());
+	}
+	
+	private CreateRentalRequestForCorporateCustomer setCreateRentalRequestForCorporateCustomerFields(Rental rental) {
 		
-		rental.setEndKilometer(finishRentalRequest.getEndKilometer());
+		CreateRentalRequestForCorporateCustomer createRentalRequestForCorporateCustomer = new CreateRentalRequestForCorporateCustomer();
 		
-		this.carService.updateCarKilometer(rental.getCar().getCarId(), finishRentalRequest.getEndKilometer());
+		createRentalRequestForCorporateCustomer.setEndDate(LocalDate.now());
+		createRentalRequestForCorporateCustomer.setStartDate(rental.getEndDate());
+		createRentalRequestForCorporateCustomer.setCar_CarId(rental.getCar().getCarId());
+		createRentalRequestForCorporateCustomer.setCorporateCustomerId(rental.getCustomer().getCustomerId());
+		createRentalRequestForCorporateCustomer.setPickUpLocationIdCityId(rental.getReturnLocation().getCityId());
+		createRentalRequestForCorporateCustomer.setReturnLocationIdCityId(rental.getReturnLocation().getCityId());
+		createRentalRequestForCorporateCustomer.setAdditionalServicesId(setIdOfAdditionalServices(rental.getOrderedAdditionalServices()));
 		
-		this.rentalDao.save(rental);
+		return createRentalRequestForCorporateCustomer;
+	}
+	
+	private CreateRentalRequestForIndividualCustomer setCreateRentalRequestForIndividualCustomer(Rental rental) {
 		
-		return new SuccessResult(BusinessMessages.RENT_IS_OVER);
 		
+		CreateRentalRequestForIndividualCustomer createRentalRequestForIndividualCustomer = new CreateRentalRequestForIndividualCustomer();
+		
+		createRentalRequestForIndividualCustomer.setEndDate(LocalDate.now());
+		createRentalRequestForIndividualCustomer.setStartDate(rental.getEndDate());
+		createRentalRequestForIndividualCustomer.setCar_CarId(rental.getCar().getCarId());
+		createRentalRequestForIndividualCustomer.setIndividualCustomerId(rental.getCustomer().getCustomerId());
+		createRentalRequestForIndividualCustomer.setPickUpLocationIdCityId(rental.getReturnLocation().getCityId());
+		createRentalRequestForIndividualCustomer.setReturnLocationIdCityId(rental.getReturnLocation().getCityId());
+		createRentalRequestForIndividualCustomer.setAdditionalServicesId(setIdOfAdditionalServices(rental.getOrderedAdditionalServices()));
+		
+		return createRentalRequestForIndividualCustomer;
 		
 	}
     

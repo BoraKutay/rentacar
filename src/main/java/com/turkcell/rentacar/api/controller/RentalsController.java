@@ -76,8 +76,13 @@ public class RentalsController {
 		return this.rentalService.delete(deleteRentalRequest);
 	}
 	
-	@PostMapping("/endRental")
-	Result finishRental(FinishRentalRequest finishRentalRequest) throws BusinessException {
-		return this.rentalService.finishRental(finishRentalRequest);
+	@PostMapping("/endRentalForIndividual")
+	Result finishRentalForIndividual(FinishRentalRequest finishRentalRequest) throws BusinessException {
+		return this.rentalService.finishRentalForIndividualCustomer(finishRentalRequest);
+	}
+	
+	@PostMapping("/endRentalForIndividual")
+	Result finishRentalForCorporate(FinishRentalRequest finishRentalRequest) throws BusinessException {
+		return this.rentalService.finishRentalForCorporateCustomer(finishRentalRequest);
 	}
 }
