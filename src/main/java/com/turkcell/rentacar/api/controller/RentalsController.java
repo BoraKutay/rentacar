@@ -81,7 +81,7 @@ public class RentalsController {
 		return this.rentalService.finishRentalForIndividualCustomer(finishRentalRequest);
 	}
 	
-	@PostMapping("/endRentalForIndividual")
+	@PostMapping("/endRentalForCorporate")
 	Result finishRentalForCorporate(FinishRentalRequest finishRentalRequest) throws BusinessException {
 		return this.rentalService.finishRentalForCorporateCustomer(finishRentalRequest);
 	}
