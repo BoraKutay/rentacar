@@ -27,8 +27,6 @@ public class PaymentsController {
 
 	private PaymentService paymentService;
 
-
-
 	
 	public PaymentsController(PaymentService paymentService) {
 		

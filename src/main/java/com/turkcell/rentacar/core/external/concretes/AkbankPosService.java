@@ -25,7 +25,7 @@ public class AkbankPosService{
 		Random isSuccess = new Random();
 		int num = isSuccess.nextInt(100);
 		
-		if(num > 5) {
+		if(num > 95) {
 			return false;
 		}
 		

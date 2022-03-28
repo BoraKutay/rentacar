@@ -34,7 +34,7 @@ public class OrderedAdditionalServicesController {
 		this.orderedAdditionalServiceService = orderedAdditionalServiceService;
 	}
 
-	 @GetMapping("/getall")
+	 @GetMapping("/getAll")
 	public DataResult<List<OrderedAdditionalServiceListDto>> getAll(){
     	return this.orderedAdditionalServiceService.getAll();
     }

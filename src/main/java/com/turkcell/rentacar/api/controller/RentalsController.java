@@ -40,34 +40,15 @@ public class RentalsController {
 		return this.rentalService.getAll();
 		
 	}
-	
 	@GetMapping("/getAllByCarId")
 	DataResult<List<RentalListDto>> getAllByCarCarId(int id) throws BusinessException{
 		return this.rentalService.getAllByCarCarId(id);
 		
 	}
 	
-	
-	@PostMapping("/addForIndividualCustomer")
-	Result addForIndividualCustomer(CreateRentalRequestForIndividualCustomer createRentalRequestForIndividualCustomer) throws BusinessException {
-		return this.rentalService.addForIndividualCustomer(createRentalRequestForIndividualCustomer);
-	}
-	
-	@PostMapping("/addForCorporateCustomer")
-	Result addForCorporateCustomer(CreateRentalRequestForCorporateCustomer createRentalRequestForCorporateCustomer) throws BusinessException {
-		return this.rentalService.addForCorporateCustomer(createRentalRequestForCorporateCustomer);
-	}
-	
-	
 	@GetMapping("/getById")
 	DataResult<RentalDtoById> getById(int id) throws BusinessException{
 		return this.rentalService.getById(id);
-		
-	}
-	
-	@PutMapping("/update")
-	Result update(@RequestBody @Valid UpdateRentalRequest updateRentalRequest) throws BusinessException{
-		return this.rentalService.update(updateRentalRequest);
 		
 	}
 	

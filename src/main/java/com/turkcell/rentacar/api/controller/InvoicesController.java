@@ -49,11 +49,6 @@ public class InvoicesController {
 		
 	}
 	
-	@PutMapping("/update")
-	Result update(int id) throws BusinessException{
-		return this.invoiceService.update(id);
-		
-	}
 	@GetMapping("/getAllByCustomerId")
 	DataResult<List<InvoiceListDto>> getAllByCustomer_CustomerId(int customerId){
 		return this.invoiceService.getAllByCustomer_CustomerId(customerId);

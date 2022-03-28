@@ -25,12 +25,12 @@ public class ColorsController {
         this.colorService = colorService;
     }
 
-    @GetMapping("/getall")
+    @GetMapping("/getAll")
     public DataResult<List<ColorListDto>> getAll() {
         return this.colorService.getAll();
     }
 
-    @GetMapping("/getbyid")
+    @GetMapping("/getById")
     public DataResult<ColorByIdDto> getById(@RequestParam(required = true) int colorId) throws BusinessException {
         return this.colorService.getById(colorId);
     }
@@ -46,7 +46,7 @@ public class ColorsController {
         return this.colorService.update(updateColorRequest);
     }
 
-    @DeleteMapping("/deletebyid")
+    @DeleteMapping("/deleteById")
     public Result deleteById(@RequestBody DeleteColorRequest deleteColorRequest) throws BusinessException {
 
         return this.colorService.deleteById(deleteColorRequest);

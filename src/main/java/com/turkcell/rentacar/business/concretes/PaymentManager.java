@@ -11,6 +11,7 @@ import com.turkcell.rentacar.api.model.CorporatePaymentModel;
 import com.turkcell.rentacar.api.model.IndividualPaymentModel;
 import com.turkcell.rentacar.business.abstracts.CreditCardService;
 import com.turkcell.rentacar.business.abstracts.InvoiceService;
+import com.turkcell.rentacar.business.abstracts.OrderedAdditionalServiceService;
 import com.turkcell.rentacar.business.abstracts.PaymentService;
 import com.turkcell.rentacar.business.abstracts.RentalService;
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
@@ -25,6 +26,7 @@ import com.turkcell.rentacar.core.utilities.results.SuccessDataResult;
 import com.turkcell.rentacar.core.utilities.results.SuccessResult;
 import com.turkcell.rentacar.dataAccess.abstracts.PaymentDao;
 import com.turkcell.rentacar.entities.concretes.Invoice;
+import com.turkcell.rentacar.entities.concretes.OrderedAdditionalService;
 import com.turkcell.rentacar.entities.concretes.Payment;
 import com.turkcell.rentacar.entities.concretes.Rental;
 
@@ -37,10 +39,11 @@ public class PaymentManager implements PaymentService{
 	private PosAdapterService posAdapterService;
 	private InvoiceService invoiceService;
 	private CreditCardService creditCardService;
+	private OrderedAdditionalServiceService orderedAdditionalServiceService;
 	
 	@Autowired
 	public PaymentManager(PaymentDao paymentDao, ModelMapperService modelMapperService,PosAdapterService posAdapterService,
-			RentalService rentalService,InvoiceService invoiceService,CreditCardService creditCardService) {
+			RentalService rentalService,InvoiceService invoiceService,CreditCardService creditCardService, OrderedAdditionalServiceService orderedAdditionalServiceService) {
 		
 		this.paymentDao = paymentDao;
 		this.modelMapperService = modelMapperService;
@@ -48,6 +51,7 @@ public class PaymentManager implements PaymentService{
 		this.posAdapterService = posAdapterService;
 		this.invoiceService = invoiceService;
 		this.creditCardService = creditCardService;
+		this.orderedAdditionalServiceService = orderedAdditionalServiceService;
 	}
 
 	@Override
@@ -144,7 +148,7 @@ public class PaymentManager implements PaymentService{
     private void setPaymentFields(Payment payment, Rental rental) {
     	
     	payment.setCustomer(rental.getCustomer());
-		//payment.setOrderedAdditionalServices(rental.getOrderedAdditionalServices());
+		payment.setOrderedAdditionalServices(this.orderedAdditionalServiceService.getAllByRentalId(rental.getRentalId()));
 		payment.setRental(rental);
 		payment.setTotalAmount(rental.getTotalPrice());
 		
