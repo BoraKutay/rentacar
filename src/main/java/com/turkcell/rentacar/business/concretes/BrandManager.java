@@ -97,9 +97,9 @@ public class BrandManager implements BrandService {
 
     private boolean checkIfBrandNameIsUnique(String brandName) throws BusinessException {
 
-        if (this.brandDao.existsByBrandName(brandName)) {
+        if (this.brandDao.existsByBrandNameIgnoreCase(brandName)) {
         	
-            throw new BusinessException(BusinessMessages.NOT_UNIQUE + BusinessMessages.BRAND);
+            throw new BusinessException(BusinessMessages.NOT_UNIQUE + brandName);
         }
 
         return true;

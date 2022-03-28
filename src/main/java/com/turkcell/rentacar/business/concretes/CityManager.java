@@ -107,7 +107,7 @@ public class CityManager implements CityService {
 
         for (CityListDto cityElement : this.getAll().getData()) {
             if (cityElement.getCityName().equalsIgnoreCase(cityName)) {
-                throw new BusinessException(BusinessMessages.NOT_UNIQUE + BusinessMessages.CITY);
+                throw new BusinessException(BusinessMessages.NOT_UNIQUE + cityName);
             }
         }
 

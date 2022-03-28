@@ -98,9 +98,9 @@ public class ColorManager implements ColorService {
     private boolean checkIfColorNameIsUnique(String colorName) throws BusinessException {
 
 
-        if (this.colorDao.existsByColorName(colorName)) {
+        if (this.colorDao.existsByColorNameIgnoreCase(colorName)) {
       	
-            throw new BusinessException(BusinessMessages.NOT_UNIQUE + BusinessMessages.COLOR);
+            throw new BusinessException(BusinessMessages.NOT_UNIQUE + colorName);
             
         }
 
