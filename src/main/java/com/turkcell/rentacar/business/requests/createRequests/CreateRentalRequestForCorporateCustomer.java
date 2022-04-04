@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -37,6 +38,5 @@ public class CreateRentalRequestForCorporateCustomer {
 	@PositiveOrZero
 	private int returnLocationIdCityId;
 	
-
 	private List<Integer> additionalServicesId;
 }

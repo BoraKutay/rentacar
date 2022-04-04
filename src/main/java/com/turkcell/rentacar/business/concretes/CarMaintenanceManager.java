@@ -58,6 +58,7 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 	public Result add(CreateCarMaintenanceRequest createCarMaintenanceRequest) throws BusinessException {
 		
 		checkIfCarIsAvailable(createCarMaintenanceRequest.getCarCarId());
+		checkIfCarIsInMaintenance(createCarMaintenanceRequest.getCarCarId());
 		
         CarMaintenance carMaintenance = this.modelMapperService.forRequest().map(createCarMaintenanceRequest, CarMaintenance.class);
         carMaintenance.setCarMaintenanceId(0);
@@ -72,6 +73,7 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 		
 		checkIfCarMaintenanceExists(updateCarMaintenanceRequest.getCarMaintenanceId());
 		checkIfCarIsAvailable(updateCarMaintenanceRequest.getCarCarId());
+		checkIfCarIsInMaintenance(updateCarMaintenanceRequest.getCarCarId());
 		
         CarMaintenance carMaintenance = this.modelMapperService.forRequest().map(updateCarMaintenanceRequest, CarMaintenance.class);
         carMaintenance.setCarMaintenanceId(0);
@@ -130,6 +132,20 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 			}
 		}
 					
+	}
+	
+	
+	private void checkIfCarIsInMaintenance(int carId) throws BusinessException{
+		
+		DataResult<List<CarMaintenanceListDto>> result = getByCarId(carId);
+		List<CarMaintenance> response = result.getData().stream().map(carMaintenance -> this.modelMapperService.forDto().map(carMaintenance, CarMaintenance.class)).collect(Collectors.toList());
+		
+		for(CarMaintenance carMaintenance : response) {
+            
+			if(carMaintenance.getReturnDate() == null || LocalDate.now().isBefore(carMaintenance.getReturnDate())) {
+				throw new BusinessException(BusinessMessages.CAR_IS_IN_MAINTENANCE);
+			}
+		}
 	}
 	
 	

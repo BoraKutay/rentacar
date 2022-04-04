@@ -95,7 +95,7 @@ public class CityManager implements CityService {
 		return new SuccessResult(BusinessMessages.CITY + BusinessMessages.DELETE);
 	}
 	
-	private boolean checkIfCityExists(int id) throws BusinessException{
+	public boolean checkIfCityExists(int id) throws BusinessException{
 		
 		if(cityDao.existsById(id) == false) {
 			throw new BusinessException(BusinessMessages.CITY + BusinessMessages.DOES_NOT_EXISTS + id);

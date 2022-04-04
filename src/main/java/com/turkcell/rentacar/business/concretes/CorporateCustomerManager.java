@@ -112,4 +112,10 @@ public class CorporateCustomerManager implements CorporateCustomerService{
 		return true;
 	}
 
+	@Override
+	public boolean checkIfCorparateCustomerExists(int id) throws BusinessException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

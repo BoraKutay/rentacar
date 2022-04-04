@@ -90,7 +90,7 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 		return new SuccessResult(BusinessMessages.INDIVIDUAL_CUSTOMER + BusinessMessages.UPDATE);
 	}
 	
-	private boolean checkIfIndividualCustomerIsExists(int id) throws BusinessException{
+	public boolean checkIfIndividualCustomerIsExists(int id) throws BusinessException{
 		
 		if(individualCustomerDao.existsById(id) == false) {
 			throw new BusinessException(BusinessMessages.INDIVIDUAL_CUSTOMER + BusinessMessages.DOES_NOT_EXISTS + id);
@@ -112,5 +112,7 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 		}
 		return true;
 	}
+
+
 
 }
