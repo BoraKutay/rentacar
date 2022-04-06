@@ -82,7 +82,7 @@ public class CorporateCustomerManager implements CorporateCustomerService{
 	}
 
 	@Override
-	public Result update(UpdateCorporateCustomerRequest updateCorporateCustomerRequest) throws BusinessException {
+	public Result update(@RequestBody @Valid @Email UpdateCorporateCustomerRequest updateCorporateCustomerRequest) throws BusinessException {
 		
 		checkIfCorporateCustomerIsExists(updateCorporateCustomerRequest.getCorporateCustomerId());
 		
