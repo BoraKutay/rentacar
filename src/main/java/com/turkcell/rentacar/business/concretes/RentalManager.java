@@ -23,6 +23,7 @@ import com.turkcell.rentacar.business.dtos.carMaintenanceDtos.CarMaintenanceList
 import com.turkcell.rentacar.business.dtos.rentalDtos.RentalDtoById;
 import com.turkcell.rentacar.business.dtos.rentalDtos.RentalListDto;
 import com.turkcell.rentacar.business.requests.FinishRentalRequest;
+import com.turkcell.rentacar.business.requests.createRequests.CreateOrderedAdditionalServiceRequest;
 import com.turkcell.rentacar.business.requests.createRequests.CreateRentalRequestForCorporateCustomer;
 import com.turkcell.rentacar.business.requests.createRequests.CreateRentalRequestForIndividualCustomer;
 import com.turkcell.rentacar.business.requests.deleteRequests.DeleteRentalRequest;
@@ -450,6 +451,7 @@ public class RentalManager implements RentalService {
 		return createRentalRequestForIndividualCustomer;
 		
 	}
+
     
 
 

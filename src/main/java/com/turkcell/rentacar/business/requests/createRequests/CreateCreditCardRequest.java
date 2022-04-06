@@ -1,6 +1,7 @@
-package com.turkcell.rentacar.business.requests;
+package com.turkcell.rentacar.business.requests.createRequests;
 
-import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.CreditCardNumber;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,14 +10,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateCreditCardRequest {
-	
-	
-	private int creditCardId;
+public class CreateCreditCardRequest {
 	
 	private String cardHolder;
 	
-	@Size(min = 16,max = 16)
+	@CreditCardNumber
 	private String cardNumber;
 	
 	private int cvv;
@@ -25,5 +23,6 @@ public class UpdateCreditCardRequest {
 	
 	private int year;
 	
-
+	private double balance;
+	
 }

@@ -15,4 +15,6 @@ public class IndividualCustomerListDto {
 	private String lastName;
 	
 	private String nationalIdentity;
+	
+	private int customerCustomerId;;
 }

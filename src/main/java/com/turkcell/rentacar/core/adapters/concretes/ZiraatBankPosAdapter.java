@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
-import com.turkcell.rentacar.business.requests.CreateCreditCardRequest;
+import com.turkcell.rentacar.business.requests.createRequests.CreateCreditCardRequest;
 import com.turkcell.rentacar.core.adapters.abstracts.PosAdapterService;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.external.concretes.ZiraatBankPosService;

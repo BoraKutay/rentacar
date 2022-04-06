@@ -3,7 +3,11 @@ package com.turkcell.rentacar.business.concretes;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Email;
+
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.turkcell.rentacar.business.abstracts.CorporateCustomerService;
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
@@ -58,7 +62,7 @@ public class CorporateCustomerManager implements CorporateCustomerService{
 	}
 
 	@Override
-	public Result add(CreateCorporateCustomerRequest createCorporateCustomerRequest) {
+	public Result add(@Valid @Email @RequestBody CreateCorporateCustomerRequest createCorporateCustomerRequest) {
 		
 		CorporateCustomer corporateCustomer = this.modelMapperService.forRequest().map(createCorporateCustomerRequest, CorporateCustomer.class);
 

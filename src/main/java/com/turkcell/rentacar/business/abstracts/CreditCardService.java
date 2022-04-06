@@ -4,9 +4,9 @@ import java.util.List;
 
 import com.turkcell.rentacar.business.dtos.creditCardDtos.CreditCardByIdDto;
 import com.turkcell.rentacar.business.dtos.creditCardDtos.CreditCardListDto;
-import com.turkcell.rentacar.business.requests.CreateCreditCardRequest;
-import com.turkcell.rentacar.business.requests.DeleteCreditCardRequest;
-import com.turkcell.rentacar.business.requests.UpdateCreditCardRequest;
+import com.turkcell.rentacar.business.requests.createRequests.CreateCreditCardRequest;
+import com.turkcell.rentacar.business.requests.deleteRequests.DeleteCreditCardRequest;
+import com.turkcell.rentacar.business.requests.updateRequests.UpdateCreditCardRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;

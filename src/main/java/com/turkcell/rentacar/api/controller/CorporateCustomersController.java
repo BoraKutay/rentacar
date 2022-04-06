@@ -2,6 +2,8 @@ package com.turkcell.rentacar.api.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,7 +48,7 @@ public class CorporateCustomersController {
 	}
 	
 	@PostMapping("/add")
-	Result add(CreateCorporateCustomerRequest createCorporateCustomerRequest) {
+	Result add(@Valid CreateCorporateCustomerRequest createCorporateCustomerRequest) {
 		return this.corporateCustomerService.add(createCorporateCustomerRequest);
 		
 	}

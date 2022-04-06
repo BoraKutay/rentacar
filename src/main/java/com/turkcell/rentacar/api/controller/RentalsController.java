@@ -2,24 +2,18 @@ package com.turkcell.rentacar.api.controller;
 
 import java.util.List;
 
-import javax.validation.Valid;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.turkcell.rentacar.business.abstracts.RentalService;
 import com.turkcell.rentacar.business.dtos.rentalDtos.RentalDtoById;
 import com.turkcell.rentacar.business.dtos.rentalDtos.RentalListDto;
 import com.turkcell.rentacar.business.requests.FinishRentalRequest;
-import com.turkcell.rentacar.business.requests.createRequests.CreateRentalRequestForCorporateCustomer;
-import com.turkcell.rentacar.business.requests.createRequests.CreateRentalRequestForIndividualCustomer;
 import com.turkcell.rentacar.business.requests.deleteRequests.DeleteRentalRequest;
-import com.turkcell.rentacar.business.requests.updateRequests.UpdateRentalRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
