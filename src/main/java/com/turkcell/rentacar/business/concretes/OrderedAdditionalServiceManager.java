@@ -55,7 +55,7 @@ public class OrderedAdditionalServiceManager implements OrderedAdditionalService
 			throws BusinessException {
 		
 		OrderedAdditionalService orderedAdditionalService = this.modelMapperService.forRequest().map(createOrderedAdditionalServiceRequest, OrderedAdditionalService.class);
-		
+		orderedAdditionalService.setOrderedAdditionalServiceId(0);
 		this.orderedAdditionalServiceDao.save(orderedAdditionalService);
 		
 		return new SuccessResult(BusinessMessages.ORDERED_ADDITIONAL_SERVICE + BusinessMessages.ADD);

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,7 +43,7 @@ public class PaymentManager implements PaymentService{
 	
 	@Autowired
 	public PaymentManager(PaymentDao paymentDao, ModelMapperService modelMapperService,PosAdapterService posAdapterService,
-			RentalService rentalService,InvoiceService invoiceService,CreditCardService creditCardService, OrderedAdditionalServiceService orderedAdditionalServiceService) {
+			@Lazy RentalService rentalService,InvoiceService invoiceService,CreditCardService creditCardService, @Lazy OrderedAdditionalServiceService orderedAdditionalServiceService) {
 		
 		this.paymentDao = paymentDao;
 		this.modelMapperService = modelMapperService;
@@ -147,7 +148,6 @@ public class PaymentManager implements PaymentService{
     private void setPaymentFields(Payment payment, Rental rental) {
     	
     	payment.setCustomer(rental.getCustomer());
-		payment.setOrderedAdditionalServices(this.orderedAdditionalServiceService.getAllByRentalId(rental.getRentalId()));
 		payment.setRental(rental);
 		payment.setTotalAmount(rental.getTotalPrice());
 		

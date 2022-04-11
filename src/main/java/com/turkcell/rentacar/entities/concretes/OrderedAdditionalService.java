@@ -34,9 +34,6 @@ public class OrderedAdditionalService {
 	@JoinColumn(name = "additional_service_id")
 	private AdditionalService additionalService;
 	
-	@ManyToOne
-	@JoinColumn(name = "payment_id")
-	private Payment payment;
     
     
 }

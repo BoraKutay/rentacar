@@ -19,6 +19,7 @@ import com.turkcell.rentacar.business.abstracts.IndividualCustomerService;
 import com.turkcell.rentacar.business.abstracts.OrderedAdditionalServiceService;
 import com.turkcell.rentacar.business.abstracts.RentalService;
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
+import com.turkcell.rentacar.business.dtos.additionalServiceDtos.AdditionalServiceByIdDto;
 import com.turkcell.rentacar.business.dtos.carMaintenanceDtos.CarMaintenanceListDto;
 import com.turkcell.rentacar.business.dtos.rentalDtos.RentalDtoById;
 import com.turkcell.rentacar.business.dtos.rentalDtos.RentalListDto;
@@ -35,6 +36,7 @@ import com.turkcell.rentacar.core.utilities.results.Result;
 import com.turkcell.rentacar.core.utilities.results.SuccessDataResult;
 import com.turkcell.rentacar.core.utilities.results.SuccessResult;
 import com.turkcell.rentacar.dataAccess.abstracts.RentalDao;
+import com.turkcell.rentacar.entities.concretes.AdditionalService;
 import com.turkcell.rentacar.entities.concretes.CarMaintenance;
 import com.turkcell.rentacar.entities.concretes.OrderedAdditionalService;
 import com.turkcell.rentacar.entities.concretes.Rental;
@@ -56,8 +58,8 @@ public class RentalManager implements RentalService {
 	private CityService cityService;
 	
 	public RentalManager(RentalDao rentalDao, ModelMapperService modelMapperService,
-			@Lazy CarMaintenanceService carMaintenanceService,CarService carService, OrderedAdditionalServiceService orderedAdditionalServiceService, 
-			AdditionalServiceService additionalServiceService, @Lazy CustomerService customerService, 
+			@Lazy CarMaintenanceService carMaintenanceService,@Lazy CarService carService, @Lazy OrderedAdditionalServiceService orderedAdditionalServiceService, 
+			@Lazy AdditionalServiceService additionalServiceService, @Lazy CustomerService customerService, 
 			@Lazy IndividualCustomerService individualCustomerService,CityService cityService,
 			@Lazy CorporateCustomerService corporateCustomerService) {
 		
@@ -110,8 +112,6 @@ public class RentalManager implements RentalService {
 		
 		
 	}
-	
-	
 	
 	@Override
 	public DataResult<Rental> addForCorporateCustomer(CreateRentalRequestForCorporateCustomer createRentalRequestForCorporateCustomer) throws BusinessException {
@@ -199,6 +199,7 @@ public class RentalManager implements RentalService {
 	
 	@Override
 	public Rental getRentalById(int id) throws BusinessException{
+		
 		checkIfRentalExists(id);
 		
 		Rental rental = this.rentalDao.getById(id);

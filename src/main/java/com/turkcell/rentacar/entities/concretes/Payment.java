@@ -41,9 +41,6 @@ public class Payment {
     @JoinColumn(name = "invoice_id")
     private Invoice invoice;
     
-    @OneToMany(mappedBy = "payment")
-    private List<OrderedAdditionalService> orderedAdditionalServices;
-    
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
