@@ -30,6 +30,10 @@ import com.turkcell.rentacar.business.requests.createRequests.CreateRentalReques
 import com.turkcell.rentacar.business.requests.deleteRequests.DeleteRentalRequest;
 import com.turkcell.rentacar.business.requests.updateRequests.UpdateRentalRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
+import com.turkcell.rentacar.core.exceptions.rental.CarAlreadyRentedException;
+import com.turkcell.rentacar.core.exceptions.rental.CarInMaintenanceException;
+import com.turkcell.rentacar.core.exceptions.rental.EndDateBeforeThanStartDateException;
+import com.turkcell.rentacar.core.exceptions.rental.RentalNotFoundException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -43,7 +47,6 @@ import com.turkcell.rentacar.entities.concretes.Rental;
 
 @Service
 public class RentalManager implements RentalService {
-
 
 	private RentalDao rentalDao;
 	private ModelMapperService modelMapperService;
@@ -79,7 +82,7 @@ public class RentalManager implements RentalService {
 		List<Rental> result = this.rentalDao.findAll();
 		List<RentalListDto> response = result.stream().map(rental->this.modelMapperService.forDto().map(rental,RentalListDto.class)).collect(Collectors.toList());
 		
-		return new SuccessDataResult<List<RentalListDto>>(response, BusinessMessages.RENTALS + BusinessMessages.LIST);
+		return new SuccessDataResult<List<RentalListDto>>(response, BusinessMessages.RENTALS + BusinessMessages.LISTED);
 	}
 	
 	@Override
@@ -107,7 +110,7 @@ public class RentalManager implements RentalService {
 		
 		Rental rentalEntity = this.rentalDao.save(rental);
 		
-		return new SuccessDataResult<Rental>(rentalEntity, BusinessMessages.RENTAL + BusinessMessages.ADD);
+		return new SuccessDataResult<Rental>(rentalEntity, BusinessMessages.RENTAL + BusinessMessages.ADDED);
 	
 		
 		
@@ -138,7 +141,7 @@ public class RentalManager implements RentalService {
 		
 		Rental rentalEntity = this.rentalDao.save(rental);
 		
-		return new SuccessDataResult<Rental>(rentalEntity,BusinessMessages.RENTAL + BusinessMessages.ADD);
+		return new SuccessDataResult<Rental>(rentalEntity,BusinessMessages.RENTAL + BusinessMessages.ADDED);
 	
 		
 		
@@ -225,7 +228,7 @@ public class RentalManager implements RentalService {
 		
 		this.rentalDao.save(rental);
 		
-		return new SuccessResult(BusinessMessages.RENTAL + BusinessMessages.UPDATE);
+		return new SuccessResult(BusinessMessages.RENTAL + BusinessMessages.UPDATED);
 	}
 
 	@Override
@@ -237,7 +240,7 @@ public class RentalManager implements RentalService {
 		List<RentalListDto> response = result.stream().map(rent -> this.modelMapperService.forDto().map(rent, RentalListDto.class))
 				.collect(Collectors.toList());
 		
-		return new SuccessDataResult<List<RentalListDto>>(response,BusinessMessages.RENTALS + BusinessMessages.LIST + BusinessMessages.BY_CAR + id);
+		return new SuccessDataResult<List<RentalListDto>>(response,BusinessMessages.RENTALS + BusinessMessages.LISTED + BusinessMessages.BY_CAR + id);
 	}
 
 	@Override
@@ -247,7 +250,7 @@ public class RentalManager implements RentalService {
 		
         this.rentalDao.deleteById(deleteRentalRequest.getRentalId());
         
-        return new SuccessResult(BusinessMessages.RENTAL + BusinessMessages.DELETE);
+        return new SuccessResult(BusinessMessages.RENTAL + BusinessMessages.DELETED);
 	}
 	
 	
@@ -271,7 +274,7 @@ public class RentalManager implements RentalService {
     	
     	for (Rental rental:response) {
     		if(!rental.getEndDate().isBefore(startDate)) {
-    			throw new BusinessException("Car is already rented!");
+    			throw new CarAlreadyRentedException(BusinessMessages.CAR + BusinessMessages.ALREADY_RENTED);
     		}
     	}
     }
@@ -284,7 +287,7 @@ public class RentalManager implements RentalService {
 		for(CarMaintenance carMaintenance : response) {
 			                                                                     
 			if(carMaintenance.getReturnDate() == null || startDate.isBefore(carMaintenance.getReturnDate())) {
-				throw new BusinessException(BusinessMessages.CAR_IS_IN_MAINTENANCE);
+				throw new CarInMaintenanceException(BusinessMessages.CAR_IS_IN_MAINTENANCE);
 			}
 		}
     }
@@ -295,7 +298,7 @@ public class RentalManager implements RentalService {
     	
     	if(rentalDao.existsById(id) == false) {
     		
-    		throw new BusinessException(BusinessMessages.RENTAL + BusinessMessages.DOES_NOT_EXISTS + id);
+    		throw new RentalNotFoundException(BusinessMessages.RENTAL + BusinessMessages.DOES_NOT_EXISTS + id);
     		
     	}
 		return true;
@@ -340,7 +343,7 @@ public class RentalManager implements RentalService {
     	
         if(endDate.isBefore(startDate)){
         	
-            throw new BusinessException(BusinessMessages.END_DATE_CANNOT_BEFORE_START_DATE);
+            throw new EndDateBeforeThanStartDateException(BusinessMessages.END_DATE_CANNOT_BEFORE_START_DATE);
             
         }
       }

@@ -14,6 +14,8 @@ import com.turkcell.rentacar.business.requests.createRequests.CreateCityRequest;
 import com.turkcell.rentacar.business.requests.deleteRequests.DeleteCityRequest;
 import com.turkcell.rentacar.business.requests.updateRequests.UpdateCityRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
+import com.turkcell.rentacar.core.exceptions.city.CityNameNotUniqueException;
+import com.turkcell.rentacar.core.exceptions.city.CityNotFoundException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -44,7 +46,7 @@ public class CityManager implements CityService {
                 .map(city -> this.modelMapperService.forDto().map(city, CityListDto.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<List<CityListDto>>(response, BusinessMessages.CITIES + BusinessMessages.LIST);
+        return new SuccessDataResult<List<CityListDto>>(response, BusinessMessages.CITIES + BusinessMessages.LISTED);
 	}
 
 	@Override
@@ -56,7 +58,7 @@ public class CityManager implements CityService {
 		
 		this.cityDao.save(city);
 		
-		return new SuccessResult(BusinessMessages.CITY + BusinessMessages.ADD);
+		return new SuccessResult(BusinessMessages.CITY + BusinessMessages.ADDED);
 	}
 
 	@Override
@@ -82,7 +84,7 @@ public class CityManager implements CityService {
 
         this.cityDao.save(city);
 
-        return new SuccessResult(BusinessMessages.CITY + BusinessMessages.UPDATE);
+        return new SuccessResult(BusinessMessages.CITY + BusinessMessages.UPDATED);
 	}
 
 	@Override
@@ -92,13 +94,13 @@ public class CityManager implements CityService {
 		
 		this.cityDao.deleteById(deleteCityRequest.getCityId());
 		
-		return new SuccessResult(BusinessMessages.CITY + BusinessMessages.DELETE);
+		return new SuccessResult(BusinessMessages.CITY + BusinessMessages.DELETED);
 	}
 	
 	public boolean checkIfCityExists(int id) throws BusinessException{
 		
 		if(cityDao.existsById(id) == false) {
-			throw new BusinessException(BusinessMessages.CITY + BusinessMessages.DOES_NOT_EXISTS + id);
+			throw new CityNotFoundException(BusinessMessages.CITY + BusinessMessages.DOES_NOT_EXISTS + id);
 		}
 		return true;
 	}
@@ -107,7 +109,7 @@ public class CityManager implements CityService {
 
         for (CityListDto cityElement : this.getAll().getData()) {
             if (cityElement.getCityName().equalsIgnoreCase(cityName)) {
-                throw new BusinessException(BusinessMessages.NOT_UNIQUE + cityName);
+                throw new CityNameNotUniqueException(BusinessMessages.NOT_UNIQUE + cityName);
             }
         }
 

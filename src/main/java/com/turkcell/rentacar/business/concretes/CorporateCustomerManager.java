@@ -17,6 +17,7 @@ import com.turkcell.rentacar.business.requests.createRequests.CreateCorporateCus
 import com.turkcell.rentacar.business.requests.deleteRequests.DeleteCorporateCustomerRequest;
 import com.turkcell.rentacar.business.requests.updateRequests.UpdateCorporateCustomerRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
+import com.turkcell.rentacar.core.exceptions.corporateCustomer.CorporateCustomerNotFoundException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -47,13 +48,13 @@ public class CorporateCustomerManager implements CorporateCustomerService{
 				.map(corporateCustomer -> this.modelMapperService.forDto().map(corporateCustomer, CorporateCustomerListDto.class))
 				.collect(Collectors.toList());
 		
-		return new SuccessDataResult<List<CorporateCustomerListDto>>(response,BusinessMessages.CORPORATE_CUSTOMERS + BusinessMessages.LIST);
+		return new SuccessDataResult<List<CorporateCustomerListDto>>(response,BusinessMessages.CORPORATE_CUSTOMERS + BusinessMessages.LISTED);
 	}
 
 	@Override
 	public DataResult<CorporateCustomerByIdDto> getById(int id) throws BusinessException {
     	
-		checkIfCorporateCustomerIsExists(id);
+		checkIfCustomerExists(id);
     	
 		CorporateCustomer corporateCustomer = this.corporateCustomerDao.getById(id);	
         CorporateCustomerByIdDto response = this.modelMapperService.forDto().map(corporateCustomer, CorporateCustomerByIdDto.class);
@@ -68,42 +69,35 @@ public class CorporateCustomerManager implements CorporateCustomerService{
 
         this.corporateCustomerDao.save(corporateCustomer);
 
-        return new SuccessResult(BusinessMessages.CORPORATE_CUSTOMER + BusinessMessages.ADD);
+        return new SuccessResult(BusinessMessages.CORPORATE_CUSTOMER + BusinessMessages.ADDED);
 	}
 
 	@Override
 	public Result delete(DeleteCorporateCustomerRequest deleteCorporateCustomerRequest) throws BusinessException {
 		
-		checkIfCorporateCustomerIsExists(deleteCorporateCustomerRequest.getCorporateCustomerId());
+		checkIfCustomerExists(deleteCorporateCustomerRequest.getCorporateCustomerId());
 		
 		this.corporateCustomerDao.deleteById(deleteCorporateCustomerRequest.getCorporateCustomerId());
 
-		return new SuccessResult(BusinessMessages.CORPORATE_CUSTOMER + BusinessMessages.DELETE);
+		return new SuccessResult(BusinessMessages.CORPORATE_CUSTOMER + BusinessMessages.DELETED);
 	}
 
 	@Override
 	public Result update(@RequestBody @Valid @Email UpdateCorporateCustomerRequest updateCorporateCustomerRequest) throws BusinessException {
 		
-		checkIfCorporateCustomerIsExists(updateCorporateCustomerRequest.getCorporateCustomerId());
+		checkIfCustomerExists(updateCorporateCustomerRequest.getCorporateCustomerId());
 		
 		CorporateCustomer corporateCustomer = this.modelMapperService.forRequest().map(updateCorporateCustomerRequest, CorporateCustomer.class);
 		
 		this.corporateCustomerDao.save(corporateCustomer);
 		
-		return new SuccessResult(BusinessMessages.CORPORATE_CUSTOMER + BusinessMessages.UPDATE);
+		return new SuccessResult(BusinessMessages.CORPORATE_CUSTOMER + BusinessMessages.UPDATED);
 	}
 	
-	private boolean checkIfCorporateCustomerIsExists(int id) throws BusinessException{
-		
-		if(corporateCustomerDao.existsById(id) == false) {
-			throw new BusinessException(BusinessMessages.CORPORATE_CUSTOMER + BusinessMessages.DOES_NOT_EXISTS  + id);
-		}
-		return true;
-	}
 
 	@Override
 	public Customer getCustomerById(int id) {
-		return null;
+		return this.corporateCustomerDao.getById(id);
 		
 	}
 
@@ -111,15 +105,11 @@ public class CorporateCustomerManager implements CorporateCustomerService{
 	public boolean checkIfCustomerExists(int id) throws BusinessException {
 		
 		if(corporateCustomerDao.existsById(id) == false) {
-			throw new BusinessException(BusinessMessages.CORPORATE_CUSTOMER + BusinessMessages.DOES_NOT_EXISTS  + id);
+			throw new CorporateCustomerNotFoundException(BusinessMessages.CORPORATE_CUSTOMER + BusinessMessages.DOES_NOT_EXISTS  + id);
 		}
 		return true;
 	}
 
-	@Override
-	public boolean checkIfCorparateCustomerExists(int id) throws BusinessException {
-		// TODO Auto-generated method stub
-		return false;
-	}
+
 
 }

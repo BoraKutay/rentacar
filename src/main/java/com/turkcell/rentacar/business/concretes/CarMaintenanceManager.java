@@ -18,6 +18,8 @@ import com.turkcell.rentacar.business.requests.createRequests.CreateCarMaintenan
 import com.turkcell.rentacar.business.requests.deleteRequests.DeleteCarMaintenanceRequest;
 import com.turkcell.rentacar.business.requests.updateRequests.UpdateCarMaintenanceRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
+import com.turkcell.rentacar.core.exceptions.carMaintenance.CarMaintenanceNotFoundException;
+import com.turkcell.rentacar.core.exceptions.carMaintenance.CarNotAvailableException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -51,7 +53,7 @@ public class CarMaintenanceManager implements CarMaintenanceService {
                 .map(carMaintenance -> this.modelMapperService.forDto().map(carMaintenance, CarMaintenanceListDto.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<List<CarMaintenanceListDto>>(response, BusinessMessages.CAR_MAINTENANCES + BusinessMessages.LIST);
+        return new SuccessDataResult<List<CarMaintenanceListDto>>(response, BusinessMessages.CAR_MAINTENANCES + BusinessMessages.LISTED);
 	}
 
 	@Override
@@ -65,7 +67,7 @@ public class CarMaintenanceManager implements CarMaintenanceService {
         
         this.carMaintenanceDao.save(carMaintenance);
 
-        return new SuccessResult(BusinessMessages.CAR_MAINTENANCE + BusinessMessages.ADD);
+        return new SuccessResult(BusinessMessages.CAR_MAINTENANCE + BusinessMessages.ADDED);
 	}
 
 	@Override
@@ -79,7 +81,7 @@ public class CarMaintenanceManager implements CarMaintenanceService {
         carMaintenance.setCarMaintenanceId(0);
         this.carMaintenanceDao.save(carMaintenance);
 
-        return new SuccessResult(BusinessMessages.CAR_MAINTENANCE + BusinessMessages.UPDATE);
+        return new SuccessResult(BusinessMessages.CAR_MAINTENANCE + BusinessMessages.UPDATED);
 	}
 
 	@Override
@@ -100,7 +102,7 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 		
         this.carMaintenanceDao.deleteById(deleteCarMaintenanceRequest.getCarMaintenanceId());
         
-        return new SuccessResult(BusinessMessages.CAR_MAINTENANCE + BusinessMessages.DELETE);
+        return new SuccessResult(BusinessMessages.CAR_MAINTENANCE + BusinessMessages.DELETED);
 	}
 	
 	@Override
@@ -112,7 +114,7 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 		List<CarMaintenanceListDto> response = result.stream()
 				.map(carMaintenance -> this.modelMapperService.forDto().map(carMaintenance, CarMaintenanceListDto.class)).collect(Collectors.toList());
 		
-		return new SuccessDataResult<List<CarMaintenanceListDto>>(response, BusinessMessages.CAR_MAINTENANCES + BusinessMessages.LIST);
+		return new SuccessDataResult<List<CarMaintenanceListDto>>(response, BusinessMessages.CAR_MAINTENANCES + BusinessMessages.LISTED);
 	}
 	
 	private void checkIfCarIsAvailable(int carId) throws BusinessException{
@@ -127,7 +129,7 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 			
 			if(rental.getEndDate() == null || rental.getEndDate().isAfter(LocalDate.now())) {
 				
-				throw new BusinessException(BusinessMessages.CAR_IS_NOT_AVAILABLE + rental.getEndDate());
+				throw new CarNotAvailableException(BusinessMessages.CAR_IS_NOT_AVAILABLE + rental.getEndDate());
 				
 			}
 		}
@@ -143,7 +145,7 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 		for(CarMaintenance carMaintenance : response) {
             
 			if(carMaintenance.getReturnDate() == null || LocalDate.now().isBefore(carMaintenance.getReturnDate())) {
-				throw new BusinessException(BusinessMessages.CAR_IS_IN_MAINTENANCE);
+				throw new CarNotAvailableException(BusinessMessages.CAR_IS_IN_MAINTENANCE);
 			}
 		}
 	}
@@ -152,7 +154,7 @@ public class CarMaintenanceManager implements CarMaintenanceService {
     private boolean checkIfCarMaintenanceExists(int id) throws BusinessException {
     	
     	if(carMaintenanceDao.existsById(id) == false) {
-    		throw new BusinessException(BusinessMessages.CAR_MAINTENANCE + BusinessMessages.DOES_NOT_EXISTS + id);
+    		throw new CarMaintenanceNotFoundException(BusinessMessages.CAR_MAINTENANCE + BusinessMessages.DOES_NOT_EXISTS + id);
     	}
 		return true;
     }

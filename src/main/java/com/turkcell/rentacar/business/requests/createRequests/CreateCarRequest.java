@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CreateCarRequest {
 
-	@Min(0)
+	@PositiveOrZero
 	@NotNull
     private double dailyPrice;
 	

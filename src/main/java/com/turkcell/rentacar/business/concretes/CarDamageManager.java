@@ -14,6 +14,7 @@ import com.turkcell.rentacar.business.requests.createRequests.CreateCarDamageReq
 import com.turkcell.rentacar.business.requests.deleteRequests.DeleteCarDamageRequest;
 import com.turkcell.rentacar.business.requests.updateRequests.UpdateCarDamageRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
+import com.turkcell.rentacar.core.exceptions.carDamage.CarDamageNotFoundException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -44,7 +45,7 @@ public class CarDamageManager implements CarDamageService {
 		List<CarDamageListDto> response = result.stream().map(cardamage -> this.modelMapperService.forDto()
 				.map(cardamage, CarDamageListDto.class)).collect(Collectors.toList());
 		
-		return new SuccessDataResult<List<CarDamageListDto>>(response,BusinessMessages.CAR_DAMAGES + BusinessMessages.LIST);
+		return new SuccessDataResult<List<CarDamageListDto>>(response,BusinessMessages.CAR_DAMAGES + BusinessMessages.LISTED);
 	}
 
 	@Override
@@ -56,7 +57,7 @@ public class CarDamageManager implements CarDamageService {
 		
 		this.carDamageDao.save(result);
 		
-		return new SuccessResult(BusinessMessages.CAR_DAMAGE + BusinessMessages.ADD);
+		return new SuccessResult(BusinessMessages.CAR_DAMAGE + BusinessMessages.ADDED);
 	}
 
 	@Override
@@ -79,7 +80,7 @@ public class CarDamageManager implements CarDamageService {
 		
 		this.carDamageDao.save(result);
 		
-		return new SuccessResult(BusinessMessages.CAR_DAMAGE + BusinessMessages.UPDATE);
+		return new SuccessResult(BusinessMessages.CAR_DAMAGE + BusinessMessages.UPDATED);
 	}
 
 	@Override
@@ -89,13 +90,13 @@ public class CarDamageManager implements CarDamageService {
 		
 		this.carDamageDao.deleteById(deleteCarDamageRequest.getCarDamageId());
 		
-		return new SuccessResult(BusinessMessages.CAR_DAMAGE + BusinessMessages.DELETE);
+		return new SuccessResult(BusinessMessages.CAR_DAMAGE + BusinessMessages.DELETED);
 	}
 	
     private boolean checkIfCarDamageExists(int id) throws BusinessException {
     	
     	if(carDamageDao.existsById(id) == false) {
-    		throw new BusinessException(BusinessMessages.CAR_DAMAGE + BusinessMessages.DOES_NOT_EXISTS + id);
+    		throw new CarDamageNotFoundException(BusinessMessages.CAR_DAMAGE + BusinessMessages.DOES_NOT_EXISTS + id);
     	}
 		return true;
     }

@@ -16,6 +16,7 @@ import com.turkcell.rentacar.business.requests.createRequests.CreateOrderedAddit
 import com.turkcell.rentacar.business.requests.deleteRequests.DeleteOrderedAdditionalServiceRequest;
 import com.turkcell.rentacar.business.requests.updateRequests.UpdateOrderedAdditionalServiceRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
+import com.turkcell.rentacar.core.exceptions.orderedAdditionalService.OrderedAdditionalServiceNotFoundException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -47,7 +48,7 @@ public class OrderedAdditionalServiceManager implements OrderedAdditionalService
                 .map(orderedAdditionalService -> this.modelMapperService.forDto().map(orderedAdditionalService, OrderedAdditionalServiceListDto.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<List<OrderedAdditionalServiceListDto>>(response, BusinessMessages.ORDERED_ADDITIONAL_SERVICES + BusinessMessages.LIST);
+        return new SuccessDataResult<List<OrderedAdditionalServiceListDto>>(response, BusinessMessages.ORDERED_ADDITIONAL_SERVICES + BusinessMessages.LISTED);
 	}
 
 	@Override
@@ -58,7 +59,7 @@ public class OrderedAdditionalServiceManager implements OrderedAdditionalService
 		orderedAdditionalService.setOrderedAdditionalServiceId(0);
 		this.orderedAdditionalServiceDao.save(orderedAdditionalService);
 		
-		return new SuccessResult(BusinessMessages.ORDERED_ADDITIONAL_SERVICE + BusinessMessages.ADD);
+		return new SuccessResult(BusinessMessages.ORDERED_ADDITIONAL_SERVICE + BusinessMessages.ADDED);
 	}
 
 	@Override
@@ -97,7 +98,7 @@ public class OrderedAdditionalServiceManager implements OrderedAdditionalService
 		
 		this.orderedAdditionalServiceDao.save(orderedAdditionalService);
 		
-		return new SuccessResult(BusinessMessages.ORDERED_ADDITIONAL_SERVICE + BusinessMessages.UPDATE);
+		return new SuccessResult(BusinessMessages.ORDERED_ADDITIONAL_SERVICE + BusinessMessages.UPDATED);
 	}
 
 	@Override
@@ -108,7 +109,7 @@ public class OrderedAdditionalServiceManager implements OrderedAdditionalService
 		
 		this.orderedAdditionalServiceDao.deleteById(deleteOrderedAdditionalServiceRequest.getOrderedAdditionalServiceId());
 		
-		return new SuccessResult(BusinessMessages.ORDERED_ADDITIONAL_SERVICE + BusinessMessages.DELETE);
+		return new SuccessResult(BusinessMessages.ORDERED_ADDITIONAL_SERVICE + BusinessMessages.DELETED);
 	}
 	
 	@Override
@@ -120,7 +121,7 @@ public class OrderedAdditionalServiceManager implements OrderedAdditionalService
     private boolean checkIfOrderedAdditionalServiceExists(int id) throws BusinessException {
     	
     	if(orderedAdditionalServiceDao.existsById(id) == false) {
-    		throw new BusinessException(BusinessMessages.ORDERED_ADDITIONAL_SERVICE + BusinessMessages.DOES_NOT_EXISTS + id);
+    		throw new OrderedAdditionalServiceNotFoundException(BusinessMessages.ORDERED_ADDITIONAL_SERVICE + BusinessMessages.DOES_NOT_EXISTS + id);
     	}
 		return true;
     }

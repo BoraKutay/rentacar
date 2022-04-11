@@ -14,6 +14,7 @@ import com.turkcell.rentacar.business.requests.createRequests.CreateIndividualCu
 import com.turkcell.rentacar.business.requests.deleteRequests.DeleteIndividualCustomerRequest;
 import com.turkcell.rentacar.business.requests.updateRequests.UpdateIndividualCustomerRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
+import com.turkcell.rentacar.core.exceptions.individualCustomer.IndividualCustomerNotFoundException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -44,13 +45,13 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 				.map(individualCustomer -> this.modelMapperService.forDto().map(individualCustomer, IndividualCustomerListDto.class))
 				.collect(Collectors.toList());
 		
-		return new SuccessDataResult<List<IndividualCustomerListDto>>(response,BusinessMessages.INDIVIDUAL_CUSTOMERS + BusinessMessages.LIST);
+		return new SuccessDataResult<List<IndividualCustomerListDto>>(response,BusinessMessages.INDIVIDUAL_CUSTOMERS + BusinessMessages.LISTED);
 	}
 
 	@Override
 	public DataResult<IndividualCustomerByIdDto> getById(int id) throws BusinessException {
     	
-		checkIfIndividualCustomerIsExists(id);
+		checkIfCustomerExists(id);
     	
 		IndividualCustomer individualCustomer = this.individualCustomerDao.getById(id);	
         IndividualCustomerByIdDto response = this.modelMapperService.forDto().map(individualCustomer, IndividualCustomerByIdDto.class);
@@ -65,38 +66,31 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 
         this.individualCustomerDao.save(individualCustomer);
 
-        return new SuccessResult(BusinessMessages.INDIVIDUAL_CUSTOMER + BusinessMessages.ADD);
+        return new SuccessResult(BusinessMessages.INDIVIDUAL_CUSTOMER + BusinessMessages.ADDED);
 	}
 
 	@Override
 	public Result delete(DeleteIndividualCustomerRequest deleteIndividualCustomerRequest) throws BusinessException {
 		
-		checkIfIndividualCustomerIsExists(deleteIndividualCustomerRequest.getIndividualCustomerId());
+		checkIfCustomerExists(deleteIndividualCustomerRequest.getIndividualCustomerId());
 		
 		this.individualCustomerDao.deleteById(deleteIndividualCustomerRequest.getIndividualCustomerId());
 
-		return new SuccessResult(BusinessMessages.INDIVIDUAL_CUSTOMER + BusinessMessages.DELETE);
+		return new SuccessResult(BusinessMessages.INDIVIDUAL_CUSTOMER + BusinessMessages.DELETED);
 	}
 
 	@Override
 	public Result update(UpdateIndividualCustomerRequest updateIndividualCustomerRequest) throws BusinessException {
 		
-		checkIfIndividualCustomerIsExists(updateIndividualCustomerRequest.getIndividualCustomerId());
+		checkIfCustomerExists(updateIndividualCustomerRequest.getIndividualCustomerId());
 		
 		IndividualCustomer individualCustomer = this.modelMapperService.forRequest().map(updateIndividualCustomerRequest, IndividualCustomer.class);
 		
 		this.individualCustomerDao.save(individualCustomer);
 		
-		return new SuccessResult(BusinessMessages.INDIVIDUAL_CUSTOMER + BusinessMessages.UPDATE);
+		return new SuccessResult(BusinessMessages.INDIVIDUAL_CUSTOMER + BusinessMessages.UPDATED);
 	}
 	
-	public boolean checkIfIndividualCustomerIsExists(int id) throws BusinessException{
-		
-		if(individualCustomerDao.existsById(id) == false) {
-			throw new BusinessException(BusinessMessages.INDIVIDUAL_CUSTOMER + BusinessMessages.DOES_NOT_EXISTS + id);
-		}
-		return true;
-	}
 
 	@Override
 	public IndividualCustomer getCustomerById(int id) {
@@ -108,7 +102,7 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 	public boolean checkIfCustomerExists(int id) throws BusinessException {
 		
 		if(individualCustomerDao.existsById(id) == false) {
-			throw new BusinessException(BusinessMessages.INDIVIDUAL_CUSTOMER + BusinessMessages.DOES_NOT_EXISTS + id);
+			throw new IndividualCustomerNotFoundException(BusinessMessages.INDIVIDUAL_CUSTOMER + BusinessMessages.DOES_NOT_EXISTS + id);
 		}
 		return true;
 	}

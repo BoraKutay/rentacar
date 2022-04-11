@@ -8,6 +8,8 @@ import com.turkcell.rentacar.business.requests.createRequests.CreateBrandRequest
 import com.turkcell.rentacar.business.requests.deleteRequests.DeleteBrandRequest;
 import com.turkcell.rentacar.business.requests.updateRequests.UpdateBrandRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
+import com.turkcell.rentacar.core.exceptions.brand.BrandNameNotUniqueException;
+import com.turkcell.rentacar.core.exceptions.brand.BrandNotFoundException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -41,7 +43,7 @@ public class BrandManager implements BrandService {
                 .map(brand -> this.modelMapperService.forDto().map(brand, BrandListDto.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<List<BrandListDto>>(response, BusinessMessages.BRANDS + BusinessMessages.LIST);
+        return new SuccessDataResult<List<BrandListDto>>(response, BusinessMessages.BRANDS + BusinessMessages.LISTED);
     }
 
     @Override
@@ -54,7 +56,7 @@ public class BrandManager implements BrandService {
 
         this.brandDao.save(brand);
 
-        return new SuccessResult(BusinessMessages.BRAND + BusinessMessages.ADD);
+        return new SuccessResult(BusinessMessages.BRAND + BusinessMessages.ADDED);
 
     }
 
@@ -82,7 +84,7 @@ public class BrandManager implements BrandService {
 
         this.brandDao.save(brand);
         
-        return new SuccessResult(BusinessMessages.BRAND + BusinessMessages.UPDATE);
+        return new SuccessResult(BusinessMessages.BRAND + BusinessMessages.UPDATED);
     }
 
     @Override
@@ -92,14 +94,14 @@ public class BrandManager implements BrandService {
     	
         this.brandDao.deleteById(deleteBrandRequest.getBrandId());
         
-        return new SuccessResult(BusinessMessages.BRAND + BusinessMessages.DELETE);
+        return new SuccessResult(BusinessMessages.BRAND + BusinessMessages.DELETED);
     }
 
     private boolean checkIfBrandNameIsUnique(String brandName) throws BusinessException {
 
         if (this.brandDao.existsByBrandNameIgnoreCase(brandName)) {
         	
-            throw new BusinessException(BusinessMessages.NOT_UNIQUE + brandName);
+            throw new BrandNameNotUniqueException(BusinessMessages.NOT_UNIQUE + brandName);
         }
 
         return true;
@@ -109,7 +111,7 @@ public class BrandManager implements BrandService {
     private boolean checkIfBrandExists(int id) throws BusinessException {
     	
     	if(brandDao.existsById(id) == false) {
-    		throw new BusinessException(BusinessMessages.BRAND + BusinessMessages.DOES_NOT_EXISTS + id);
+    		throw new BrandNotFoundException(BusinessMessages.BRAND + BusinessMessages.DOES_NOT_EXISTS + id);
     	}
 		return true;
     }

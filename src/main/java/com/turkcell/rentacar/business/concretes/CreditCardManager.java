@@ -15,6 +15,7 @@ import com.turkcell.rentacar.business.requests.createRequests.CreateCreditCardRe
 import com.turkcell.rentacar.business.requests.deleteRequests.DeleteCreditCardRequest;
 import com.turkcell.rentacar.business.requests.updateRequests.UpdateCreditCardRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
+import com.turkcell.rentacar.core.exceptions.creditCard.CreditCardNotFoundException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -46,7 +47,7 @@ public class CreditCardManager implements CreditCardService {
 		List<CreditCardListDto> response = result.stream().map(creditCard -> this.modelMapperService.forDto().map(creditCard, CreditCardListDto.class))
 		.collect(Collectors.toList());
 		
-		return new SuccessDataResult<List<CreditCardListDto>>(response,BusinessMessages.CREDIT_CARDS + BusinessMessages.LIST);
+		return new SuccessDataResult<List<CreditCardListDto>>(response,BusinessMessages.CREDIT_CARDS + BusinessMessages.LISTED);
 	}
 	
 	@Override
@@ -56,7 +57,7 @@ public class CreditCardManager implements CreditCardService {
 		creditCard.setCustomer(this.customerService.getCustomerById(customerId));
 		this.creditCardDao.save(creditCard);
 		
-		return new SuccessResult(BusinessMessages.CREDIT_CARD + BusinessMessages.ADD);
+		return new SuccessResult(BusinessMessages.CREDIT_CARD + BusinessMessages.ADDED);
 	}
 
 	@Override
@@ -84,7 +85,7 @@ public class CreditCardManager implements CreditCardService {
 				.map(creditCard -> this.modelMapperService.forDto().map(creditCard, CreditCardListDto.class))
 				.collect(Collectors.toList());
 		
-		return new SuccessDataResult<List<CreditCardListDto>>(response, BusinessMessages.CREDIT_CARDS + BusinessMessages.LIST);
+		return new SuccessDataResult<List<CreditCardListDto>>(response, BusinessMessages.CREDIT_CARDS + BusinessMessages.LISTED);
 	}
 
 	@Override
@@ -95,7 +96,7 @@ public class CreditCardManager implements CreditCardService {
 		CreditCard creditCard = this.modelMapperService.forDto().map(updateCreditCardRequest, CreditCard.class);
 		this.creditCardDao.save(creditCard);
 		
-		return new SuccessResult(BusinessMessages.CREDIT_CARD + BusinessMessages.UPDATE);
+		return new SuccessResult(BusinessMessages.CREDIT_CARD + BusinessMessages.UPDATED);
 	}
 
 	@Override
@@ -105,14 +106,14 @@ public class CreditCardManager implements CreditCardService {
 		
 		this.creditCardDao.deleteById(deleteCreditCardRequest.getCreditCardId());
 		
-		return new SuccessResult(BusinessMessages.CREDIT_CARD + BusinessMessages.DELETE);
+		return new SuccessResult(BusinessMessages.CREDIT_CARD + BusinessMessages.DELETED);
 	}
 	
 	
 	private boolean checkIfCreditCardExists(int id) throws BusinessException {
     	
 		if(creditCardDao.existsById(id) == false) {
-    		throw new BusinessException(BusinessMessages.CREDIT_CARD + BusinessMessages.DOES_NOT_EXISTS + id);
+    		throw new CreditCardNotFoundException(BusinessMessages.CREDIT_CARD + BusinessMessages.DOES_NOT_EXISTS + id);
     	}
 		return true;
 	}

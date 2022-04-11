@@ -39,11 +39,11 @@ public class BusinessMessages {
 	
 	
 	//CRUD
-	public static final String ADD = "added.";
-	public static final String UPDATE = "updated.";
-	public static final String DELETE = "deleted.";
+	public static final String ADDED = "added.";
+	public static final String UPDATED = "updated.";
+	public static final String DELETED = "deleted.";
 	public static final String GET_BY_ID = "found by id: ";
-	public static final String LIST = "listed ";
+	public static final String LISTED = "listed ";
 	
 	
 	//Field
@@ -62,6 +62,7 @@ public class BusinessMessages {
 	public static final String BETWEEN = "by between: ";
 	public static final String BY_CUSTOMER = "by customer.";
 	public static final String BY_CAR = "by car: ";
+	public static final String ALREADY_RENTED = "is already rented!";
 	
 	
 	
@@ -74,7 +75,7 @@ public class BusinessMessages {
 	public static final String CARD_IS_NOT_VALID = "Card is not valid!";
 	public static final String CARD_IS_VALID = "Card is valid.";
 	public static final String PAYMENT_SUCCEED = "Payment succeed.";
-	public static final String ALREADY_PAID = "Paid alread!";
+	public static final String ALREADY_PAID = "Paid already!";
 	
 
 }

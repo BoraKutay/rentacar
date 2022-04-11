@@ -20,6 +20,7 @@ import com.turkcell.rentacar.business.dtos.paymentDtos.PaymentByIdDto;
 import com.turkcell.rentacar.business.dtos.paymentDtos.PaymentListDto;
 import com.turkcell.rentacar.core.adapters.abstracts.PosAdapterService;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
+import com.turkcell.rentacar.core.exceptions.payment.PaymentNotFoundException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -62,7 +63,7 @@ public class PaymentManager implements PaymentService{
                 .map(payment -> this.modelMapperService.forDto().map(payment, PaymentListDto.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<List<PaymentListDto>>(response, BusinessMessages.PAYMENTS + BusinessMessages.LIST);
+        return new SuccessDataResult<List<PaymentListDto>>(response, BusinessMessages.PAYMENTS + BusinessMessages.LISTED);
 	}
 
 	@Override
@@ -74,7 +75,7 @@ public class PaymentManager implements PaymentService{
 		runPaymentSuccessorForIndividual(individualPaymentModel);
 		
 		
-		return new SuccessResult(BusinessMessages.PAYMENT + BusinessMessages.ADD);
+		return new SuccessResult(BusinessMessages.PAYMENT + BusinessMessages.ADDED);
 	}
 	
 	
@@ -87,7 +88,7 @@ public class PaymentManager implements PaymentService{
 			
 		runPaymentSuccessorForCorporate(corporatePaymentModel);
 		
-		return new SuccessResult(BusinessMessages.PAYMENT + BusinessMessages.ADD);
+		return new SuccessResult(BusinessMessages.PAYMENT + BusinessMessages.ADDED);
 		
 	}
 	
@@ -140,7 +141,7 @@ public class PaymentManager implements PaymentService{
     private boolean checkIfPaymentExists(int id) throws BusinessException {
     	
     	if(paymentDao.existsById(id) == false) {
-    		throw new BusinessException(BusinessMessages.PAYMENT + BusinessMessages.DOES_NOT_EXISTS + id);
+    		throw new PaymentNotFoundException(BusinessMessages.PAYMENT + BusinessMessages.DOES_NOT_EXISTS + id);
     	}
 		return true;
     }

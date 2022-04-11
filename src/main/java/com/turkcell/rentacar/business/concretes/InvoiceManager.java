@@ -16,6 +16,7 @@ import com.turkcell.rentacar.business.dtos.invoiceDtos.InvoiceByIdDto;
 import com.turkcell.rentacar.business.dtos.invoiceDtos.InvoiceListDto;
 import com.turkcell.rentacar.business.requests.deleteRequests.DeleteInvoiceRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
+import com.turkcell.rentacar.core.exceptions.invoice.InvoiceNotFoundException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -46,7 +47,7 @@ public class InvoiceManager implements InvoiceService {
 		List<InvoiceListDto> response = result.stream().map(invoice -> this.modelMapperService.forDto().map(invoice, InvoiceListDto.class) )
 				.collect(Collectors.toList());
 		
-		return new SuccessDataResult<List<InvoiceListDto>>(response, BusinessMessages.INVOICES + BusinessMessages.LIST);
+		return new SuccessDataResult<List<InvoiceListDto>>(response, BusinessMessages.INVOICES + BusinessMessages.LISTED);
 	}
 	
 	@Override
@@ -64,7 +65,6 @@ public class InvoiceManager implements InvoiceService {
 	@Transactional
 	public Invoice add(int rentalId) throws BusinessException {
 		
-		//RentalDtoById rentalDtoById = this.rentalService.getById(rentalId).getData();
 		Rental rental = this.rentalService.getRentalById(rentalId);
 		Invoice invoice = new Invoice();
 			
@@ -79,7 +79,7 @@ public class InvoiceManager implements InvoiceService {
 		
 		this.invoiceDao.deleteById(deleteInvoiceRequest.getInvoiceNo());
 		
-		return new SuccessResult(BusinessMessages.INVOICE + BusinessMessages.DELETE);
+		return new SuccessResult(BusinessMessages.INVOICE + BusinessMessages.DELETED);
 	}
 
 	@Override
@@ -92,7 +92,7 @@ public class InvoiceManager implements InvoiceService {
 		
 		this.invoiceDao.save(invoice);
 		
-		return new SuccessResult(BusinessMessages.INVOICE + BusinessMessages.UPDATE);
+		return new SuccessResult(BusinessMessages.INVOICE + BusinessMessages.UPDATED);
 	}
 	
 	@Override
@@ -103,7 +103,7 @@ public class InvoiceManager implements InvoiceService {
 				.map(invoice -> this.modelMapperService.forDto().map(invoice, InvoiceListDto.class))
 				.collect(Collectors.toList());
 		
-		return new SuccessDataResult<List<InvoiceListDto>>(response,BusinessMessages.INVOICES + BusinessMessages.LIST + BusinessMessages.BY_CUSTOMER);
+		return new SuccessDataResult<List<InvoiceListDto>>(response,BusinessMessages.INVOICES + BusinessMessages.LISTED + BusinessMessages.BY_CUSTOMER);
 	}
 	
 	@Override
@@ -114,14 +114,14 @@ public class InvoiceManager implements InvoiceService {
 				.map(invoice -> this.modelMapperService.forDto().map(invoice, InvoiceListDto.class))
 				.collect(Collectors.toList());
 		
-		return new SuccessDataResult<List<InvoiceListDto>>(response,BusinessMessages.INVOICE + BusinessMessages.LIST + BusinessMessages.BETWEEN + startDate + BusinessMessages.AND + endDate);
+		return new SuccessDataResult<List<InvoiceListDto>>(response,BusinessMessages.INVOICE + BusinessMessages.LISTED + BusinessMessages.BETWEEN + startDate + BusinessMessages.AND + endDate);
 	}
 	
     private boolean checkIfInvoiceExists(int id) throws BusinessException {
     	
     	if(invoiceDao.existsById(id) == false) {
     		
-    		throw new BusinessException(BusinessMessages.INVOICE + BusinessMessages.DOES_NOT_EXISTS + id);
+    		throw new InvoiceNotFoundException(BusinessMessages.INVOICE + BusinessMessages.DOES_NOT_EXISTS + id);
     		
     	}
 		return true;

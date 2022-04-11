@@ -17,5 +17,4 @@ public interface CorporateCustomerService extends CustomerService{
 	Result add(CreateCorporateCustomerRequest createCorporateCustomerRequest);
 	Result delete(DeleteCorporateCustomerRequest deleteCorporateCustomerRequest) throws BusinessException;
 	Result update(UpdateCorporateCustomerRequest updateCorporateCustomerRequest) throws BusinessException;
-	boolean checkIfCorparateCustomerExists(int id) throws BusinessException;
 }

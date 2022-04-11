@@ -19,5 +19,4 @@ public interface IndividualCustomerService extends CustomerService {
 	Result delete(DeleteIndividualCustomerRequest deleteIndividualCustomerRequest) throws BusinessException;
 	Result update(UpdateIndividualCustomerRequest updateIndividualCustomerRequest) throws BusinessException;
 	IndividualCustomer getCustomerById(int id);
-	boolean checkIfIndividualCustomerIsExists(int id) throws BusinessException;
 }

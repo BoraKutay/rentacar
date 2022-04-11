@@ -14,6 +14,8 @@ import com.turkcell.rentacar.business.requests.createRequests.CreateAdditionalSe
 import com.turkcell.rentacar.business.requests.deleteRequests.DeleteAdditionalServiceRequest;
 import com.turkcell.rentacar.business.requests.updateRequests.UpdateAdditionalServiceRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
+import com.turkcell.rentacar.core.exceptions.additionalService.AdditionalServiceNotFoundException;
+import com.turkcell.rentacar.core.exceptions.additionalService.AdditionalServiceNotUniqueException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -44,7 +46,7 @@ public class AdditionalServiceManager implements AdditionalServiceService {
                 .map(additionalService -> this.modelMapperService.forDto().map(additionalService, AdditionalServiceListDto.class))
                 .collect(Collectors.toList());
 
-        return new SuccessDataResult<List<AdditionalServiceListDto>>(response, BusinessMessages.ADDITIONAL_SERVICES + BusinessMessages.LIST);
+        return new SuccessDataResult<List<AdditionalServiceListDto>>(response, BusinessMessages.ADDITIONAL_SERVICES + BusinessMessages.LISTED);
 	}
 
 	@Override
@@ -56,7 +58,7 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 		
 		this.additionalServiceDao.save(additionalService);
 		
-		return new SuccessResult(BusinessMessages.ADDITIONAL_SERVICE + BusinessMessages.ADD);
+		return new SuccessResult(BusinessMessages.ADDITIONAL_SERVICE + BusinessMessages.ADDED);
 
 	}
 
@@ -83,7 +85,7 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 		
         this.additionalServiceDao.save(additionalService);
         
-        return new SuccessResult(BusinessMessages.ADDITIONAL_SERVICE + BusinessMessages.UPDATE);
+        return new SuccessResult(BusinessMessages.ADDITIONAL_SERVICE + BusinessMessages.UPDATED);
 	}
 
 	@Override
@@ -93,7 +95,7 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 		
         this.additionalServiceDao.deleteById(deleteAdditionalServiceRequest.getAdditionalServiceId());
         
-        return new SuccessResult(BusinessMessages.ADDITIONAL_SERVICE + BusinessMessages.DELETE);
+        return new SuccessResult(BusinessMessages.ADDITIONAL_SERVICE + BusinessMessages.DELETED);
 	}
 	
 	
@@ -101,7 +103,7 @@ public class AdditionalServiceManager implements AdditionalServiceService {
     	
         for (AdditionalServiceListDto additionalServiceElement : this.getAll().getData()) {
             if (additionalServiceElement.getAdditionalServiceName().equalsIgnoreCase(additionalServiceName)) {
-                throw new BusinessException(BusinessMessages.NOT_UNIQUE + BusinessMessages.ADDITIONAL_SERVICE);
+                throw new AdditionalServiceNotUniqueException(BusinessMessages.NOT_UNIQUE + BusinessMessages.ADDITIONAL_SERVICE);
             }
         }
     }
@@ -109,7 +111,7 @@ public class AdditionalServiceManager implements AdditionalServiceService {
     public boolean checkIfAdditionalServiceExists(int id) throws BusinessException {
     	
     	if(additionalServiceDao.existsById(id) == false) {
-    		throw new BusinessException(BusinessMessages.ADDITIONAL_SERVICE + BusinessMessages.DOES_NOT_EXISTS + id);
+    		throw new AdditionalServiceNotFoundException(BusinessMessages.ADDITIONAL_SERVICE + BusinessMessages.DOES_NOT_EXISTS + id);
     	}
 		return true;
     }
