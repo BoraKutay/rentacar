@@ -44,8 +44,7 @@ import com.turkcell.rentacar.entities.concretes.Rental;
 @Service
 public class RentalManager implements RentalService {
 
-	
-	
+
 	private RentalDao rentalDao;
 	private ModelMapperService modelMapperService;
 	private CarMaintenanceService carMaintenanceService;
@@ -92,6 +91,7 @@ public class RentalManager implements RentalService {
 		checkIfIndividualCustomerExists(createRentalRequestForIndividualCustomer.getIndividualCustomerId());
 		checkIfCityExists(createRentalRequestForIndividualCustomer.getPickUpLocationIdCityId());
 		checkIfCityExists(createRentalRequestForIndividualCustomer.getReturnLocationIdCityId());
+		checkIfAdditionalServiceExists(createRentalRequestForIndividualCustomer.getAdditionalServicesId());
 		
 		Rental rental = this.modelMapperService.forDto().map(createRentalRequestForIndividualCustomer, Rental.class);
 		
@@ -113,6 +113,7 @@ public class RentalManager implements RentalService {
 		
 	}
 	
+	
 	@Override
 	public DataResult<Rental> addForCorporateCustomer(CreateRentalRequestForCorporateCustomer createRentalRequestForCorporateCustomer) throws BusinessException {
 		
@@ -121,6 +122,7 @@ public class RentalManager implements RentalService {
 		checkIfCorporateCustomerExists(createRentalRequestForCorporateCustomer.getCorporateCustomerId());
 		checkIfCityExists(createRentalRequestForCorporateCustomer.getPickUpLocationIdCityId());
 		checkIfCityExists(createRentalRequestForCorporateCustomer.getReturnLocationIdCityId());
+		checkIfAdditionalServiceExists(createRentalRequestForCorporateCustomer.getAdditionalServicesId());
 		
 		Rental rental = this.modelMapperService.forDto().map(createRentalRequestForCorporateCustomer, Rental.class);
 		
@@ -311,6 +313,13 @@ public class RentalManager implements RentalService {
     	return true;
     	
     }
+    
+	public void checkIfAdditionalServiceExists(List<Integer> additionalServicesId) throws BusinessException {
+		for (Integer additionalServiceId : additionalServicesId) {
+			this.additionalServiceService.checkIfAdditionalServiceExists(additionalServiceId);
+		}
+		
+	}
     
     private double calculateAdditionalPriceForReturnLocation(int pickUpLocationId, int returnLocationId) {
     	
