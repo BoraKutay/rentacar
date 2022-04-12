@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 
 @RestController
 @RequestMapping("/api/brands")
@@ -48,7 +50,7 @@ public class BrandsController {
     }
 
     @DeleteMapping("/deleteById")
-    public Result deleteById(@RequestBody DeleteBrandRequest deleteBrandRequest) throws BusinessException {
+    public Result deleteById(@RequestBody @Valid DeleteBrandRequest deleteBrandRequest) throws BusinessException {
 
         return this.brandService.deleteById(deleteBrandRequest);
     }

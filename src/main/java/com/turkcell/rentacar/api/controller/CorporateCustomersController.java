@@ -3,12 +3,14 @@ package com.turkcell.rentacar.api.controller;
 import java.util.List;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -48,19 +50,19 @@ public class CorporateCustomersController {
 	}
 	
 	@PostMapping("/add")
-	Result add(@Valid CreateCorporateCustomerRequest createCorporateCustomerRequest) {
+	Result add(@RequestBody @Valid @Email CreateCorporateCustomerRequest createCorporateCustomerRequest) {
 		return this.corporateCustomerService.add(createCorporateCustomerRequest);
 		
 	}
 	
-	@DeleteMapping("/delete")
-	Result delete(DeleteCorporateCustomerRequest deleteCorporateCustomerRequest) throws BusinessException{
+	@DeleteMapping("/deleteById")
+	Result delete(@RequestBody @Valid DeleteCorporateCustomerRequest deleteCorporateCustomerRequest) throws BusinessException{
 		return this.corporateCustomerService.delete(deleteCorporateCustomerRequest);
 		
 	}
 	
 	@PutMapping("/update")
-	Result update(UpdateCorporateCustomerRequest updateCorporateCustomerRequest) throws BusinessException{
+	Result update(@RequestBody @Valid @Email UpdateCorporateCustomerRequest updateCorporateCustomerRequest) throws BusinessException{
 		return this.corporateCustomerService.update(updateCorporateCustomerRequest);
 		
 	}

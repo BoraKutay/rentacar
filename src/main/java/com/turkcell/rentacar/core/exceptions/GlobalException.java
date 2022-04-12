@@ -10,13 +10,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.turkcell.rentacar.core.utilities.results.ErrorDataResult;
 import com.turkcell.rentacar.core.utilities.results.ErrorResult;
 
 @RestControllerAdvice
 public class GlobalException {
 	
-	@ExceptionHandler
+	@ExceptionHandler(MethodArgumentNotValidException.class)
 	@ResponseStatus(code=HttpStatus.BAD_REQUEST)
 	public ErrorDataResult<Object> handleValidationExceptions(MethodArgumentNotValidException argumentNotValidException){
 		Map<String, String> validationErrors = new HashMap<String, String>();
@@ -28,10 +29,19 @@ public class GlobalException {
 	}
 
 
-	@ExceptionHandler
+	@ExceptionHandler(BusinessException.class)
 	@ResponseStatus(code=HttpStatus.BAD_REQUEST)
 	public ErrorResult businessValidationExceptions(BusinessException businessException){
 		ErrorResult errorResult = new ErrorResult(businessException.getMessage());
 		return errorResult;
 	}
+
+	@ExceptionHandler(InvalidFormatException.class)
+	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
+	public ErrorResult invalidTypeExceptions(InvalidFormatException invalidFormatException ){
+		ErrorResult errorResult = new ErrorResult(invalidFormatException.getMessage());
+		return errorResult;
+	}
+
+	
 }

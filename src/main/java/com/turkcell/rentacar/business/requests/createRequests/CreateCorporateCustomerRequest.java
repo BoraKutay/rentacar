@@ -5,6 +5,9 @@ package com.turkcell.rentacar.business.requests.createRequests;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
+import com.turkcell.rentacar.business.constants.messages.ValidationMessages;
+import com.turkcell.rentacar.business.constants.regularExpressions.RegularExpressions;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CreateCorporateCustomerRequest {
 
-	@Email(message = "Email is not valid!",regexp = "^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^-]+(?:\\\\.[a-zA-Z0-9_!#$%&’*+/=?`{|}~^-]+)*@[a-zA-Z0-9-]+(?:\\\\.[a-zA-Z0-9-]+)*$")
+	@Email(message = ValidationMessages.EMAIL_NOT_VALID,regexp = RegularExpressions.MAIL_REGEX)
 	@NotNull
 	private String mail;
 

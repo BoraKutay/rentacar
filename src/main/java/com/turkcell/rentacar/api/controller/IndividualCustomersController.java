@@ -54,8 +54,8 @@ public class IndividualCustomersController {
 		
 	}
 	
-	@DeleteMapping("/delete")
-	Result delete(DeleteIndividualCustomerRequest deleteIndividualCustomerRequest) throws BusinessException{
+	@DeleteMapping("/deleteById")
+	Result delete(@RequestBody @Valid DeleteIndividualCustomerRequest deleteIndividualCustomerRequest) throws BusinessException{
 		return this.individualCustomerService.delete(deleteIndividualCustomerRequest);
 		
 	}

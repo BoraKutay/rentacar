@@ -2,6 +2,7 @@ package com.turkcell.rentacar.api.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,8 +47,8 @@ public class RentalsController {
 		
 	}
 	
-	@DeleteMapping("/delete")
-	Result delete(@RequestBody DeleteRentalRequest deleteRentalRequest) throws BusinessException {
+	@DeleteMapping("/deleteById")
+	Result delete(@RequestBody @Valid DeleteRentalRequest deleteRentalRequest) throws BusinessException {
 		return this.rentalService.delete(deleteRentalRequest);
 	}
 	

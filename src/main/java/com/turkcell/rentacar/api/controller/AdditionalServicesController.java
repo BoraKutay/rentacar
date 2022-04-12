@@ -57,8 +57,8 @@ public class AdditionalServicesController {
     	
     }
 
-    @DeleteMapping("/delete")
-    public Result deleteById(DeleteAdditionalServiceRequest deleteAdditionalServiceRequest) throws BusinessException{
+    @DeleteMapping("/deleteById")
+    public Result deleteById(@RequestBody @Valid DeleteAdditionalServiceRequest deleteAdditionalServiceRequest) throws BusinessException{
 		return this.additionalServiceService.deleteById(deleteAdditionalServiceRequest);
     	
     }

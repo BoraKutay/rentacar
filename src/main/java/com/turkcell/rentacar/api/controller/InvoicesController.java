@@ -3,10 +3,13 @@ package com.turkcell.rentacar.api.controller;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,8 +45,8 @@ public class InvoicesController {
 		
 	}	
 	
-	@DeleteMapping("/delete")
-	Result delete(DeleteInvoiceRequest deleteInvoiceRequest) throws BusinessException{
+	@DeleteMapping("/deleteById")
+	Result delete(@RequestBody @Valid DeleteInvoiceRequest deleteInvoiceRequest) throws BusinessException{
 		return this.invoiceService.delete(deleteInvoiceRequest);
 		
 	}

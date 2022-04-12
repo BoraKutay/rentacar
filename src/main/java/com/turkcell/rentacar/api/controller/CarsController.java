@@ -47,8 +47,8 @@ public class CarsController {
         return this.carService.update(updatecarRequest);
     }
 
-    @DeleteMapping("/deletebyid")
-    public Result deleteById(@RequestBody DeleteCarRequest deleteCarRequest) throws BusinessException {
+    @DeleteMapping("/deleteById")
+    public Result deleteById(@RequestBody @Valid DeleteCarRequest deleteCarRequest) throws BusinessException {
 
         return this.carService.deleteById(deleteCarRequest);
     }

@@ -54,8 +54,8 @@ public class CitiesController {
     	return this.cityService.update(updateCityRequest);
     }
 
-    @DeleteMapping("/delete")
-    Result deleteById(DeleteCityRequest deleteCityRequest) throws BusinessException{
+    @DeleteMapping("/deleteById")
+    Result deleteById(@RequestBody @Valid DeleteCityRequest deleteCityRequest) throws BusinessException{
     	return this.cityService.deleteById(deleteCityRequest);
     }
 }

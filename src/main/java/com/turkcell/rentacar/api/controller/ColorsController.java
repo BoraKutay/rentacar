@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api/colors")
 
@@ -47,7 +49,7 @@ public class ColorsController {
     }
 
     @DeleteMapping("/deleteById")
-    public Result deleteById(@RequestBody DeleteColorRequest deleteColorRequest) throws BusinessException {
+    public Result deleteById(@RequestBody @Valid DeleteColorRequest deleteColorRequest) throws BusinessException {
 
         return this.colorService.deleteById(deleteColorRequest);
     }

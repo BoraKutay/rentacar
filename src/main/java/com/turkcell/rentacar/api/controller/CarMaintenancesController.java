@@ -57,7 +57,7 @@ public class CarMaintenancesController {
 	    }
 
 	    @DeleteMapping("/deleteById")
-	    public Result deleteById(@RequestBody DeleteCarMaintenanceRequest deleteCarMaintenanceRequest) throws BusinessException {
+	    public Result deleteById(@RequestBody @Valid DeleteCarMaintenanceRequest deleteCarMaintenanceRequest) throws BusinessException {
 
 	        return this.carMaintenanceService.deleteById(deleteCarMaintenanceRequest);
 	    }

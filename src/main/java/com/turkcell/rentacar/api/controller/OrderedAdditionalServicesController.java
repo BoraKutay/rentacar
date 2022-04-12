@@ -55,8 +55,8 @@ public class OrderedAdditionalServicesController {
     	return this.orderedAdditionalServiceService.update(updateOrderedAdditionalServiceRequest);
     }
 
-	 @DeleteMapping("/delete")
-	public Result deleteById(DeleteOrderedAdditionalServiceRequest deleteOrderedAdditionalServiceRequest) throws BusinessException{
+	 @DeleteMapping("/deleteById")
+	public Result deleteById(@RequestBody @Valid DeleteOrderedAdditionalServiceRequest deleteOrderedAdditionalServiceRequest) throws BusinessException{
     	return this.deleteById(deleteOrderedAdditionalServiceRequest);
     }
 }

@@ -59,7 +59,7 @@ public class CarDamagesController {
 		return this.carDamageService.update(updateCarDamageRequest);
 	}
 	
-	@DeleteMapping("/delete")
+	@DeleteMapping("/deleteById")
 	Result delete(@RequestBody @Valid DeleteCarDamageRequest deleteCarDamageRequest) throws BusinessException {
 		return this.carDamageService.delete(deleteCarDamageRequest);
 	}
