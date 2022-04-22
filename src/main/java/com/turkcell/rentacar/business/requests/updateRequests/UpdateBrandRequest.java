@@ -1,5 +1,6 @@
 package com.turkcell.rentacar.business.requests.updateRequests;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
@@ -17,5 +18,6 @@ public class UpdateBrandRequest {
 	@Positive
     private int brandId;
 	
+	@NotEmpty
     private String brandName;
 }

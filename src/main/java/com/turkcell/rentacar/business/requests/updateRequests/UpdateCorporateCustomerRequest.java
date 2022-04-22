@@ -1,6 +1,7 @@
 package com.turkcell.rentacar.business.requests.updateRequests;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
@@ -25,8 +26,10 @@ public class UpdateCorporateCustomerRequest {
 	@NotNull
 	private String mail;
 
+	@NotEmpty
 	private String password;
 	
+	@NotEmpty
 	private String companyName;
 	
 	private String taxNumber;

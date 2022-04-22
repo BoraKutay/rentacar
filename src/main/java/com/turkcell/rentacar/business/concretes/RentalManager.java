@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
@@ -97,6 +98,7 @@ public class RentalManager implements RentalService {
 		checkIfAdditionalServiceExists(createRentalRequestForIndividualCustomer.getAdditionalServicesId());
 		
 		Rental rental = this.modelMapperService.forDto().map(createRentalRequestForIndividualCustomer, Rental.class);
+		
 		
 		rental.setRentalId(0);
 		
@@ -294,7 +296,7 @@ public class RentalManager implements RentalService {
 	
 
 	
-    private boolean checkIfRentalExists(int id) throws BusinessException {
+    public boolean checkIfRentalExists(int id) throws BusinessException {
     	
     	if(rentalDao.existsById(id) == false) {
     		

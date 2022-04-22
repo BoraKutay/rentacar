@@ -17,7 +17,6 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/colors")
-
 public class ColorsController {
 
     private ColorService colorService;
@@ -38,13 +37,13 @@ public class ColorsController {
     }
 
     @PostMapping("/add")
-    public Result add(@RequestBody CreateColorRequest createColorRequest) throws BusinessException {
+    public Result add(@RequestBody @Valid CreateColorRequest createColorRequest) throws BusinessException {
 
         return this.colorService.add(createColorRequest);
     }
 
     @PutMapping("/update")
-    public Result update(@RequestBody UpdateColorRequest updateColorRequest) throws BusinessException {
+    public Result update(@RequestBody @Valid UpdateColorRequest updateColorRequest) throws BusinessException {
         return this.colorService.update(updateColorRequest);
     }
 

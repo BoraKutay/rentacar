@@ -1,7 +1,7 @@
 package com.turkcell.rentacar.business.requests.createRequests;
 
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CreateCityRequest {
 	
-	@NotNull
+	@NotEmpty
 	private String cityName;
 }

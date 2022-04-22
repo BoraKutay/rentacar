@@ -4,18 +4,15 @@ import javax.validation.Valid;
 
 import com.turkcell.rentacar.business.requests.createRequests.CreateCreditCardRequest;
 import com.turkcell.rentacar.business.requests.createRequests.CreatePaymentRequest;
-import com.turkcell.rentacar.business.requests.createRequests.CreateRentalRequestForCorporateCustomer;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CorporatePaymentModel{
-	CreateRentalRequestForCorporateCustomer createRentalRequestForCorporateCustomer;
+public class PaymentForLateFinishModel {
 	@Valid
 	CreateCreditCardRequest createCreditCardRequest;
 	CreatePaymentRequest createPaymentRequest;

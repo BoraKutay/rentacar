@@ -1,5 +1,6 @@
 package com.turkcell.rentacar.business.concretes;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -67,6 +68,8 @@ public class CorporateCustomerManager implements CorporateCustomerService{
 		
 		CorporateCustomer corporateCustomer = this.modelMapperService.forRequest().map(createCorporateCustomerRequest, CorporateCustomer.class);
 
+		corporateCustomer.setRegisteredDate(LocalDate.now());
+		
         this.corporateCustomerDao.save(corporateCustomer);
 
         return new SuccessResult(BusinessMessages.CORPORATE_CUSTOMER + BusinessMessages.ADDED);

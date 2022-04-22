@@ -34,7 +34,7 @@ public class BrandsController {
     }
 
     @PostMapping("/add")
-    public Result add(@RequestBody CreateBrandRequest createBrandRequest) throws BusinessException {
+    public Result add(@RequestBody @Valid CreateBrandRequest createBrandRequest) throws BusinessException {
 
         return this.brandService.add(createBrandRequest);
     }
@@ -45,7 +45,7 @@ public class BrandsController {
     }
 
     @PutMapping("/update")
-    public Result update(@RequestBody UpdateBrandRequest updateBrandRequest) throws BusinessException {
+    public Result update(@RequestBody @Valid UpdateBrandRequest updateBrandRequest) throws BusinessException {
         return this.brandService.update(updateBrandRequest);
     }
 

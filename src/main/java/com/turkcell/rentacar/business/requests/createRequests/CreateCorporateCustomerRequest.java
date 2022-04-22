@@ -3,6 +3,7 @@ package com.turkcell.rentacar.business.requests.createRequests;
 
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import com.turkcell.rentacar.business.constants.messages.ValidationMessages;
@@ -21,8 +22,10 @@ public class CreateCorporateCustomerRequest {
 	@NotNull
 	private String mail;
 
+	@NotEmpty
 	private String password;
 	
+	@NotEmpty
 	private String companyName;
 	
 	private String taxNumber;

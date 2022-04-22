@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.turkcell.rentacar.api.model.CorporatePaymentModel;
 import com.turkcell.rentacar.api.model.IndividualPaymentModel;
+import com.turkcell.rentacar.api.model.PaymentForLateFinishModel;
 import com.turkcell.rentacar.business.abstracts.PaymentService;
 import com.turkcell.rentacar.business.dtos.paymentDtos.PaymentByIdDto;
 import com.turkcell.rentacar.business.dtos.paymentDtos.PaymentListDto;
@@ -53,6 +54,11 @@ public class PaymentsController {
 		return this.paymentService.makePaymentForCorporateCustomer(corporatePaymentModel);
 	}
 	
+	@Transactional
+	@PostMapping("/makePaymentForLateFinish")
+	Result makePaymentForLateFinish(@RequestBody @Valid PaymentForLateFinishModel paymentForLateFinishModel) throws BusinessException {
+		return this.paymentService.makePaymentForLateFinish(paymentForLateFinishModel);
+	}
     @GetMapping("/getById")
     DataResult<PaymentByIdDto> getById(int id) throws BusinessException {
 		return this.paymentService.getById(id);

@@ -20,7 +20,8 @@ public class CreditCard {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int creditCarId;
+	@Column(name = "id")
+	private int creditCardId;
 	
 	@Column(name="card_holder")
 	private String cardHolder;

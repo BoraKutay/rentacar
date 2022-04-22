@@ -20,6 +20,7 @@ public class Car {
     @Column(name = "car_id")
     private int carId;
 
+    //bigdecimal
     @Column(name = "daily_price")
     private double dailyPrice;
 

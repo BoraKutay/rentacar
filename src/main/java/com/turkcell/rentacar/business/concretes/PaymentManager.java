@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.turkcell.rentacar.api.model.CorporatePaymentModel;
 import com.turkcell.rentacar.api.model.IndividualPaymentModel;
+import com.turkcell.rentacar.api.model.PaymentForLateFinishModel;
 import com.turkcell.rentacar.business.abstracts.CreditCardService;
 import com.turkcell.rentacar.business.abstracts.InvoiceService;
 import com.turkcell.rentacar.business.abstracts.OrderedAdditionalServiceService;
@@ -18,6 +19,7 @@ import com.turkcell.rentacar.business.abstracts.RentalService;
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.business.dtos.paymentDtos.PaymentByIdDto;
 import com.turkcell.rentacar.business.dtos.paymentDtos.PaymentListDto;
+import com.turkcell.rentacar.business.requests.createRequests.CreatePaymentRequest;
 import com.turkcell.rentacar.core.adapters.abstracts.PosAdapterService;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.exceptions.payment.PaymentNotFoundException;
@@ -77,6 +79,35 @@ public class PaymentManager implements PaymentService{
 		
 		return new SuccessResult(BusinessMessages.PAYMENT + BusinessMessages.ADDED);
 	}
+	
+
+	@Override
+	@Transactional(rollbackFor = BusinessException.class)
+	public Result makePaymentForLateFinish(PaymentForLateFinishModel paymentForLateFinishModel)
+			throws BusinessException {
+		
+		this.rentalService.checkIfRentalExists(paymentForLateFinishModel.getCreatePaymentRequest().getRentalId());
+		
+		posAdapterService.isCardValid(paymentForLateFinishModel.getCreateCreditCardRequest());
+		
+		Payment payment = this.modelMapperService.forRequest().map(paymentForLateFinishModel.getCreatePaymentRequest(), Payment.class);
+		Rental rental = this.rentalService.getRentalById(paymentForLateFinishModel.getCreatePaymentRequest().getRentalId());
+		Invoice invoice = this.invoiceService.add(rental.getRentalId());
+		
+		System.out.println(invoice.getInvoiceNo());
+		payment.setInvoice(invoice);
+		payment.setRental(rental);
+		setPaymentFields(payment, rental);
+		
+		this.posAdapterService.makePayment(paymentForLateFinishModel.getCreateCreditCardRequest(), rental.getTotalPrice());
+		
+		this.paymentDao.save(payment);
+		
+		return new SuccessResult(BusinessMessages.PAYMENT + BusinessMessages.ADDED);
+	}
+	
+
+    
 	
 	
 
@@ -153,7 +184,10 @@ public class PaymentManager implements PaymentService{
 		payment.setTotalAmount(rental.getTotalPrice());
 		
     }
-    
+
+
+
+
 
     
       

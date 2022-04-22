@@ -23,8 +23,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "corporate_customers")
 public class CorporateCustomer extends Customer {
    
-	
-
 	@Column(name = "corporate_customer_id",insertable = false,updatable = false)
 	private int corporateCustomerId;
 	

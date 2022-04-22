@@ -35,4 +35,6 @@ public interface RentalService {
 	Result finishRentalForIndividualCustomer(FinishRentalRequest finishRentalRequest) throws BusinessException;
 
 	Result finishRentalForCorporateCustomer(FinishRentalRequest finishRentalRequest) throws BusinessException;
+	
+	boolean checkIfRentalExists(int id) throws BusinessException;
 }

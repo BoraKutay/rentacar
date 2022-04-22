@@ -77,5 +77,8 @@ public class BusinessMessages {
 	public static final String PAYMENT_SUCCEED = "Payment succeed.";
 	public static final String ALREADY_PAID = "Paid already!";
 	
+	//Data integrity exception
+	public static final String DATA_INTEGRITY_VIOLATION = "This entity used by different tables!";
+	
 
 }

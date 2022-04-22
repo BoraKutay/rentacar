@@ -28,5 +28,5 @@ public class RentalListDto {
 	
 	private int carCarId;
 	
-	private int customerId;
+	private int customerCustomerId;
 }

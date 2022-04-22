@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 
+import org.springframework.lang.Nullable;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -38,5 +39,6 @@ public class CreateRentalRequestForCorporateCustomer {
 	@PositiveOrZero
 	private int returnLocationIdCityId;
 	
+	@Nullable
 	private List<Integer> additionalServicesId;
 }

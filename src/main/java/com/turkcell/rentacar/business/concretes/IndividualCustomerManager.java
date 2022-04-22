@@ -1,5 +1,6 @@
 package com.turkcell.rentacar.business.concretes;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -64,6 +65,8 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 		
 		IndividualCustomer individualCustomer = this.modelMapperService.forRequest().map(createIndividualCustomerRequest, IndividualCustomer.class);
 
+		individualCustomer.setRegisteredDate(LocalDate.now());
+		
         this.individualCustomerDao.save(individualCustomer);
 
         return new SuccessResult(BusinessMessages.INDIVIDUAL_CUSTOMER + BusinessMessages.ADDED);
