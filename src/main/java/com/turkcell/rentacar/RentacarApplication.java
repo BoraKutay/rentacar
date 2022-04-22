@@ -18,6 +18,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @RestControllerAdvice
 public class RentacarApplication {
 
+	
     public static void main(String[] args) {
         SpringApplication.run(RentacarApplication.class, args);
     }
