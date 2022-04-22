@@ -27,7 +27,7 @@ public class UpdateCreditCardRequest {
 	@Size(min = 16,max = 16)
 	private String cardNumber;
 	
-	@Size(min = 3,max = 3)
+	@Size(min = 100,max = 999)
 	private int cvv;
 	
 	@Min(1)
