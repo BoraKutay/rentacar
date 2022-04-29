@@ -1,4 +1,4 @@
-package com.turkcell.rentacar.core.adapters.abstracts;
+package com.turkcell.rentacar.business.adapters.abstracts;
 
 import com.turkcell.rentacar.business.requests.createRequests.CreateCreditCardRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;

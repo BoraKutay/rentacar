@@ -34,6 +34,7 @@ public class UpdateCreditCardRequest {
 	@Max(12)
 	private int month;
 	
+	@NotEmpty
 	private int year;
 	
 

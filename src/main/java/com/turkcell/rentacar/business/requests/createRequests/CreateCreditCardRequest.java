@@ -30,6 +30,7 @@ public class CreateCreditCardRequest {
 	@Max(12)
 	private int month;
 	
+	@NotEmpty
 	private int year;
 	
 	private double balance;

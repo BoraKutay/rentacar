@@ -1,13 +1,13 @@
-package com.turkcell.rentacar.core.adapters.concretes;
+package com.turkcell.rentacar.business.adapters.concretes;
 
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
+import com.turkcell.rentacar.business.adapters.abstracts.PosAdapterService;
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
+import com.turkcell.rentacar.business.outServices.AkbankPosService;
 import com.turkcell.rentacar.business.requests.createRequests.CreateCreditCardRequest;
-import com.turkcell.rentacar.core.adapters.abstracts.PosAdapterService;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
-import com.turkcell.rentacar.core.external.concretes.AkbankPosService;
 import com.turkcell.rentacar.core.utilities.results.Result;
 import com.turkcell.rentacar.core.utilities.results.SuccessResult;
 

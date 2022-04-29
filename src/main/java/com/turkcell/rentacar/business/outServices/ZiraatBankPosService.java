@@ -1,4 +1,4 @@
-package com.turkcell.rentacar.core.external.concretes;
+package com.turkcell.rentacar.business.outServices;
 
 import java.util.Random;
 
