@@ -6,7 +6,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 import com.turkcell.rentacar.business.constants.messages.ValidationMessages;
-import com.turkcell.rentacar.business.constants.regularExpressions.RegularExpressions;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,7 +21,7 @@ public class UpdateCorporateCustomerRequest {
 	@Positive
 	private int corporateCustomerId;
 	
-	@Email(message = ValidationMessages.EMAIL_NOT_VALID,regexp = RegularExpressions.MAIL_REGEX)
+	@Email(message = ValidationMessages.EMAIL_NOT_VALID)
 	@NotNull
 	private String mail;
 

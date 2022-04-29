@@ -126,7 +126,7 @@ public class PaymentManager implements PaymentService{
 	@Transactional(rollbackFor = BusinessException.class)
 	public void runPaymentSuccessorForIndividual(IndividualPaymentModel individualPaymentModel) throws BusinessException {
 		
-		Payment payment = this.modelMapperService.forRequest().map(individualPaymentModel.getCreatePaymentRequest(), Payment.class);
+		Payment payment = new Payment();
 		Rental rental = this.rentalService.addForIndividualCustomer(individualPaymentModel.getCreateRentalRequestForIndividualCustomer()).getData();
 		Invoice invoice = this.invoiceService.add(rental.getRentalId());
 		
@@ -143,7 +143,7 @@ public class PaymentManager implements PaymentService{
 	@Transactional(rollbackFor = BusinessException.class)
 	public void runPaymentSuccessorForCorporate(CorporatePaymentModel corporatePaymentModel) throws BusinessException {
 			
-		Payment payment = this.modelMapperService.forRequest().map(corporatePaymentModel.getCreatePaymentRequest(), Payment.class);
+		Payment payment = new Payment();
 		Rental rental = this.rentalService.addForCorporateCustomer(corporatePaymentModel.getCreateRentalRequestForCorporateCustomer()).getData();
 		Invoice invoice = this.invoiceService.add(rental.getRentalId());
 		

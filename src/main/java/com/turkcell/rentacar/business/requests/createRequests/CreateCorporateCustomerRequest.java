@@ -7,7 +7,6 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import com.turkcell.rentacar.business.constants.messages.ValidationMessages;
-import com.turkcell.rentacar.business.constants.regularExpressions.RegularExpressions;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,7 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CreateCorporateCustomerRequest {
 
-	@Email(message = ValidationMessages.EMAIL_NOT_VALID,regexp = RegularExpressions.MAIL_REGEX)
+	@Email(message = ValidationMessages.EMAIL_NOT_VALID)
 	@NotNull
 	private String mail;
 

@@ -24,7 +24,7 @@ public class UpdateCreditCardRequest {
 	@NotEmpty
 	private String cardHolder;
 	
-	@Size(min = 16,max = 16)
+	@Size(min = 16,max = 16,message = "Must have 16 characters!")
 	private String cardNumber;
 	
 	@Size(min = 100,max = 999)
